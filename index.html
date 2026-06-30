@@ -493,12 +493,12 @@ class Dashboard extends React.Component {
 
   questionsVals() {
     return { questions: [
-      { tag:'Risk appetite', q:'Does the institution’s exposure to AI-accelerated cyber risk sit within the board’s stated risk appetite — and how is that position measured and reported?', why:'Risk appetite turns the analysis into a board-level threshold and a decision.' },
-      { tag:'Material financial risk', q:'What is the plausible material financial impact of a successful attack — losses, capital, fines, and operational disruption — and what would oblige disclosure to regulators and the market?', why:'Materiality and disclosure obligations frame this as enterprise risk, not an IT issue.' },
-      { tag:'Customers', q:'How is risk to customers — their funds, data, and continued access to services — being reduced, and how is customer impact measured?', why:'Customer harm is the outcome the board is ultimately accountable for.' },
-      { tag:'Sector resilience', q:'Which critical services have board-approved impact tolerances, when was each last tested, and does the institution meet its obligations to wider financial-sector resilience?', why:'Tested impact tolerances and sector resilience are supervisory expectations, not technical detail.' },
-      { tag:'Detection & containment', q:'If a critical flaw were exploited before a fix existed, how quickly could it be detected and contained while critical services keep running — and what evidence supports that?', why:'Detection and containment now bound the loss as much as prevention does.' },
-      { tag:'Investment & decision', q:'Is security investment shifting toward detection, containment, and recovery in proportion to the risk appetite — and what decision does this analysis call for?', why:'The board’s role is to convert this into a funded, tracked decision.' },
+      { tag:'CISO · Detection & response', q:'In your domain, if a critical flaw were exploited before a patch existed, how quickly could you detect and contain it while critical services keep running — and which single investment would shorten that most?', example:'Cutting mean time to detect on internet-facing systems from days to hours by extending logging and round-the-clock monitoring coverage.' },
+      { tag:'CIO · Remediation & exposure', q:'Where remediation can no longer outpace exploitation, how are you prioritizing the few changes that remove the most exploitable risk, rather than chasing every open vulnerability?', example:'Enforcing risk-based fix deadlines on actively-exploited and internet-facing assets first, and isolating systems that cannot be patched quickly.' },
+      { tag:'CTO · Internal AI & agents', q:'As frontier models and agents are adopted in your teams — directly or through vendors — which controls give you observability, kill switches, and bounded autonomy, and which is weakest today?', example:'Requiring an audited action log and a tested kill switch before any agent is granted write access to a production system.' },
+      { tag:'COO · Operational resilience', q:'For the services you own, what is the tested impact tolerance, when was recovery last exercised under a realistic attack, and where does reliance on a single vendor concentrate risk?', example:'Running a recovery exercise that assumes a critical provider is unavailable for 48 hours and confirming essential payments still complete.' },
+      { tag:'CRO · Risk appetite & materiality', q:'Does AI-accelerated cyber exposure in your portfolio sit within the stated risk appetite, how is that position measured, and what scale of loss would be material enough to disclose?', example:'Translating a credible ransomware or data-loss scenario into a capital, customer-harm, and disclosure estimate the committee can act on.' },
+      { tag:'CFO · Investment & prioritization', q:'Is security investment shifting toward where risk reduction now comes from — detection, containment, and recovery — and what single funded decision should this produce this cycle?', example:'Reallocating budget from incremental patch-speed tooling toward detection and tested recovery, with a named owner and a delivery date.' },
     ] };
   }
 
@@ -1171,13 +1171,13 @@ class Dashboard extends React.Component {
           </section>
           </div>
 
-          {this.groupHeader('grp4',4,'V','Part five','Questions to Identify What Matters Most','Open questions to identify where attention and resources matter most — assessing readiness with evidence and directing a measurable plan.',40)}
+          {this.groupHeader('grp4',4,'V','Part five','Questions That Prioritize Risk Reduction','Questions for Executive Committee members and IT leadership — locating frontier-AI cyber risk in their own sphere of influence and prioritizing the work that materially reduces it.',40)}
 
           {/* ============ SECTION 8 · QUESTIONS ============ */}
           <div id="ch8" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 26px;margin-top:28px;")}>
-            <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Questions to ask management</div>
-            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Six questions to test what matters most at board level — exposure against risk appetite, material financial and customer impact, and the institution’s role in sector resilience.</p>
+            <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Questions for executive and IT leadership</div>
+            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:820px;text-wrap:pretty;")}>Six questions for Executive Committee members and IT leadership — to test how each sees frontier-AI cyber risk in their own domain, and how to prioritize the work that materially reduces it. Each pairs a question with an example of what acting on it looks like.</p>
             <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;")} data-collapse="">
               {questions.map((q, i) => (
                 <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:18px 20px;background:#fff;")}>
@@ -1186,7 +1186,7 @@ class Dashboard extends React.Component {
                     <span style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pnc-orange);")}>{q.tag}</span>
                   </div>
                   <div style={s("font-size:15px;line-height:21px;font-weight:700;color:var(--fg-1);margin-top:11px;text-wrap:pretty;")}>{q.q}</div>
-                  <div style={s("font-size:12px;line-height:17px;color:var(--fg-3);margin-top:11px;padding-top:11px;border-top:1px solid var(--line-1);text-wrap:pretty;")}>{q.why}</div>
+                  <div style={s("font-size:12px;line-height:17px;color:var(--fg-3);margin-top:11px;padding-top:11px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--pnc-orange-700);font-weight:700;")}>Example &mdash; </strong>{q.example}</div>
                 </div>
               ))}
             </div>
