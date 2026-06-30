@@ -203,7 +203,7 @@ class Dashboard extends React.Component {
     };
     const policyLegend = ['internal','pci','cisa'].map(id => ({ id, ...policyMeta[id], active: this.state.framework === id, onClick: () => this.setState({ framework: id }) }));
 
-    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.exploitVals(), ...this.modelsVals(), ...this.defenseVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.internalAIVals(), ...this.navVals() };
+    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.modelsVals(), ...this.defenseVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.internalAIVals(), ...this.navVals() };
   }
 
   cveVals() {
@@ -238,43 +238,6 @@ class Dashboard extends React.Component {
     const cveChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
     const cveBtns = [['actual','As reported'],['surge','vs. pre-AI trend']].map(([id,label]) => { const active = this.state.cveView === id; return { label, onClick:()=>this.setState({cveView:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
     return { cveChart, cveBtns, cveSurge: surge };
-  }
-
-  exploitVals() {
-    const h = React.createElement, T = this.T.bind(this);
-    const NAVY = '#10314F', RED = '#C0392B';
-    const rows = [
-      { y:'2018', sub:'Defenders had ~2 months', v:63 },
-      { y:'2022', sub:'Warning window shrinking', v:32 },
-      { y:'Today · 2026', sub:'Attackers strike first', v:-8, today:true },
-    ];
-    const W = 820, H = 250, GX = 106, ML = 120, MR = 64, MT = 62, MB = 26;
-    const pw = W - ML - MR, ph = H - MT - MB, base = MT + ph;
-    const vMin = -22, vMax = 70, range = vMax - vMin;
-    const xFor = v => ML + (v - vMin) / range * pw, x0 = xFor(0);
-    const n = rows.length, bandH = ph / n, barH = 26;
-    const k = [];
-    rows.forEach((r,i) => { if (i % 2 === 0) k.push(h('rect',{key:'bd'+i,x:12,y:MT+bandH*i,width:(ML+pw)-12,height:bandH,fill:'#FAFBFC'})); });
-    k.push(h('line',{key:'z',x1:x0,x2:x0,y1:52,y2:base,stroke:NAVY,strokeWidth:1.5,strokeDasharray:'3 3'}));
-    k.push(T(x0,30,'Flaw made public · day 0',{key:'z0',anchor:'middle',fs:10.5,fw:700,fill:NAVY}));
-    k.push(T(x0-12,46,'← before it is public',{key:'zb',anchor:'end',fs:9.5,fw:700,fill:RED}));
-    k.push(T(x0+12,46,'after it is public →',{key:'za',anchor:'start',fs:9.5,fw:700,fill:'#6B747C'}));
-    rows.forEach((r,i) => {
-      const yMid = MT + bandH*(i+0.5), bx = xFor(r.v), pos = r.v >= 0, col = pos ? NAVY : RED;
-      k.push(h('rect',{key:'b'+i,x:pos?x0:bx,y:yMid-barH/2,width:Math.max(2,Math.abs(bx-x0)),height:barH,rx:3,fill:col,opacity:pos?0.9:1}));
-      k.push(T(GX,yMid-2,r.y,{key:'y'+i,anchor:'end',fs:12.5,fw:700,fill:r.today?RED:'#23282C'}));
-      k.push(T(GX,yMid+13,r.sub,{key:'s'+i,anchor:'end',fs:9.5,fw:500,fill:r.today?RED:'#97A0A8'}));
-      const vt = Math.abs(r.v) + ' days';
-      if (pos) k.push(T(bx+9,yMid+4,vt,{key:'v'+i,anchor:'start',mono:true,fs:12.5,fw:700,fill:NAVY}));
-      else k.push(T(bx-9,yMid+4,vt,{key:'v'+i,anchor:'end',mono:true,fs:12.5,fw:700,fill:RED}));
-    });
-    const exploitChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
-    const exploitStats = [
-      { label:'2018 — first tracked', value:'63 days', note:'Attackers took about two months after a flaw was known to exploit it.', color:'#10314F', bg:'#fff' },
-      { label:'Today (2026)', value:'−8 days', note:'Exploitation now begins about a week before a flaw is even public.', color:'#C0392B', bg:'var(--risk-high-bg)' },
-      { label:'The shift', value:'≈ 70 days', note:'Exploitation arrives roughly 70 days earlier than a decade ago — and is still moving forward.', color:'#C0392B', bg:'#fff' },
-    ];
-    return { exploitChart, exploitStats };
   }
 
   modelsVals() {
@@ -560,7 +523,6 @@ class Dashboard extends React.Component {
       stepLabel, chapNav, onPdf, onPrev, onNext, prevText, nextText, prevOpacity, nextOpacity,
       cveBtns, cveSurge, cveChart,
       frameworkBtns, policyLegend, fwLabel, ticks, bars, showTargets,
-      exploitStats, exploitChart,
       models, modelsChart, defenseLayers,
       windowChart, milestoneLegend,
       volBtns, scen2Btns, zeroStats, zerodayChart,
@@ -867,33 +829,6 @@ class Dashboard extends React.Component {
               <p style={s("font-size:12.5px;line-height:18.5px;color:var(--fg-1);margin:6px 0 0;text-wrap:pretty;")}>The most capable Western models are now government-gated before release: Anthropic&rsquo;s <strong>Mythos</strong> was withheld for its cyber capability, then cleared for a limited set of US institutions, and OpenAI&rsquo;s <strong>GPT-5.6</strong> is likewise government-gated &mdash; released first only to government-approved partners. That control does little to slow the wider threat once a comparably capable model &mdash; China&rsquo;s <strong>GLM-5.2</strong> &mdash; is released with open weights, no usage restrictions, and at roughly a quarter of the cost (about $1.40 / $4.40 per million tokens versus $5 / $30). The board-level takeaway: frontier-grade offensive capability should be assumed broadly available, not confined to gated labs &mdash; which raises the weight on the defensive layers that follow.</p>
             </div>
             <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Illustrative — vertical position is a directional estimate, not a benchmark score.</strong> Model names, versions (in brackets), developers and release dates are publicly reported; the height reflects relative cyber-relevant capability to support discussion. Public cyber benchmarks (e.g. Cybench, CyberGym) do exist, but they use different tasks and agent harnesses, are not directly comparable across these models, and the strongest models approach their ceilings — so this chart deliberately shows direction over time, not scores. The availability label shows how each model is distributed — closed API, open weights, or government-gated.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://github.com/andyzorigin/cybench" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Cybench (CTF benchmark)</a> &middot; <a href="https://techcrunch.com/2026/04/07/anthropic-mythos-ai-model-preview-security/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>TechCrunch: Anthropic Mythos</a> &middot; <a href="https://www.semafor.com/article/06/27/2026/us-releases-powerful-anthropic-model-mythos-to-some-us-companies" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Semafor: US releases Mythos</a> &middot; <a href="https://www.trendingtopics.eu/glm-5-2-chinas-zhipu-ai-beats-even-googles-top-models-with-its-new-open-llm/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GLM-5.2 (Z.ai)</a> &middot; <a href="https://www.cfr.org/articles/deepseek-v4-signals-a-new-phase-in-the-u-s-china-ai-rivalry" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CFR: US–China AI rivalry</a></span></p>
-          </section>
-          </div>
-
-          {/* ============ SECTION 2 · THREAT-ACTOR SPEED ============ */}
-          <div id="ch2" className="reveal" style={s("scroll-margin-top:66px;")}>
-          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
-            <div style={s("max-width:620px;")}>
-              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Threat-actor speed</div>
-              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Time to exploit a vulnerability</h2>
-              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Each bar is the gap between a flaw becoming public &mdash; <strong style={s("color:var(--fg-1);")}>day 0</strong> &mdash; and the first real-world attack on it. That gap is the warning window defenders have to test and apply a patch.</p>
-            </div>
-            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;")} data-collapse="">
-              {exploitStats.map((st, i) => (
-                <div key={i} style={s(`border:1px solid var(--line-1);border-radius:var(--radius-md);padding:13px 15px;background:${st.bg};`)}>
-                  <div style={s("font-size:11px;font-weight:700;color:var(--fg-2);")}>{st.label}</div>
-                  <div style={s(`font-family:var(--font-mono);font-size:24px;font-weight:600;color:${st.color};line-height:1;margin-top:7px;`)}>{st.value}</div>
-                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:6px;")}>{st.note}</div>
-                </div>
-              ))}
-            </div>
-            <div style={s("display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:20px;")}>
-              <span style={s("display:inline-flex;align-items:center;gap:8px;font-size:12px;line-height:1.35;color:var(--fg-2);max-width:430px;")}><span style={s("width:18px;height:12px;border-radius:2px;background:#10314F;flex:none;")}></span><span><strong style={s("color:var(--fg-1);")}>Blue &mdash; defenders had a head start:</strong> days <strong>after</strong> a flaw was public before it was attacked.</span></span>
-              <span style={s("display:inline-flex;align-items:center;gap:8px;font-size:12px;line-height:1.35;color:var(--fg-2);max-width:430px;")}><span style={s("width:18px;height:12px;border-radius:2px;background:#C0392B;flex:none;")}></span><span><strong style={s("color:var(--fg-1);")}>Red &mdash; attackers strike first:</strong> the flaw is exploited <strong>before</strong> it is public.</span></span>
-            </div>
-            <div style={s("margin-top:14px;")}>{exploitChart}</div>
-            <div style={s("margin-top:16px;padding:13px 16px;background:var(--pnc-orange-050);border:1px solid var(--pnc-orange-100);border-radius:var(--radius-md);font-size:12.5px;line-height:18.5px;color:var(--fg-1);text-wrap:pretty;")}><strong style={s("color:var(--pnc-orange-700);")}>What it means:</strong> The warning window has closed. In 2018, a newly public flaw gave defenders roughly two months before attackers exploited it &mdash; time to test and apply a patch. Today attackers typically strike about a week <strong>before</strong> a flaw is even public, so there is no longer a reliable window in which patching alone protects the institution.</div>
-            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Time-to-exploit from Mandiant / GTIG; negative values mean exploitation begins before a patch exists.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/time-to-exploit-trends-2023" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Mandiant: Time-to-Exploit 2023</a> &middot; <a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Mandiant M-Trends 2026</a></span></p>
           </section>
           </div>
 
