@@ -914,12 +914,7 @@ class Dashboard extends React.Component {
               <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>If remediation runs behind, why aren&rsquo;t prime targets breached more often?</h2>
               <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>With remediation under pressure and frontier-AI capability widely available, one might expect frequent, material breaches at well-defended institutions such as banks. In practice, they remain comparatively rare — because patching is only one of many controls working together.</p>
             </div>
-            <div style={s("display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;")}>
-              <span style={s("display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--fg-2);")}><span style={s("width:7px;height:7px;border-radius:50%;background:var(--risk-critical);")}></span>Attacker</span>
-              <span style={s("font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);")}>Must get past every layer &rarr;</span>
-              <span style={s("display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--fg-2);")}>Customers &amp; critical services<span style={s("width:7px;height:7px;border-radius:50%;background:var(--risk-low);")}></span></span>
-            </div>
-            <div style={s("display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px;")} data-collapse="">
+            <div style={s("display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:20px;")} data-collapse="">
               {defenseLayers.map((L, i) => (
                 <div key={i} style={s(`position:relative;border:1px solid ${L.hl?'var(--pnc-orange)':'var(--line-1)'};background:${L.hl?'var(--pnc-orange-050)':'#F7F8F9'};border-radius:10px;padding:12px 11px 13px;`)}>
                   <div style={s(`font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.04em;color:${L.hl?'var(--pnc-orange-700)':'var(--fg-3)'};`)}>{'LAYER ' + (i+1)}</div>
