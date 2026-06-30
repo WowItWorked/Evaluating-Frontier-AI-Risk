@@ -26,6 +26,7 @@
 *{box-sizing:border-box;}
 html,body{margin:0;}
 .print-only{display:none;}
+.mobilenav{display:none;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 @media print{
   @page{margin:12mm;}
@@ -37,8 +38,10 @@ html,body{margin:0;}
   .reveal{animation:none!important;opacity:1!important;transform:none!important;transition:none!important;}
   header{padding:0 0 14px!important;}
   main{max-width:none!important;padding:6px 2mm 0!important;}
-  section,.partbanner{break-inside:avoid;page-break-inside:avoid;}
-  #grp1,#grp2,#grp3{break-before:page;page-break-before:always;margin-top:0!important;}
+  .partbanner{break-inside:avoid;page-break-inside:avoid;}
+  section svg, section .page-keep, [data-collapse] > *{break-inside:avoid;page-break-inside:avoid;}
+  section h2{break-after:avoid;}
+  #grp1,#grp2,#grp3{break-before:auto;margin-top:18px!important;}
   .print-only{display:block!important;}
   #printfooter{position:fixed;bottom:5mm;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.04em;color:#97A0A8;}
 }
@@ -60,8 +63,8 @@ html{scroll-behavior:smooth;}
   nav.no-print{flex-wrap:wrap!important;}
   nav.no-print > span{order:0;}
   nav.no-print > button{order:1;margin-left:auto!important;}
-  .chapstrip{order:2;flex:1 1 100%!important;flex-wrap:nowrap!important;overflow-x:auto;padding-bottom:3px;}
-  .chapstrip button{flex:0 0 auto;white-space:nowrap;}
+  .chapstrip{display:none!important;}
+  .mobilenav{display:block!important;order:2;flex:1 1 100%!important;}
   #grpC section{padding:22px 18px 20px!important;}
   #grpC h2{font-size:21px!important;}
 }
@@ -99,7 +102,7 @@ function s(str){
 class Dashboard extends React.Component {
   constructor(props){
     super(props);
-    this.state = { framework: "internal", hovered: null, cveView: "actual", cveYear: null, scenario: "ai", exHover: null, winScen: "today", volumeView: "count", scenario2: "ai", controlsView: "ai", freezeScope: "targeted", gateMode: "zero", chapter: 0 };
+    this.state = { framework: "internal", hovered: null, cveView: "actual", cveYear: null, scenario: "ai", exHover: null, winScen: "today", volumeView: "count", scenario2: "ai", controlsView: "ai", freezeScope: "targeted", gateMode: "zero", chapter: 0, navOpen: false };
   }
 
   componentDidMount() {
@@ -497,6 +500,8 @@ class Dashboard extends React.Component {
       gateBtns, gateShip, gateBlock, gateShipLabel, gateBlockLabel, gateStats, gateVerdict, gateChallenges,
       questions,
     } = v;
+    const curNav = chapNav.find(n => n.active) || chapNav[0];
+    const navOpen = this.state.navOpen;
 
     return (
       <div id="scroller" style={s("height:100vh;overflow-y:auto;background:var(--bg-2);font-family:var(--font-sans);color:var(--fg-1);")}>
@@ -522,6 +527,19 @@ class Dashboard extends React.Component {
             {chapNav.map((n, i) => (
               <button key={i} onClick={n.onClick} style={s(`display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-pill);background:${n.bg};color:${n.color};border:1px solid ${n.border};transition:all var(--dur-fast);`)}><span style={s("font-family:var(--font-mono);font-size:10.5px;opacity:.7;")}>{n.num}</span>{n.label}</button>
             ))}
+          </div>
+          <div className="mobilenav" style={s("position:relative;")}>
+            <button onClick={() => this.setState({ navOpen: !this.state.navOpen })} style={s("display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;cursor:pointer;font-family:var(--font-sans);font-size:13px;font-weight:700;padding:9px 13px;border-radius:var(--radius-md);background:var(--pnc-navy);color:#fff;border:none;")}>
+              <span style={s("display:inline-flex;align-items:center;gap:8px;")}><span style={s("font-family:var(--font-mono);font-size:11px;opacity:.7;")}>{curNav.num}</span>{curNav.label}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: navOpen ? 'rotate(180deg)' : 'none', transition: 'transform .18s' }}><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            {navOpen && (
+              <div style={s("position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:40;background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);overflow:hidden;")}>
+                {chapNav.map((n, i) => (
+                  <button key={i} onClick={() => { n.onClick(); this.setState({ navOpen: false }); }} style={s(`display:flex;align-items:center;gap:9px;width:100%;text-align:left;cursor:pointer;font-family:var(--font-sans);font-size:13px;font-weight:600;padding:11px 14px;background:${n.active?'var(--bg-2)':'#fff'};color:${n.active?'var(--pnc-navy)':'var(--fg-2)'};border:none;border-top:${i>0?'1px solid var(--line-1)':'none'};`)}><span style={s("font-family:var(--font-mono);font-size:11px;opacity:.6;")}>{n.num}</span>{n.label}</button>
+                ))}
+              </div>
+            )}
           </div>
           <button onClick={onPdf} style={s("display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:700;padding:7px 13px;border-radius:var(--radius-md);background:var(--pnc-orange);color:#fff;border:none;flex:none;")}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V3"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>Download PDF</button>
         </nav>
@@ -664,7 +682,7 @@ class Dashboard extends React.Component {
               <span style={s("margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--fg-3);")}>industry-average days to remediate · lower is better</span>
             </div>
 
-            <div style={s("display:flex;gap:10px;margin-top:24px;")}>
+            <div className="page-keep" style={s("display:flex;gap:10px;margin-top:24px;")}>
               <div style={s("position:relative;width:42px;height:360px;flex:none;")}>
                 {ticks.map((t, i) => (
                   <div key={i} style={s(`position:absolute;right:0;bottom:${t.px}px;transform:translateY(50%);font-family:var(--font-mono);font-size:11px;color:var(--fg-3);`)}>{t.v}</div>
