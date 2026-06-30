@@ -247,13 +247,13 @@ class Dashboard extends React.Component {
       { name:'GPT-4',       co:'OpenAI',    company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Mar 2023', t:2023.17, cap:40, c:US, tag:'api' },
       { name:'Llama 3',     co:'Meta',      company:'Meta',            country:'United States', flag:'🇺🇸', date:'Apr 2024', t:2024.29, cap:52, c:US, tag:'open' },
       { name:'DeepSeek-R1', co:'DeepSeek',  company:'DeepSeek',        country:'China',         flag:'🇨🇳', date:'Jan 2025', t:2025.04, cap:66, c:CN, tag:'open' },
-      { name:'GPT-5',       co:'OpenAI',    company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Aug 2025', t:2025.62, cap:80, c:US, tag:'api' },
-      { name:'Mythos',      co:'Anthropic', company:'Anthropic',       country:'United States', flag:'🇺🇸', date:'Apr 2026', t:2026.27, cap:94, c:US, tag:'gated' },
-      { name:'GLM-5.2',     co:'Z.ai',      company:'Z.ai (Zhipu AI)', country:'China',         flag:'🇨🇳', date:'Jun 2026', t:2026.45, cap:88, c:CN, tag:'free' },
+      { name:'Mythos 5',    co:'Anthropic', company:'Anthropic',       country:'United States', flag:'🇺🇸', date:'May 2026', t:2026.34, cap:95, c:US, tag:'gated' },
+      { name:'GPT-5.6',     co:'OpenAI',    company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Jun 2026', t:2026.50, cap:91, c:US, tag:'gated' },
+      { name:'GLM-5.2',     co:'Z.ai',      company:'Z.ai (Zhipu AI)', country:'China',         flag:'🇨🇳', date:'Jun 2026', t:2026.62, cap:87, c:CN, tag:'free' },
     ];
     const W=820, H=320, ML=34, MR=26, MT=34, MB=46;
     const pw=W-ML-MR, ph=H-MT-MB, base=MT+ph;
-    const tMin=2023.0, tMax=2026.65;
+    const tMin=2023.0, tMax=2026.9;
     const xFor=t=>ML+(t-tMin)/(tMax-tMin)*pw;
     const yFor=v=>MT+(100-v)/100*ph;
     const k=[];
@@ -266,9 +266,9 @@ class Dashboard extends React.Component {
       'GPT-4':{dx:0,nameDy:-24,verDy:-12,anchor:'middle'},
       'Llama 3':{dx:0,nameDy:-24,verDy:-12,anchor:'middle'},
       'DeepSeek-R1':{dx:0,nameDy:16,verDy:28,anchor:'middle'},
-      'GPT-5':{dx:0,nameDy:-24,verDy:-12,anchor:'middle'},
-      'Mythos':{dx:-8,nameDy:-24,verDy:-12,anchor:'end'},
-      'GLM-5.2':{dx:10,nameDy:5,verDy:17,anchor:'start'},
+      'Mythos 5':{dx:-8,nameDy:-24,verDy:-12,anchor:'end'},
+      'GPT-5.6':{dx:9,nameDy:-22,verDy:-10,anchor:'start'},
+      'GLM-5.2':{dx:6,nameDy:18,verDy:30,anchor:'start'},
     };
     models.forEach((m,i)=>{
       const o=lab[m.name];
