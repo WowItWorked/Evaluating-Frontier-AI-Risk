@@ -458,13 +458,12 @@ class Dashboard extends React.Component {
 
   questionsVals() {
     return { questions: [
-      { tag:'Detection', q:'How quickly can the organisation detect exploitation of a critical vulnerability, and how is that measured?', why:'Detection and response shape the impact of an incident alongside prevention.' },
-      { tag:'Resilience', q:'Which critical services have a defined tolerance for disruption, and when was each last tested?', why:'Tested recovery is the basis for operating through an incident.' },
-      { tag:'Investment', q:'How is security investment currently allocated across prevention, detection, containment, and recovery?', why:'Allocation can be compared with where protective value now sits.' },
-      { tag:'Containment', q:'If a breach occurred this year, what evidence shows it could be contained while critical services continue?', why:'Evidence turns an assumption into a tested plan.' },
-      { tag:'Concentration', q:'Which single third-party or platform, if it failed, could disrupt a critical service — and what is the fallback?', why:'Concentration risk grows as exploitation accelerates.' },
-      { tag:'AI in defence', q:'Where is AI being applied to strengthen detection and response within the organisation?', why:'Defensive capability is most useful when it matches the pace of the threat.' },
-      { tag:'AI governance', q:'What governance covers internal use of frontier AI — inventory, validation, and oversight of AI agents?', why:'Internal AI adoption adds a model-risk and security domain of its own.' },
+      { tag:'Risk appetite', q:'Does the institution’s exposure to AI-accelerated cyber risk sit within the board’s stated risk appetite — and how is that position measured and reported?', why:'Risk appetite turns the analysis into a board-level threshold and a decision.' },
+      { tag:'Material financial risk', q:'What is the plausible material financial impact of a successful attack — losses, capital, fines, and operational disruption — and what would oblige disclosure to regulators and the market?', why:'Materiality and disclosure obligations frame this as enterprise risk, not an IT issue.' },
+      { tag:'Customers', q:'How is risk to customers — their funds, data, and continued access to services — being reduced, and how is customer impact measured?', why:'Customer harm is the outcome the board is ultimately accountable for.' },
+      { tag:'Sector resilience', q:'Which critical services have board-approved impact tolerances, when was each last tested, and does the institution meet its obligations to wider financial-sector resilience?', why:'Tested impact tolerances and sector resilience are supervisory expectations, not technical detail.' },
+      { tag:'Detection & containment', q:'If a critical flaw were exploited before a fix existed, how quickly could it be detected and contained while critical services keep running — and what evidence supports that?', why:'Detection and containment now bound the loss as much as prevention does.' },
+      { tag:'Investment & decision', q:'Is security investment shifting toward detection, containment, and recovery in proportion to the risk appetite — and what decision does this analysis call for?', why:'The board’s role is to convert this into a funded, tracked decision.' },
     ] };
   }
 
@@ -1076,7 +1075,7 @@ class Dashboard extends React.Component {
           <div id="ch8" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 26px;margin-top:28px;")}>
             <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Questions to ask management</div>
-            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Seven open questions to identify where readiness matters most. They map to the themes above — detection, resilience, investment, containment, concentration, defensive AI, and governance of internal AI.</p>
+            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Six questions to test what matters most at board level — exposure against risk appetite, material financial and customer impact, and the institution’s role in sector resilience.</p>
             <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;")} data-collapse="">
               {questions.map((q, i) => (
                 <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:18px 20px;background:#fff;")}>
