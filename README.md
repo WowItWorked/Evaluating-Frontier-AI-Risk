@@ -1,4 +1,4 @@
-# Frontier AI and Cyber Risk — Board Briefing
+# Evaluating Frontier AI Risk — Board Briefing
 
 An interactive, single-file dashboard examining how frontier AI is accelerating cyber risk, and what that means for remediation strategy, control priorities, and board oversight.
 
