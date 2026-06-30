@@ -281,12 +281,12 @@ class Dashboard extends React.Component {
     const h = React.createElement, T = this.T.bind(this);
     const US = '#10314F', CN = '#C0392B';
     const models = [
-      { name:'GPT-4',       company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Mar 2023', t:2023.17, cap:40, c:US, tag:'api' },
-      { name:'Llama 3',     company:'Meta',            country:'United States', flag:'🇺🇸', date:'Apr 2024', t:2024.29, cap:52, c:US, tag:'open' },
-      { name:'DeepSeek-R1', company:'DeepSeek',        country:'China',         flag:'🇨🇳', date:'Jan 2025', t:2025.04, cap:66, c:CN, tag:'open' },
-      { name:'GPT-5',       company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Aug 2025', t:2025.62, cap:80, c:US, tag:'api' },
-      { name:'Mythos',      company:'Anthropic',       country:'United States', flag:'🇺🇸', date:'Apr 2026', t:2026.27, cap:94, c:US, tag:'gated' },
-      { name:'GLM-5.2',     company:'Z.ai (Zhipu AI)', country:'China',         flag:'🇨🇳', date:'Jun 2026', t:2026.45, cap:88, c:CN, tag:'free' },
+      { name:'GPT-4',       ver:'v4',      company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Mar 2023', t:2023.17, cap:40, c:US, tag:'api' },
+      { name:'Llama 3',     ver:'v3',      company:'Meta',            country:'United States', flag:'🇺🇸', date:'Apr 2024', t:2024.29, cap:52, c:US, tag:'open' },
+      { name:'DeepSeek-R1', ver:'R1',      company:'DeepSeek',        country:'China',         flag:'🇨🇳', date:'Jan 2025', t:2025.04, cap:66, c:CN, tag:'open' },
+      { name:'GPT-5',       ver:'v5',      company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Aug 2025', t:2025.62, cap:80, c:US, tag:'api' },
+      { name:'Mythos',      ver:'Fable 5', company:'Anthropic',       country:'United States', flag:'🇺🇸', date:'Apr 2026', t:2026.27, cap:94, c:US, tag:'gated' },
+      { name:'GLM-5.2',     ver:'v5.2',    company:'Z.ai (Zhipu AI)', country:'China',         flag:'🇨🇳', date:'Jun 2026', t:2026.45, cap:88, c:CN, tag:'free' },
     ];
     const W=820, H=320, ML=34, MR=26, MT=34, MB=46;
     const pw=W-ML-MR, ph=H-MT-MB, base=MT+ph;
@@ -300,14 +300,18 @@ class Dashboard extends React.Component {
     const pts=models.map(m=>xFor(m.t).toFixed(1)+','+yFor(m.cap).toFixed(1));
     k.push(h('polyline',{key:'ln',points:pts.join(' '),fill:'none',stroke:'#C2C9D0',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}));
     const lab = {
-      'GPT-4':{dx:0,dy:-13,anchor:'middle'}, 'Llama 3':{dx:0,dy:-13,anchor:'middle'},
-      'DeepSeek-R1':{dx:0,dy:20,anchor:'middle'}, 'GPT-5':{dx:0,dy:-13,anchor:'middle'},
-      'Mythos':{dx:-8,dy:-13,anchor:'end'}, 'GLM-5.2':{dx:10,dy:5,anchor:'start'},
+      'GPT-4':{dx:0,nameDy:-24,verDy:-12,anchor:'middle'},
+      'Llama 3':{dx:0,nameDy:-24,verDy:-12,anchor:'middle'},
+      'DeepSeek-R1':{dx:0,nameDy:16,verDy:28,anchor:'middle'},
+      'GPT-5':{dx:0,nameDy:-24,verDy:-12,anchor:'middle'},
+      'Mythos':{dx:-8,nameDy:-24,verDy:-12,anchor:'end'},
+      'GLM-5.2':{dx:10,nameDy:5,verDy:17,anchor:'start'},
     };
     models.forEach((m,i)=>{
       const o=lab[m.name];
       k.push(h('circle',{key:'c'+i,cx:xFor(m.t),cy:yFor(m.cap),r:5,fill:m.c,stroke:'#fff',strokeWidth:1.5}));
-      k.push(T(xFor(m.t)+o.dx, yFor(m.cap)+o.dy, m.name, {key:'l'+i,anchor:o.anchor,fs:11,fw:700,fill:m.c}));
+      k.push(T(xFor(m.t)+o.dx, yFor(m.cap)+o.nameDy, m.name, {key:'l'+i,anchor:o.anchor,fs:11,fw:700,fill:m.c}));
+      k.push(T(xFor(m.t)+o.dx, yFor(m.cap)+o.verDy, '('+m.ver+')', {key:'lv'+i,anchor:o.anchor,fs:8.5,fw:600,fill:'#9AA4AE'}));
     });
     const modelsChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
     return { models, modelsChart };
@@ -859,7 +863,7 @@ class Dashboard extends React.Component {
               <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pnc-orange-700);")}>Why pre-release gating has limits</div>
               <p style={s("font-size:12.5px;line-height:18.5px;color:var(--fg-1);margin:6px 0 0;text-wrap:pretty;")}>The most capable Western models now face government review before release: Anthropic&rsquo;s <strong>Mythos</strong> was withheld for its cyber capability, then cleared for a limited set of US institutions, and OpenAI&rsquo;s <strong>GPT-5.6</strong> shipped first to government-approved partners. That control does little to slow the wider threat once a comparably capable model &mdash; China&rsquo;s <strong>GLM-5.2</strong> &mdash; is released with open weights, no usage restrictions, and at roughly a quarter of the cost (about $1.40 / $4.40 per million tokens versus $5 / $30). The board-level takeaway: frontier-grade offensive capability should be assumed broadly available, not confined to gated labs &mdash; which raises the weight on the defensive layers that follow.</p>
             </div>
-            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Illustrative — cybersecurity capability is a directional estimate, not a benchmark score.</strong> Models, developers and release dates are publicly reported; vertical position reflects relative cyber-relevant capability to support discussion. The availability label shows how each model is distributed — closed API, open weights, or government-gated.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://techcrunch.com/2026/04/07/anthropic-mythos-ai-model-preview-security/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>TechCrunch: Anthropic Mythos</a> &middot; <a href="https://www.semafor.com/article/06/27/2026/us-releases-powerful-anthropic-model-mythos-to-some-us-companies" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Semafor: US releases Mythos</a> &middot; <a href="https://www.trendingtopics.eu/glm-5-2-chinas-zhipu-ai-beats-even-googles-top-models-with-its-new-open-llm/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GLM-5.2 (Z.ai)</a> &middot; <a href="https://www.cfr.org/articles/deepseek-v4-signals-a-new-phase-in-the-u-s-china-ai-rivalry" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CFR: US–China AI rivalry</a></span></p>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Illustrative — vertical position is a directional estimate, not a benchmark score.</strong> Model names, versions (in brackets), developers and release dates are publicly reported; the height reflects relative cyber-relevant capability to support discussion. Public cyber benchmarks (e.g. Cybench, CyberGym) do exist, but they use different tasks and agent harnesses, are not directly comparable across these models, and the strongest models approach their ceilings — so this chart deliberately shows direction over time, not scores. The availability label shows how each model is distributed — closed API, open weights, or government-gated.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://github.com/andyzorigin/cybench" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Cybench (CTF benchmark)</a> &middot; <a href="https://techcrunch.com/2026/04/07/anthropic-mythos-ai-model-preview-security/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>TechCrunch: Anthropic Mythos</a> &middot; <a href="https://www.semafor.com/article/06/27/2026/us-releases-powerful-anthropic-model-mythos-to-some-us-companies" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Semafor: US releases Mythos</a> &middot; <a href="https://www.trendingtopics.eu/glm-5-2-chinas-zhipu-ai-beats-even-googles-top-models-with-its-new-open-llm/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GLM-5.2 (Z.ai)</a> &middot; <a href="https://www.cfr.org/articles/deepseek-v4-signals-a-new-phase-in-the-u-s-china-ai-rivalry" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CFR: US–China AI rivalry</a></span></p>
           </section>
           </div>
 
