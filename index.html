@@ -272,15 +272,43 @@ class Dashboard extends React.Component {
   }
 
   modelsVals() {
+    const h = React.createElement, T = this.T.bind(this);
+    const US = '#10314F', CN = '#C0392B';
     const models = [
-      { name:'GPT-4',       company:'OpenAI',    country:'United States', flag:'🇺🇸', year:'2023', cap:45 },
-      { name:'Llama 3',     company:'Meta',      country:'United States', flag:'🇺🇸', year:'2024', cap:58 },
-      { name:'Gemini 2.0',  company:'Google',    country:'United States', flag:'🇺🇸', year:'2024', cap:67 },
-      { name:'Mistral Large',company:'Mistral AI',country:'France',       flag:'🇫🇷', year:'2024', cap:72 },
-      { name:'DeepSeek-R1', company:'DeepSeek',  country:'China',         flag:'🇨🇳', year:'2025', cap:84 },
-      { name:'GPT-5',       company:'OpenAI',    country:'United States', flag:'🇺🇸', year:'2025', cap:95 },
+      { name:'GPT-4',       company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Mar 2023', t:2023.17, cap:40, c:US, tag:'api' },
+      { name:'Llama 3',     company:'Meta',            country:'United States', flag:'🇺🇸', date:'Apr 2024', t:2024.29, cap:52, c:US, tag:'open' },
+      { name:'DeepSeek-R1', company:'DeepSeek',        country:'China',         flag:'🇨🇳', date:'Jan 2025', t:2025.04, cap:66, c:CN, tag:'open' },
+      { name:'GPT-5',       company:'OpenAI',          country:'United States', flag:'🇺🇸', date:'Aug 2025', t:2025.62, cap:80, c:US, tag:'api' },
+      { name:'Mythos',      company:'Anthropic',       country:'United States', flag:'🇺🇸', date:'Apr 2026', t:2026.27, cap:94, c:US, tag:'gated' },
+      { name:'GLM-5.2',     company:'Z.ai (Zhipu AI)', country:'China',         flag:'🇨🇳', date:'Jun 2026', t:2026.45, cap:88, c:CN, tag:'free' },
     ];
-    return { models };
+    const W=820, H=320, ML=34, MR=26, MT=34, MB=46;
+    const pw=W-ML-MR, ph=H-MT-MB, base=MT+ph;
+    const tMin=2023.0, tMax=2026.65;
+    const xFor=t=>ML+(t-tMin)/(tMax-tMin)*pw;
+    const yFor=v=>MT+(100-v)/100*ph;
+    const k=[];
+    [0,25,50,75,100].forEach(v=>k.push(h('line',{key:'g'+v,x1:ML,x2:ML+pw,y1:yFor(v),y2:yFor(v),stroke:'#EEF0F2',strokeWidth:1})));
+    [2023,2024,2025,2026].forEach(y=>{ const x=xFor(y); k.push(h('line',{key:'vx'+y,x1:x,x2:x,y1:MT,y2:base,stroke:'#F4F5F6',strokeWidth:1})); k.push(T(x,base+16,String(y),{key:'xl'+y,anchor:'middle',mono:true,fs:10,fill:'#97A0A8'})); });
+    k.push(h('text',{key:'yt',x:13,y:MT+ph/2,fill:'#97A0A8',fontSize:9.5,fontWeight:700,fontFamily:'Public Sans, system-ui, sans-serif',textAnchor:'middle',letterSpacing:'.05em',transform:`rotate(-90 13 ${MT+ph/2})`},'CYBERSECURITY CAPABILITY ↑'));
+    const pts=models.map(m=>xFor(m.t).toFixed(1)+','+yFor(m.cap).toFixed(1));
+    k.push(h('polyline',{key:'ln',points:pts.join(' '),fill:'none',stroke:'#C2C9D0',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}));
+    const lab = {
+      'GPT-4':{dy:-11,anchor:'middle'}, 'Llama 3':{dy:-11,anchor:'middle'},
+      'DeepSeek-R1':{dy:17,anchor:'middle'}, 'GPT-5':{dy:-11,anchor:'middle'},
+      'Mythos':{dy:-11,anchor:'middle'}, 'GLM-5.2':{dy:-11,anchor:'end'},
+    };
+    models.forEach((m,i)=>{
+      const o=lab[m.name];
+      k.push(h('circle',{key:'c'+i,cx:xFor(m.t),cy:yFor(m.cap),r:5,fill:m.c,stroke:'#fff',strokeWidth:1.5}));
+      k.push(T(xFor(m.t)+(o.anchor==='end'?7:0), yFor(m.cap)+o.dy, m.name, {key:'l'+i,anchor:o.anchor,fs:10.5,fw:700,fill:m.c}));
+    });
+    // governance annotations on the 2026 pair
+    const mMy=models[4], mGl=models[5];
+    k.push(T(xFor(mMy.t), yFor(mMy.cap)+15, 'US · gov-gated', {key:'amy',anchor:'middle',fs:8.5,fw:700,fill:'#97A0A8'}));
+    k.push(T(xFor(mGl.t)+7, yFor(mGl.cap)+15, 'China · open · free', {key:'agl',anchor:'end',fs:8.5,fw:700,fill:CN}));
+    const modelsChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    return { models, modelsChart };
   }
 
   defenseVals() {
@@ -527,7 +555,7 @@ class Dashboard extends React.Component {
       cveBtns, cveSurge, cveChart,
       frameworkBtns, policyLegend, fwLabel, ticks, bars, showTargets,
       exploitStats, exploitChart,
-      models, defenseLayers,
+      models, modelsChart, defenseLayers,
       windowChart, milestoneLegend,
       volBtns, scen2Btns, zeroStats, zerodayChart,
       controlGroups,
@@ -769,29 +797,40 @@ class Dashboard extends React.Component {
           {/* ============ SECTION · FRONTIER MODELS ============ */}
           <div id="chModels" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
-            <div style={s("max-width:660px;")}>
+            <div style={s("max-width:690px;")}>
               <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>The models behind the shift</div>
-              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Frontier AI capability is rising — and spreading</h2>
-              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>A small group of frontier models — and the autonomous agents built on them — is the engine behind faster exploitation. Their capability has climbed sharply in three years, and the leading models now come from several companies and more than one country.</p>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Frontier capability is rising &mdash; and harder to contain</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Frontier models &mdash; and the autonomous agents built on them &mdash; keep raising what an attacker can do. Cyber-relevant capability has climbed sharply, the leading edge now spans more than one country, and the most capable models are increasingly released open-weight and low-cost &mdash; beyond the reach of pre-release review.</p>
             </div>
-            <div style={s("display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;")}>
-              <span style={s("font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-3);")}>Relative capability &#8599;</span>
-              <span style={s("font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-3);")}>2023 &rarr; 2025</span>
+            <div style={s("display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;flex-wrap:wrap;")}>
+              <div style={s("display:flex;align-items:center;gap:16px;")}>
+                <span style={s("display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--fg-2);")}><span style={s("width:9px;height:9px;border-radius:50%;background:#10314F;")}></span>United States</span>
+                <span style={s("display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--fg-2);")}><span style={s("width:9px;height:9px;border-radius:50%;background:#C0392B;")}></span>China</span>
+              </div>
+              <span style={s("font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);")}>Release date &rarr;</span>
             </div>
-            <div style={s("display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:10px;align-items:end;")} data-collapse="">
-              {models.map((m, i) => (
-                <div key={i} style={s("display:flex;flex-direction:column;")}>
-                  <div style={s("position:relative;height:118px;border-bottom:2px solid var(--line-2);display:flex;align-items:flex-end;")}>
-                    <div style={s(`width:100%;height:${m.cap}%;background:#FF6B57;opacity:${(0.5 + i*0.1).toFixed(2)};border-radius:5px 5px 0 0;`)}></div>
+            <div style={s("margin-top:8px;")}>{modelsChart}</div>
+            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;")} data-collapse="">
+              {models.map((m, i) => {
+                const tg = {open:{l:'Open weights',c:'#1E7F4F',bg:'#E7F5EE'}, free:{l:'Open · free',c:'#1E7F4F',bg:'#E7F5EE'}, gated:{l:'Gov-gated',c:'var(--pnc-orange-700)',bg:'var(--pnc-orange-050)'}, api:{l:'Closed API',c:'#5A6570',bg:'#F2F4F5'}}[m.tag];
+                return (
+                  <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:12px 14px;background:#fff;")}>
+                    <div style={s("display:flex;align-items:center;justify-content:space-between;gap:8px;")}>
+                      <span style={s("font-family:var(--font-mono);font-size:10.5px;color:var(--fg-3);")}>{m.date}</span>
+                      <span style={s(`font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:${tg.c};background:${tg.bg};border-radius:99px;padding:2px 8px;`)}>{tg.l}</span>
+                    </div>
+                    <div style={s("font-size:13.5px;font-weight:700;color:var(--fg-1);margin-top:8px;line-height:1.2;")}>{m.name}</div>
+                    <div style={s("font-size:11.5px;color:var(--fg-2);margin-top:2px;")}>{m.company}</div>
+                    <div style={s("font-size:11px;color:var(--fg-3);margin-top:3px;")}>{m.flag} {m.country}</div>
                   </div>
-                  <div style={s("font-family:var(--font-mono);font-size:10.5px;color:var(--fg-3);margin-top:9px;")}>{m.year}</div>
-                  <div style={s("font-size:13px;font-weight:700;color:var(--fg-1);margin-top:2px;line-height:1.2;")}>{m.name}</div>
-                  <div style={s("font-size:11.5px;color:var(--fg-2);margin-top:3px;")}>{m.company}</div>
-                  <div style={s("font-size:11px;color:var(--fg-3);margin-top:3px;")}>{m.flag} {m.country}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
-            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Illustrative — relative capability and release timing based on public information.</strong> The models and their developers are publicly announced; the capability ranking is a directional comparison across widely used frontier models to support discussion, not a benchmark score. The point is the trajectory: rapidly rising capability, available from multiple companies and countries.</p>
+            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-orange-050);border:1px solid var(--pnc-orange-100);border-radius:var(--radius-md);")}>
+              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pnc-orange-700);")}>Why pre-release gating has limits</div>
+              <p style={s("font-size:12.5px;line-height:18.5px;color:var(--fg-1);margin:6px 0 0;text-wrap:pretty;")}>The most capable Western models now face government review before release: Anthropic&rsquo;s <strong>Mythos</strong> was withheld for its cyber capability, then cleared for a limited set of US institutions, and OpenAI&rsquo;s <strong>GPT-5.6</strong> shipped first to government-approved partners. That control does little to slow the wider threat once a comparably capable model &mdash; China&rsquo;s <strong>GLM-5.2</strong> &mdash; is released with open weights, no usage restrictions, and at roughly a quarter of the cost (about $1.40 / $4.40 per million tokens versus $5 / $30). The board-level takeaway: frontier-grade offensive capability should be assumed broadly available, not confined to gated labs &mdash; which raises the weight on the defensive layers that follow.</p>
+            </div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Illustrative — cybersecurity capability is a directional estimate, not a benchmark score.</strong> Models, developers and release dates are publicly reported; vertical position reflects relative cyber-relevant capability to support discussion. The availability label shows how each model is distributed — closed API, open weights, or government-gated.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://techcrunch.com/2026/04/07/anthropic-mythos-ai-model-preview-security/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>TechCrunch: Anthropic Mythos</a> &middot; <a href="https://www.semafor.com/article/06/27/2026/us-releases-powerful-anthropic-model-mythos-to-some-us-companies" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Semafor: US releases Mythos</a> &middot; <a href="https://www.trendingtopics.eu/glm-5-2-chinas-zhipu-ai-beats-even-googles-top-models-with-its-new-open-llm/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GLM-5.2 (Z.ai)</a> &middot; <a href="https://www.cfr.org/articles/deepseek-v4-signals-a-new-phase-in-the-u-s-china-ai-rivalry" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CFR: US–China AI rivalry</a></span></p>
           </section>
           </div>
 
