@@ -431,16 +431,19 @@ class Dashboard extends React.Component {
   }
 
   zeroPolicyVals() {
-    const mode = this.state.gateMode || 'zero';
-    const d = {
-      zero: { shipW:16, blockW:84, shipLabel:'Limited change proceeds', blockLabel:'Most change held pending remediation', ship:'Limited', wait:'Extended', windows:'Rare' },
-      risk: { shipW:82, blockW:18, shipLabel:'Most change proceeds', blockLabel:'Highest-risk items held first', ship:'Most', wait:'Within days', windows:'Continuous' },
-    }[mode];
-    const gateBtns = [['zero','Zero-vulnerability gate'],['risk','Risk-based gate']].map(([id,label]) => { const active=mode===id; return { label, onClick:()=>this.setState({gateMode:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
-    const gateStats = [
-      { label:'Production change able to proceed', value:d.ship },
-      { label:'Typical wait to ship a change', value:d.wait },
-      { label:'Clear production windows', value:d.windows },
+    const gates = [
+      { key:'zero', name:'Zero-vulnerability gate', tagline:'Fix every known flaw before any change ships', accent:'var(--risk-high)', shipW:16, ship:'Limited', wait:'Open-ended', windows:'Rare',
+        points:[
+          { ok:true,  t:'Nothing with a known vulnerability reaches production' },
+          { ok:false, t:'Most change is held, so delivery largely stalls' },
+          { ok:false, t:'Rarely reaches zero — new flaws arrive continually' },
+        ] },
+      { key:'risk', name:'Risk-based gate', tagline:'Hold the highest-risk flaws first, ship the rest', accent:'var(--success)', shipW:82, ship:'Most', wait:'Within days', windows:'Continuous',
+        points:[
+          { ok:true, t:'Highest-risk vulnerabilities are held and fixed first' },
+          { ok:true, t:'Most change continues to reach production' },
+          { ok:true, t:'Continuous, risk-prioritised flow' },
+        ] },
     ];
     const gateChallenges = [
       { tag:'Continuous inflow', text:'New relevant vulnerabilities are disclosed continually, so the open count rarely settles at zero.', stat:'~110+ new CVEs / day' },
@@ -450,7 +453,7 @@ class Dashboard extends React.Component {
       { tag:'Security fixes included', text:'A strict gate can also delay shipping security improvements themselves.', stat:'delays improvements' },
       { tag:'Delivery slows', text:'Routine features, fixes, and resilience work may wait, slowing delivery.', stat:'slower delivery' },
     ];
-    return { gateBtns, gateStats, gateChallenges, gateShip:d.shipW, gateBlock:d.blockW, gateShipLabel:d.shipLabel, gateBlockLabel:d.blockLabel, gateVerdict: mode==='zero' ? 'A zero-vulnerability gate aims to clear all known exposure before change ships. In practice, because new vulnerabilities arrive continually and some have no fix yet, it tends to hold back most change while rarely reaching zero.' : 'A risk-based gate allows most change to proceed while holding the highest-risk vulnerabilities first.' };
+    return { gates, gateChallenges };
   }
 
   questionsVals() {
@@ -517,7 +520,7 @@ class Dashboard extends React.Component {
       volBtns, scen2Btns, zeroStats, zerodayChart,
       controlGroups,
       scopeBtns, valueMeter, disruptionMeter, freezeVerdict, freezePros, freezeLimits,
-      gateBtns, gateShip, gateBlock, gateShipLabel, gateBlockLabel, gateStats, gateVerdict, gateChallenges,
+      gates, gateChallenges,
       aiFrameworks, aiControls,
       questions,
     } = v;
@@ -974,44 +977,43 @@ class Dashboard extends React.Component {
           {/* ============ SECTION 7 · ZERO-VULNERABILITY GATE ============ */}
           <div id="ch7" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
-            <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
-              <div style={s("max-width:620px;")}>
-                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Policy option &middot; zero-vulnerability gate</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Weighing a zero-vulnerability gate</h2>
-                <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Requiring zero open vulnerabilities before any change ships is an understandable goal. Comparing it with a risk-based gate helps weigh the protection it offers against its effect on delivery.</p>
-              </div>
-              <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
-                <span style={s("font-size:10.5px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.05em;")}>Gate policy</span>
-                <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
-                  {gateBtns.map((g, i) => (
-                    <button key={i} onClick={g.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${g.bg};color:${g.color};box-shadow:${g.shadow};`)}>{g.label}</button>
-                  ))}
-                </div>
-              </div>
+            <div style={s("max-width:660px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Policy option &middot; zero-vulnerability gate</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Weighing a zero-vulnerability gate</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Requiring zero open vulnerabilities before any change ships is an understandable goal. Set against a risk-based gate, the trade-off is between eliminating known exposure and keeping delivery moving.</p>
             </div>
 
-            <div style={s("margin-top:20px;padding-top:18px;border-top:1px solid var(--line-1);")}>
-              <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);")}>Production changes able to reach production</div>
-              <div style={s("display:flex;height:38px;border:1px solid var(--line-1);border-radius:var(--radius-md);overflow:hidden;margin-top:12px;")}>
-                <div style={s(`width:${gateShip}%;background:var(--success);transition:width var(--dur-slow) var(--ease-standard);`)}></div>
-                <div style={s(`width:${gateBlock}%;background:var(--risk-high);transition:width var(--dur-slow) var(--ease-standard);`)}></div>
-              </div>
-              <div style={s("display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:8px;")}>
-                <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:11px;height:11px;border-radius:3px;background:var(--success);")}></span><span style={s("font-size:12px;color:var(--fg-1);font-weight:600;")}>{gateShipLabel}</span></div>
-                <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:11px;height:11px;border-radius:3px;background:var(--risk-high);")}></span><span style={s("font-size:12px;color:var(--fg-1);font-weight:600;")}>{gateBlockLabel}</span></div>
-              </div>
-            </div>
+            <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;")} data-collapse="">
+              {gates.map((g, i) => (
+                <div key={i} style={s(`border:1px solid var(--line-1);border-top:3px solid ${g.accent};border-radius:var(--radius-md);padding:16px 18px;background:#fff;`)}>
+                  <div style={s("font-size:14.5px;font-weight:700;color:var(--fg-1);")}>{g.name}</div>
+                  <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-3);margin-top:2px;text-wrap:pretty;")}>{g.tagline}</div>
 
-            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;")} data-collapse="">
-              {gateStats.map((st, i) => (
-                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:13px 15px;background:#fff;")}>
-                  <div style={s("font-size:10.5px;font-weight:700;color:var(--fg-2);text-wrap:pretty;")}>{st.label}</div>
-                  <div style={s("font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--pnc-navy);line-height:1.1;margin-top:8px;")}>{st.value}</div>
+                  <div style={s("font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:15px;")}>Change that reaches production</div>
+                  <div style={s("position:relative;display:flex;height:30px;border:1px solid var(--line-1);border-radius:var(--radius-sm);overflow:hidden;margin-top:7px;")}>
+                    <div style={s(`width:${g.shipW}%;background:var(--success);display:flex;align-items:center;justify-content:center;`)}>{g.shipW>=34 && <span style={s("font-size:11.5px;font-weight:700;color:#fff;")}>{g.ship}</span>}</div>
+                    <div style={s(`width:${100-g.shipW}%;background:var(--bg-3);`)}></div>
+                  </div>
+                  {g.shipW<34 && <div style={s("font-size:11.5px;font-weight:700;color:var(--success);margin-top:5px;")}>{g.ship}</div>}
+
+                  <div style={s("display:flex;flex-direction:column;gap:8px;margin-top:14px;")}>
+                    {g.points.map((p, j) => (
+                      <div key={j} style={s("display:flex;gap:8px;align-items:flex-start;")}>
+                        <span style={s(`flex:none;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;background:${p.ok?'var(--success)':'var(--risk-high)'};margin-top:1px;`)}>{p.ok?'✓':'✕'}</span>
+                        <span style={s("font-size:12px;line-height:16px;color:var(--fg-2);text-wrap:pretty;")}>{p.t}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={s("display:flex;gap:18px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-1);")}>
+                    <div><div style={s("font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-3);")}>Typical wait</div><div style={s("font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--pnc-navy);margin-top:3px;")}>{g.wait}</div></div>
+                    <div><div style={s("font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-3);")}>Clear windows</div><div style={s("font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--pnc-navy);margin-top:3px;")}>{g.windows}</div></div>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div style={s("margin-top:18px;padding:13px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>In practice:</strong> {gateVerdict}</div>
+            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The trade-off:</strong> A zero-vulnerability gate prioritises eliminating known exposure, but holds back most change and rarely reaches zero. A risk-based gate keeps most delivery moving and contains the highest-risk flaws first — accepting that some lower-risk issues remain open.</div>
 
             <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);margin-top:22px;")}>Practical considerations for a zero-vulnerability gate</div>
             <div style={s("display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px;")} data-collapse="">
@@ -1068,13 +1070,13 @@ class Dashboard extends React.Component {
           </section>
           </div>
 
-          {this.groupHeader('grp4',4,'V','Part five','Questions to Drive Risk Reduction','Questions to assess organisational readiness, direct a measurable plan, and allocate resources to where protective value has shifted.',40)}
+          {this.groupHeader('grp4',4,'V','Part five','Questions to Identify What Matters Most','Open questions to identify where attention and resources matter most — assessing readiness with evidence and directing a measurable plan.',40)}
 
           {/* ============ SECTION 8 · QUESTIONS ============ */}
           <div id="ch8" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 26px;margin-top:28px;")}>
             <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Questions to ask management</div>
-            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Seven open questions to assess readiness with evidence. They map to the themes above — detection, resilience, investment, containment, concentration, defensive AI, and governance of internal AI.</p>
+            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Seven open questions to identify where readiness matters most. They map to the themes above — detection, resilience, investment, containment, concentration, defensive AI, and governance of internal AI.</p>
             <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;")} data-collapse="">
               {questions.map((q, i) => (
                 <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:18px 20px;background:#fff;")}>
@@ -1087,7 +1089,6 @@ class Dashboard extends React.Component {
                 </div>
               ))}
             </div>
-            <div style={s("margin-top:18px;padding:13px 16px;background:var(--pnc-blue-050);border:1px solid var(--pnc-blue-100);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:var(--fg-2);")}>These questions are intended to assess readiness with evidence.</div>
             <p style={s("font-size:9.5px;line-height:13.5px;color:var(--fg-3);margin:16px 0 0;padding-top:11px;border-top:1px solid var(--line-1);")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong></p>
           </section>
           </div>
