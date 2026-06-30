@@ -127,7 +127,7 @@ class Dashboard extends React.Component {
         }
       }
       // active part + background tint shift
-      const ids = ['grpC','grp0','grp1','grp2','grp3']; let active = 0;
+      const ids = ['grpC','grp0','grp1','grp2','grp3','grp4']; let active = 0;
       ids.forEach((id, i) => { const el = document.getElementById(id); if (el && (el.getBoundingClientRect().top - scr.top) <= 140) active = i; });
       sc.style.background = this._tints[active] || this._tints[0];
       if (this.state.chapter !== active) this.setState({ chapter: active });
@@ -148,7 +148,7 @@ class Dashboard extends React.Component {
   }
 
   groupHeader(id, idx, badge, part, title, desc, mt) {
-    const accents = ['#F58025', '#FF6B57', '#4FA8E0', '#4FC18A'];
+    const accents = ['#F58025', '#FF6B57', '#4FA8E0', '#4FC18A', '#A78BFA'];
     const ac = accents[idx] || '#F58025';
     return (
       <div id={id} className="reveal" style={s(`scroll-margin-top:66px;margin-top:${mt}px;`)}>
@@ -157,12 +157,12 @@ class Dashboard extends React.Component {
             <div style={s("display:flex;align-items:center;gap:10px;flex-wrap:wrap;")}>
               <span style={s(`font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${ac};`)}>{part}</span>
               <span style={s("width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);")}></span>
-              <span style={s("font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.55);")}>Section {idx + 1} of 4</span>
+              <span style={s("font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.55);")}>Section {idx + 1} of 5</span>
             </div>
             <h2 style={s("font-family:var(--font-serif);font-size:30px;font-weight:700;letter-spacing:-.015em;line-height:1.12;margin:9px 0 0;color:#fff;")}>{title}</h2>
             <p style={s("font-size:13.5px;line-height:20px;color:rgba(255,255,255,.74);margin:9px 0 0;max-width:730px;text-wrap:pretty;")}>{desc}</p>
             <div style={s("display:flex;align-items:center;gap:6px;margin-top:17px;")}>
-              {[0,1,2,3].map(i => (
+              {[0,1,2,3,4].map(i => (
                 <span key={i} style={s(`width:${i===idx?24:13}px;height:4px;border-radius:2px;background:${i===idx?ac:'rgba(255,255,255,.22)'};transition:all var(--dur-base) var(--ease-standard);`)}></span>
               ))}
             </div>
@@ -203,7 +203,7 @@ class Dashboard extends React.Component {
     };
     const policyLegend = ['internal','pci','cisa'].map(id => ({ id, ...policyMeta[id], active: this.state.framework === id, onClick: () => this.setState({ framework: id }) }));
 
-    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.exploitVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.navVals() };
+    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.exploitVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.internalAIVals(), ...this.navVals() };
   }
 
   cveVals() {
@@ -461,7 +461,26 @@ class Dashboard extends React.Component {
       { tag:'Containment', q:'If a breach occurred this year, what evidence shows it could be contained while critical services continue?', why:'Evidence turns an assumption into a tested plan.' },
       { tag:'Concentration', q:'Which single third-party or platform, if it failed, could disrupt a critical service — and what is the fallback?', why:'Concentration risk grows as exploitation accelerates.' },
       { tag:'AI in defence', q:'Where is AI being applied to strengthen detection and response within the organisation?', why:'Defensive capability is most useful when it matches the pace of the threat.' },
+      { tag:'AI governance', q:'What governance covers internal use of frontier AI — inventory, validation, and oversight of AI agents?', why:'Internal AI adoption adds a model-risk and security domain of its own.' },
     ] };
+  }
+
+  internalAIVals() {
+    const aiFrameworks = [
+      { name:'Model risk management', detail:'Fed SR 11-7, revised as SR 26-2 (2026)' },
+      { name:'NIST AI RMF', detail:'Govern · Map · Measure · Manage' },
+      { name:'ISO/IEC 42001', detail:'AI management-system standard' },
+      { name:'EU AI Act', detail:'Risk-tiered legal rules (Reg. 2024/1689)' },
+    ];
+    const aiControls = [
+      { name:'AI inventory & approval', desc:'Catalogue where AI is used — models, vendors, and agents — and bring shadow AI into governance.', metric:'Share of AI use catalogued and approved' },
+      { name:'Access & data controls', desc:'Govern who and what can use each model, and keep sensitive data out of prompts, training, and third-party models.', metric:'Data-classification controls on AI inputs' },
+      { name:'AI supply-chain & pipeline security', desc:'Vet model provenance and dependencies; protect the integrity of training and retrieval data.', metric:'Provenance and integrity checks' },
+      { name:'Model & prompt security', desc:'Test for prompt injection, jailbreaks, and data exfiltration; validate outputs before they drive action.', metric:'Adversarial testing / red-teaming' },
+      { name:'AI-agent oversight', desc:'Least privilege for autonomous agents, human approval for consequential actions, and full logging.', metric:'Agent permissions; human-in-the-loop coverage' },
+      { name:'Validation & monitoring', desc:'Validate models before deployment and monitor for drift, bias, and failure in production.', metric:'Pre-deployment validation; ongoing monitoring' },
+    ];
+    return { aiFrameworks, aiControls };
   }
 
   navVals() {
@@ -470,7 +489,8 @@ class Dashboard extends React.Component {
       { id:'grp0', label:'Threat Landscape' },
       { id:'grp1', label:'AI Acceleration' },
       { id:'grp2', label:'Risk Management' },
-      { id:'grp3', label:'Executive Questions' },
+      { id:'grp3', label:'Internal AI' },
+      { id:'grp4', label:'Executive Questions' },
     ];
     const chapters = sections.map(sx => sx.label);
     const c = this.state.chapter || 0, n = sections.length;
@@ -498,6 +518,7 @@ class Dashboard extends React.Component {
       controlGroups,
       scopeBtns, valueMeter, disruptionMeter, freezeVerdict, freezePros, freezeLimits,
       gateBtns, gateShip, gateBlock, gateShipLabel, gateBlockLabel, gateStats, gateVerdict, gateChallenges,
+      aiFrameworks, aiControls,
       questions,
     } = v;
     const curNav = chapNav.find(n => n.active) || chapNav[0];
@@ -1007,13 +1028,53 @@ class Dashboard extends React.Component {
           </section>
           </div>
 
-          {this.groupHeader('grp3',3,'IV','Part four','Questions to Drive Risk Reduction','Questions to assess organisational readiness, direct a measurable plan, and allocate resources to where protective value has shifted.',40)}
+          {this.groupHeader('grp3',3,'IV','Part four','Governing Internal AI','Beyond AI as a threat, the institution\'s own AI use is a distinct control domain. As adoption grows, the models, agents, and data pipelines it runs extend model risk management and security beyond traditional software.',40)}
+
+          {/* ============ PART IV · INTERNAL AI MODEL CONTROL ============ */}
+          <div id="ch9" className="reveal" style={s("scroll-margin-top:66px;margin-top:28px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;")}>
+            <div style={s("max-width:680px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Internal AI &middot; model control &amp; governance</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Governing the AI the institution runs</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Frontier AI is not only a threat the institution faces — it is a capability it deploys. Internally-run models, agents, and data pipelines need governance and security of their own, building on established frameworks.</p>
+            </div>
+
+            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Established governance frameworks</div>
+            <div style={s("display:grid;grid-template-columns:repeat(4,1fr);gap:10px;")} data-collapse="">
+              {aiFrameworks.map((f, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:11px 13px;background:var(--bg-2);")}>
+                  <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);")}>{f.name}</div>
+                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:4px;text-wrap:pretty;")}>{f.detail}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Controls over internally-deployed AI</div>
+            <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:10px;")} data-collapse="">
+              {aiControls.map((c, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-left:3px solid var(--pnc-blue);border-radius:var(--radius-md);padding:12px 15px;")}>
+                  <div style={s("font-size:13px;font-weight:700;color:var(--fg-1);")}>{c.name}</div>
+                  <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-2);margin-top:4px;text-wrap:pretty;")}>{c.desc}</div>
+                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:6px;")}><span style={s("font-weight:700;")}>Measure &middot; </span>{c.metric}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={s("margin-top:18px;padding:15px 18px;background:var(--pnc-navy);border-radius:var(--radius-md);color:#fff;")}>
+              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pnc-orange);")}>What it means for the board</div>
+              <div style={s("font-size:13px;line-height:19px;margin-top:5px;")}>As internal AI adoption grows, it expands both the attack surface and the model-risk surface. Inventory, validation, access, and agent oversight should keep pace with adoption, not lag it.</div>
+            </div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available standards and guidance — not internal data from any single institution.</strong> Control set aligned to the frameworks above; a directional interpretation, not a scored model.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST AI RMF</a> &middot; <a href="https://www.iso.org/standard/81230.html" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>ISO/IEC 42001</a> &middot; <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>EU AI Act</a> &middot; <a href="https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Fed SR 26-2 (model risk)</a> &middot; <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>OWASP LLM Top 10</a></span></p>
+          </section>
+          </div>
+
+          {this.groupHeader('grp4',4,'V','Part five','Questions to Drive Risk Reduction','Questions to assess organisational readiness, direct a measurable plan, and allocate resources to where protective value has shifted.',40)}
 
           {/* ============ SECTION 8 · QUESTIONS ============ */}
           <div id="ch8" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 26px;margin-top:28px;")}>
             <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Questions to ask management</div>
-            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Six open questions to assess readiness with evidence. They map to the themes above — detection, resilience, investment, containment, concentration, and the use of AI in defence.</p>
+            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Seven open questions to assess readiness with evidence. They map to the themes above — detection, resilience, investment, containment, concentration, defensive AI, and governance of internal AI.</p>
             <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;")} data-collapse="">
               {questions.map((q, i) => (
                 <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:18px 20px;background:#fff;")}>
