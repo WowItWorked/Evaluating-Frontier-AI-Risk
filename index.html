@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frontier AI and Cyber Risk — Board Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,400..600&family=Source+Serif+4:opsz,wght@8..60,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+--pnc-orange:#F58025;--pnc-orange-600:#E06E14;--pnc-orange-700:#C75E0B;--pnc-orange-100:#FDEAD7;--pnc-orange-050:#FEF6EE;
+--pnc-blue:#0069AA;--pnc-blue-600:#005A93;--pnc-blue-700:#004A79;--pnc-blue-100:#D7EBF5;--pnc-blue-050:#EFF7FB;
+--pnc-navy:#10314F;--pnc-navy-700:#0B2438;--pnc-navy-900:#07182A;
+--gray-000:#FFFFFF;--gray-025:#FAFAFA;--gray-050:#F4F5F6;--gray-100:#E9EBED;--gray-200:#D7DBDF;--gray-300:#BCC2C8;--gray-400:#97A0A8;--gray-500:#6B747C;--gray-600:#4D555C;--gray-700:#353B41;--gray-800:#23282C;--gray-900:#14171A;
+--fg-1:var(--gray-900);--fg-2:var(--gray-600);--fg-3:var(--gray-500);--fg-onbrand:#fff;--fg-link:var(--pnc-blue);
+--bg-1:#fff;--bg-2:var(--gray-050);--bg-3:var(--gray-100);--bg-brand:var(--pnc-navy);
+--line-1:var(--gray-200);--line-2:var(--gray-300);--line-focus:var(--pnc-blue);
+--success:#1B7F4B;--success-bg:#E7F4EC;--success-line:#BFE0CB;--warning:#B5740A;--warning-bg:#FBF1DD;--warning-line:#EAD7AC;--danger:#C0392B;--danger-bg:#FBEAE8;--danger-line:#EFC4BE;--info:#0069AA;--info-bg:#EFF7FB;--info-line:#C2E0EF;
+--risk-critical:#8E1B12;--risk-critical-bg:#F7E4E2;--risk-high:#C0392B;--risk-high-bg:#FBEAE8;--risk-medium:#B5740A;--risk-medium-bg:#FBF1DD;--risk-low:#1B7F4B;--risk-low-bg:#E7F4EC;--risk-info:#6B747C;--risk-info-bg:#F4F5F6;
+--font-sans:"Public Sans",system-ui,sans-serif;--font-serif:"Source Serif 4",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+--radius-sm:4px;--radius-md:6px;--radius-lg:10px;--radius-pill:999px;
+--shadow-xs:0 1px 2px rgba(16,49,79,.06);--shadow-sm:0 1px 3px rgba(16,49,79,.08),0 1px 2px rgba(16,49,79,.06);--shadow-md:0 4px 10px rgba(16,49,79,.08),0 2px 4px rgba(16,49,79,.06);--shadow-lg:0 12px 28px rgba(16,49,79,.12),0 4px 8px rgba(16,49,79,.06);
+--ease-standard:cubic-bezier(.2,0,0,1);--dur-fast:120ms;--dur-base:180ms;--dur-slow:260ms;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+.print-only{display:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+@media print{
+  @page{margin:12mm;}
+  .no-print{display:none!important;}
+  html,body{background:#fff!important;height:auto!important;overflow:visible!important;}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  #scroller{height:auto!important;overflow:visible!important;background:#fff!important;}
+  #progbar{display:none!important;}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important;transition:none!important;}
+  header{padding:0 0 14px!important;}
+  main{max-width:none!important;padding:6px 2mm 0!important;}
+  section,.partbanner{break-inside:avoid;page-break-inside:avoid;}
+  #grp1,#grp2,#grp3{break-before:page;page-break-before:always;margin-top:0!important;}
+  .print-only{display:block!important;}
+  #printfooter{position:fixed;bottom:5mm;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.04em;color:#97A0A8;}
+}
+html{scroll-behavior:smooth;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s var(--ease-standard),transform .6s var(--ease-standard);will-change:opacity,transform;}
+.reveal.in{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none;}}
+#progbar{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--pnc-orange),var(--pnc-orange-700));box-shadow:0 0 8px rgba(245,128,37,.55);transition:width .12s linear;}
+.partbanner{position:relative;overflow:hidden;border-radius:var(--radius-lg);color:#fff;padding:26px 30px 24px;box-shadow:var(--shadow-md);background:linear-gradient(120deg,var(--pnc-navy),var(--pnc-navy-900));}
+#scroller{transition:background var(--dur-slow) var(--ease-standard);}
+@media(max-width:820px){main{padding:18px!important;}[data-collapse]{grid-template-columns:1fr!important;}[data-collapse] aside{border-right:none!important;padding-right:0!important;border-bottom:1px solid var(--line-1);padding-bottom:20px;}header{padding:16px 18px!important;}nav.no-print{padding:9px 16px!important;}}
+@media(max-width:640px){
+  main{padding:14px!important;}
+  header{flex-wrap:wrap!important;row-gap:8px;}
+  .partbanner{padding:20px 18px 18px!important;}
+  .partbanner h2{font-size:23px!important;}
+  .partbanner p{font-size:12.5px!important;}
+  .rembars-col,.rembars-lbl{width:auto!important;flex:1 1 0!important;min-width:0!important;}
+  nav.no-print{flex-wrap:wrap!important;}
+  nav.no-print > span{order:0;}
+  nav.no-print > button{order:1;margin-left:auto!important;}
+  .chapstrip{order:2;flex:1 1 100%!important;flex-wrap:nowrap!important;overflow-x:auto;padding-bottom:3px;}
+  .chapstrip button{flex:0 0 auto;white-space:nowrap;}
+  #grpC section{padding:22px 18px 20px!important;}
+  #grpC h2{font-size:21px!important;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+/* Parse a prototype inline-style STRING into a React style object.
+   Keeps the original design markup nearly verbatim and easy to edit. */
+function s(str){
+  const o = {};
+  if(!str) return o;
+  str.split(';').forEach(decl => {
+    decl = decl.trim();
+    if(!decl) return;
+    const i = decl.indexOf(':');
+    if(i < 0) return;
+    let key = decl.slice(0, i).trim();
+    const val = decl.slice(i + 1).trim();
+    if(key.startsWith('--')){ o[key] = val; return; }       // CSS custom property
+    key = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase()); // kebab -> camel
+    o[key] = val;
+  });
+  return o;
+}
+
+class Dashboard extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = { framework: "internal", hovered: null, cveView: "actual", cveYear: null, scenario: "ai", exHover: null, winScen: "today", volumeView: "count", scenario2: "ai", controlsView: "ai", freezeScope: "targeted", gateMode: "zero", chapter: 0 };
+  }
+
+  componentDidMount() {
+    this._tints = ['#F4F5F6', '#F7F1EE', '#EEF3F7', '#EFF5F1'];
+    this._onScroll = () => {
+      const sc = document.getElementById('scroller'); if (!sc) return;
+      const scr = sc.getBoundingClientRect();
+      const vh = sc.clientHeight;
+      const max = sc.scrollHeight - sc.clientHeight;
+      const pct = max > 0 ? (sc.scrollTop / max) * 100 : 0;
+      const pb = document.getElementById('progbar'); if (pb) pb.style.width = pct + '%';
+      // staggered reveal-on-scroll
+      const reveals = document.querySelectorAll('.reveal');
+      let stagger = 0;
+      for (let i = 0; i < reveals.length; i++) {
+        const el = reveals[i];
+        if (el.classList.contains('in')) continue;
+        if (el.getBoundingClientRect().top - scr.top < vh * 0.88) {
+          el.style.transitionDelay = (stagger * 70) + 'ms';
+          el.classList.add('in');
+          stagger++;
+        }
+      }
+      // active part + background tint shift
+      const ids = ['grpC','grp0','grp1','grp2','grp3']; let active = 0;
+      ids.forEach((id, i) => { const el = document.getElementById(id); if (el && (el.getBoundingClientRect().top - scr.top) <= 140) active = i; });
+      sc.style.background = this._tints[active] || this._tints[0];
+      if (this.state.chapter !== active) this.setState({ chapter: active });
+    };
+    try {
+      const sc = document.getElementById('scroller');
+      if (sc) sc.addEventListener('scroll', this._onScroll, { passive: true });
+      this._onScroll();
+      setTimeout(this._onScroll, 60);
+      setTimeout(this._onScroll, 320);
+    } catch (e) {}
+  }
+  componentWillUnmount() { try { const sc = document.getElementById('scroller'); if (sc) sc.removeEventListener('scroll', this._onScroll); } catch (e) {} }
+
+  T(x, y, str, o) {
+    o = o || {};
+    return React.createElement('text', { key: o.key, x: x, y: y, fill: o.fill || '#6B747C', fontSize: o.fs || 11, fontFamily: o.mono ? 'IBM Plex Mono, monospace' : 'Public Sans, system-ui, sans-serif', fontWeight: o.fw || 500, textAnchor: o.anchor || 'start' }, str);
+  }
+
+  groupHeader(id, idx, badge, part, title, desc, mt) {
+    const accents = ['#F58025', '#FF6B57', '#4FA8E0', '#4FC18A'];
+    const ac = accents[idx] || '#F58025';
+    return (
+      <div id={id} className="reveal" style={s(`scroll-margin-top:66px;margin-top:${mt}px;`)}>
+        <div className="partbanner" style={s(`border-left:6px solid ${ac};`)}>
+          <div style={s("position:relative;")}>
+            <div style={s("display:flex;align-items:center;gap:10px;flex-wrap:wrap;")}>
+              <span style={s(`font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${ac};`)}>{part}</span>
+              <span style={s("width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);")}></span>
+              <span style={s("font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.55);")}>Section {idx + 1} of 4</span>
+            </div>
+            <h2 style={s("font-family:var(--font-serif);font-size:30px;font-weight:700;letter-spacing:-.015em;line-height:1.12;margin:9px 0 0;color:#fff;")}>{title}</h2>
+            <p style={s("font-size:13.5px;line-height:20px;color:rgba(255,255,255,.74);margin:9px 0 0;max-width:730px;text-wrap:pretty;")}>{desc}</p>
+            <div style={s("display:flex;align-items:center;gap:6px;margin-top:17px;")}>
+              {[0,1,2,3].map(i => (
+                <span key={i} style={s(`width:${i===idx?24:13}px;height:4px;border-radius:2px;background:${i===idx?ac:'rgba(255,255,255,.22)'};transition:all var(--dur-base) var(--ease-standard);`)}></span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderVals() {
+    const PLOT = 360, AXMAX = 220, px = v => (v / AXMAX) * PLOT;
+    const frameworks = {
+      internal:   { label: "Standard",   t: { Critical: 15, High: 30, Medium: 90, Low: 180 } },
+      pci:        { label: "PCI DSS",    t: { Critical: 30, High: 30, Medium: 90, Low: 180 } },
+      cisa:       { label: "CISA (federal)", t: { Critical: 3, High: 14, Medium: 60, Low: 60 } },
+    };
+    const actual = { Critical: 45, High: 88, Medium: 151, Low: 196 };
+    const meta = {
+      Critical: { share: 12, c: "var(--risk-critical)", bg: "var(--risk-critical-bg)" },
+      High:     { share: 39, c: "var(--risk-high)",     bg: "var(--risk-high-bg)" },
+      Medium:   { share: 44, c: "var(--risk-medium)",   bg: "var(--risk-medium-bg)" },
+      Low:      { share: 5,  c: "var(--risk-low)",      bg: "var(--risk-low-bg)" },
+    };
+    const order = ["Critical", "High", "Medium", "Low"];
+    const fw = frameworks[this.state.framework] || frameworks.internal;
+    const h = this.state.hovered;
+    const showTargets = this.props.showTargets ?? true;
+    const bars = order.map((k, i) => {
+      const a = actual[k], t = fw.t[k], within = Math.min(a, t), over = Math.max(0, a - t);
+      return { key: k, ...meta[k], actual: a, target: t, over, within, targetPx: px(t), overPx: px(over), withinPx: px(within), labelPx: px(a) + 8, tipBottom: px(a) + 26, opacity: (h === null || h === i) ? 1 : 0.4, showTip: h === i, onEnter: () => this.setState({ hovered: i }), onLeave: () => this.setState({ hovered: null }) };
+    });
+    const ticks = [0, 30, 60, 90, 120, 150, 180, 210].map(v => ({ v, px: px(v) }));
+    const frameworkBtns = Object.keys(frameworks).map(id => { const active = this.state.framework === id; return { id, label: frameworks[id].label, bg: active ? "#fff" : "transparent", color: active ? "var(--pnc-navy)" : "var(--fg-2)", shadow: active ? "var(--shadow-xs)" : "none", onClick: () => this.setState({ framework: id }) }; });
+    const policyMeta = {
+      internal:   { name:'Standard',       days:'Crit 15 · High 30 · Med 90 · Low 180', basis:'Common internal target by severity.' },
+      pci:        { name:'PCI DSS',        days:'Critical ≤ 30 (one month)',            basis:'Payment-card regulation; critical patches within a month.' },
+      cisa:       { name:'CISA (federal)', days:'Top-risk ≤ 3 · next ≤ 14',             basis:'CISA BOD 26-04 (2026); risk-tiered federal deadlines.' },
+    };
+    const policyLegend = ['internal','pci','cisa'].map(id => ({ id, ...policyMeta[id], active: this.state.framework === id, onClick: () => this.setState({ framework: id }) }));
+
+    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.exploitVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.navVals() };
+  }
+
+  cveVals() {
+    const h = React.createElement, T = this.T.bind(this);
+    const W = 820, H = 500, ML = 52, MR = 22, MT = 26, MB = 44;
+    const pw = W - ML - MR, ph = H - MT - MB, base = MT + ph;
+    const years = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028];
+    const counts = [6447,14645,16511,17305,18351,20153,25082,28817,40009,48000,58000,70000,85000];
+    const baseline = [6447,14645,16511,17305,18351,20153,25082,27500,30000,32500,35000,37500,40000];
+    const obsEnd = 9, aiStart = 7, n = years.length;
+    const max = 90000, yFor = v => MT + (max - v) / max * ph;
+    const step = pw / n, bw = step * 0.6, xFor = i => ML + step * i + step / 2;
+    const surge = this.state.cveView === 'surge', hy = this.state.cveYear;
+    const k = [];
+    [0,20000,40000,60000,80000].forEach(v => { k.push(h('line',{key:'g'+v,x1:ML,x2:ML+pw,y1:yFor(v),y2:yFor(v),stroke:'#EEF0F2',strokeWidth:1})); k.push(T(ML-8,yFor(v)+3,(v/1000)+'k',{key:'gl'+v,anchor:'end',mono:true,fs:10})); });
+    k.push(h('rect',{key:'aibg',x:xFor(aiStart)-step/2,y:MT,width:(ML+pw)-(xFor(aiStart)-step/2),height:ph,fill:'#FEF6EE'}));
+    k.push(T(xFor(aiStart)+step/2+4,MT+12,'AI-era acceleration',{key:'ail',anchor:'start',fs:9.5,fw:700,fill:'#C75E0B'}));
+    years.forEach((yr,i) => {
+      const proj = i > obsEnd, ai = i >= aiStart, y = yFor(counts[i]);
+      const col = proj ? 'rgba(245,128,37,0.28)' : (ai ? '#F58025' : '#10314F');
+      k.push(h('rect',{key:'b'+yr,x:xFor(i)-bw/2,y:y,width:bw,height:base-y,rx:2,fill:col,stroke:proj?'#F58025':'none',strokeWidth:proj?1:0,strokeDasharray:proj?'3 2':'0',style:{cursor:'default'},onMouseEnter:()=>this.setState({cveYear:i}),onMouseLeave:()=>this.setState({cveYear:null})}));
+    });
+    if (surge) {
+      const bl = []; for (let i=0;i<n;i++) bl.push(xFor(i).toFixed(1)+','+yFor(baseline[i]).toFixed(1));
+      k.push(h('polyline',{key:'bln',points:bl.join(' '),fill:'none',stroke:'#10314F',strokeWidth:2,strokeDasharray:'5 4',strokeLinecap:'round'}));
+      k.push(T(xFor(n-1),yFor(baseline[n-1])-7,'Pre-AI trend',{key:'bll',anchor:'end',fs:10,fw:700,fill:'#10314F'}));
+    }
+    [0,8,9,12].forEach(i => k.push(T(xFor(i),yFor(counts[i])-7,Math.round(counts[i]/1000)+'k',{key:'vl'+i,anchor:'middle',mono:true,fs:10.5,fw:700,fill:i>obsEnd?'#C77A1F':(i>=aiStart?'#8A4E12':'#10314F')})));
+    if (hy != null) k.push(T(xFor(hy),yFor(counts[hy])-7,counts[hy].toLocaleString(),{key:'hl',anchor:'middle',mono:true,fs:11,fw:700,fill:'#10314F'}));
+    years.forEach((yr,i) => k.push(T(xFor(i),base+15,String(yr),{key:'xl'+yr,anchor:'middle',mono:true,fs:9,fill:(i===obsEnd)?'#23282C':'#97A0A8',fw:(i===obsEnd)?700:500})));
+    k.push(h('line',{key:'bl0',x1:ML,x2:ML+pw,y1:base,y2:base,stroke:'#D7DBDF',strokeWidth:1}));
+    const cveChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const cveBtns = [['actual','As reported'],['surge','vs. pre-AI trend']].map(([id,label]) => { const active = this.state.cveView === id; return { label, onClick:()=>this.setState({cveView:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
+    return { cveChart, cveBtns, cveSurge: surge };
+  }
+
+  exploitVals() {
+    const h = React.createElement, T = this.T.bind(this);
+    const W = 820, H = 320, ML = 50, MR = 70, MT = 24, MB = 40;
+    const pw = W - ML - MR, ph = H - MT - MB, base = MT + ph;
+    const years = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030];
+    const obsEnd = 10, n = years.length, last = n - 1;
+    const tteObs = [70,66,63,54,44,38,32,5,-1,-7,-8];
+    const scen = this.state.scenario || 'ai';
+    const tteProj = scen === 'baseline' ? [-8,-8,-9,-9] : [-11,-13,-15,-17];
+    const tte = tteObs.concat(tteProj);
+    const xFor = i => ML + i / last * pw;
+    const dMin = -20, dMax = 75, yFor = v => MT + (dMax - v) / (dMax - dMin) * ph;
+    const exH = this.state.exHover;
+    const fmt = v => (v < 0 ? ('−' + Math.abs(v)) : ('+' + v));
+    const k = [];
+    k.push(h('rect',{key:'pbg',x:xFor(obsEnd),y:MT,width:(ML+pw)-xFor(obsEnd),height:ph,fill:'#FAFAFA'}));
+    [60,40,20,0,-20].forEach(v => { k.push(h('line',{key:'g'+v,x1:ML,x2:ML+pw,y1:yFor(v),y2:yFor(v),stroke:v===0?'#10314F':'#EEF0F2',strokeWidth:v===0?1.25:1,strokeDasharray:v===0?'2 3':'0'})); k.push(T(ML-8,yFor(v)+3,String(v),{key:'gl'+v,anchor:'end',mono:true,fs:10})); });
+    k.push(h('rect',{key:'dz',x:ML,y:yFor(0),width:pw,height:base-yFor(0),fill:'rgba(192,57,43,0.06)'}));
+    k.push(T(ML+6,base-8,'Exploitation precedes public disclosure',{key:'dzl',anchor:'start',fs:9.5,fw:700,fill:'#C0392B'}));
+    k.push(T(ML+6,yFor(0)-6,'Public disclosure (day 0)',{key:'z0',anchor:'start',fs:9.5,fw:700,fill:'#10314F'}));
+    const obs = []; for (let i=0;i<=obsEnd;i++) obs.push(xFor(i).toFixed(1)+','+yFor(tte[i]).toFixed(1));
+    k.push(h('polyline',{key:'o',points:obs.join(' '),fill:'none',stroke:'#C0392B',strokeWidth:2.75,strokeLinecap:'round',strokeLinejoin:'round'}));
+    const pr = []; for (let i=obsEnd;i<n;i++) pr.push(xFor(i).toFixed(1)+','+yFor(tte[i]).toFixed(1));
+    k.push(h('polyline',{key:'p',points:pr.join(' '),fill:'none',stroke:'#C0392B',strokeWidth:2.75,strokeLinecap:'round',strokeLinejoin:'round',strokeDasharray:'6 4',opacity:0.85}));
+    k.push(h('circle',{key:'cd',cx:xFor(obsEnd),cy:yFor(tte[obsEnd]),r:3.6,fill:'#fff',stroke:'#C0392B',strokeWidth:2}));
+    k.push(h('circle',{key:'ed',cx:xFor(last),cy:yFor(tte[last]),r:3.8,fill:'#C0392B',stroke:'#fff',strokeWidth:1.5}));
+    k.push(T(xFor(0),yFor(tte[0])-9,fmt(tte[0])+'d',{key:'fl',anchor:'start',mono:true,fs:11,fw:700,fill:'#C0392B'}));
+    k.push(T(xFor(last)+8,yFor(tte[last])+3,fmt(tte[last])+'d',{key:'el',anchor:'start',mono:true,fs:11.5,fw:700,fill:'#C0392B'}));
+    if (exH != null) { k.push(h('line',{key:'hg',x1:xFor(exH),x2:xFor(exH),y1:MT,y2:base,stroke:'#10314F',strokeWidth:1,strokeDasharray:'2 3'})); k.push(h('circle',{key:'hd',cx:xFor(exH),cy:yFor(tte[exH]),r:4,fill:'#C0392B',stroke:'#fff',strokeWidth:1.5})); k.push(T(xFor(exH)+(exH>n/2?-7:7),yFor(tte[exH])-9,fmt(tte[exH])+'d',{key:'hv',anchor:exH>n/2?'end':'start',mono:true,fs:11.5,fw:700,fill:'#C0392B'})); }
+    years.forEach((yr,i) => k.push(h('rect',{key:'hit'+i,x:xFor(i)-pw/last/2,y:MT,width:pw/last,height:ph,fill:'transparent',style:{cursor:'crosshair'},onMouseEnter:()=>this.setState({exHover:i}),onMouseLeave:()=>this.setState({exHover:null})})));
+    years.forEach((yr,i) => { if (i%2===0 || i===obsEnd) k.push(T(xFor(i),base+15,String(yr),{key:'xl'+yr,anchor:'middle',mono:true,fs:9,fill:(i===obsEnd)?'#23282C':'#97A0A8',fw:(i===obsEnd)?700:500})); });
+    k.push(T(xFor(obsEnd),MT-7,'Today',{key:'tdl',anchor:'middle',fs:10,fw:700,fill:'#4D555C'}));
+    k.push(h('line',{key:'td',x1:xFor(obsEnd),x2:xFor(obsEnd),y1:MT-2,y2:base,stroke:'#97A0A8',strokeWidth:1,strokeDasharray:'3 3'}));
+    const exploitChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const scenBtns = [['ai','AI-accelerated'],['baseline','Baseline']].map(([id,label]) => { const active = scen === id; return { label, onClick:()=>this.setState({scenario:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
+    const exploitStats = [
+      { label:'2018 (first tracked)', value:'63 days', note:'Mandiant first measured a 63-day average gap between disclosure and exploitation.', color:'#10314F', bg:'#fff' },
+      { label:'Today (2026)', value:fmt(tte[obsEnd])+' days', note:'Exploitation now precedes public disclosure by over a week, on average.', color:'#C0392B', bg:'var(--risk-high-bg)' },
+      { label:'2030 · '+(scen==='baseline'?'baseline':'AI-accelerated'), value:fmt(tte[last])+' days', note:'Projected median under the selected scenario.', color:'#C0392B', bg:'#fff' },
+    ];
+    return { exploitChart, scenBtns, exploitStats };
+  }
+
+  windowVals() {
+    const h = React.createElement, T = this.T.bind(this);
+    const W = 820, H = 300, ML = 150, MR = 26;
+    const pw = W - ML - MR, dMin = -15, dMax = 90;
+    const xFor = v => ML + (v - dMin) / (dMax - dMin) * pw;
+    const COL = { disc:'#10314F', exploit:'#C0392B', vendor:'#0069AA', internal:'#F58025' };
+    const eras = [
+      { key:'historic', label:'Historic', sub:'pre-AI',    exploit:63, vendor:30, internal:45 },
+      { key:'today',    label:'Today',    sub:'2025',       exploit:5,  vendor:30, internal:45 },
+      { key:'ai',       label:'AI-accelerated', sub:'projected', exploit:-5, vendor:12, internal:20 },
+    ];
+    const rowY = [96, 158, 220];
+    const bandH = 24, base = 256;
+    const fmtD = v => v < 0 ? ('−' + Math.abs(v) + 'd') : (v === 0 ? '0' : '+' + v + 'd');
+    const k = [];
+    // before-disclosure region
+    k.push(h('rect',{key:'pre',x:xFor(dMin),y:74,width:xFor(0)-xFor(dMin),height:base-74,fill:'rgba(192,57,43,0.05)'}));
+    k.push(T(xFor(dMin)+6,86,'before disclosure',{key:'prel',anchor:'start',fs:9,fw:600,fill:'#C0392B'}));
+    // gridlines + axis
+    [-15,0,15,30,45,60,75,90].forEach(v => {
+      k.push(h('line',{key:'g'+v,x1:xFor(v),x2:xFor(v),y1:74,y2:base,stroke:v===0?'#10314F':'#EEF0F2',strokeWidth:v===0?1.5:1,strokeDasharray:v===0?'3 3':'0'}));
+      k.push(T(xFor(v),base+16,(v>0?'+'+v:String(v)),{key:'gl'+v,anchor:'middle',mono:true,fs:9.5,fill:v===0?'#10314F':'#97A0A8',fw:v===0?700:500}));
+    });
+    k.push(T(xFor(90),base+30,'days from discovery',{key:'axu',anchor:'end',fs:9.5,fill:'#97A0A8'}));
+    k.push(T(xFor(0),48,'Public disclosure · day 0',{key:'pd',anchor:'middle',fs:10,fw:700,fill:'#10314F'}));
+    eras.forEach((e,i) => {
+      const y = rowY[i];
+      k.push(T(ML-16,y-3,e.label,{key:'rl'+i,anchor:'end',fs:13,fw:700,fill:'#14171A'}));
+      k.push(T(ML-16,y+13,e.sub,{key:'rs'+i,anchor:'end',fs:10,fw:500,fill:'#97A0A8'}));
+      k.push(h('line',{key:'tr'+i,x1:xFor(dMin),x2:xFor(dMax),y1:y,y2:y,stroke:'#E9EBED',strokeWidth:2,strokeLinecap:'round'}));
+      const exposed = e.internal > e.exploit;
+      if (exposed) {
+        k.push(h('rect',{key:'eb'+i,x:xFor(e.exploit),y:y-bandH/2,width:xFor(e.internal)-xFor(e.exploit),height:bandH,rx:3,fill:'rgba(192,57,43,0.15)',stroke:'#C0392B',strokeWidth:1.25}));
+        k.push(T((xFor(e.exploit)+xFor(e.internal))/2,y-bandH/2-7,(e.internal-e.exploit)+' days exposed',{key:'ed'+i,anchor:'middle',fs:11.5,fw:700,fill:'#C0392B'}));
+      } else {
+        k.push(h('rect',{key:'sb'+i,x:xFor(e.internal),y:y-bandH/2,width:xFor(e.exploit)-xFor(e.internal),height:bandH,rx:3,fill:'rgba(27,127,75,0.14)',stroke:'#1B7F4B',strokeWidth:1.25}));
+        k.push(T((xFor(e.internal)+xFor(e.exploit))/2,y-bandH/2-7,'fix ready first · no exposure',{key:'ng'+i,anchor:'middle',fs:11,fw:700,fill:'#1B7F4B'}));
+      }
+      // day labels under the window edges
+      k.push(T(xFor(e.exploit),y+bandH/2+15,fmtD(e.exploit),{key:'dx'+i,anchor:'middle',mono:true,fs:9.5,fw:700,fill:COL.exploit}));
+      k.push(T(xFor(e.internal),y+bandH/2+15,fmtD(e.internal),{key:'di'+i,anchor:'middle',mono:true,fs:9.5,fw:700,fill:COL.internal}));
+      // milestone dots
+      [['disc',0],['vendor',e.vendor],['internal',e.internal],['exploit',e.exploit]].forEach(([kk,val]) => {
+        k.push(h('circle',{key:'m'+i+kk,cx:xFor(val),cy:y,r:kk==='exploit'?5.5:4.5,fill:COL[kk],stroke:'#fff',strokeWidth:1.5}));
+      });
+    });
+    const windowChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const milestoneLegend = [
+      { name:'Vulnerability discovered', color:COL.disc },
+      { name:'Attackers can exploit — risk starts', color:COL.exploit },
+      { name:'Vendor fix available', color:COL.vendor },
+      { name:'Internal fix deployed — risk ends', color:COL.internal },
+    ];
+    return { windowChart, milestoneLegend };
+  }
+
+  zerodayVals() {
+    const h = React.createElement, T = this.T.bind(this);
+    const W = 820, H = 300, ML = 50, MR = 24, MT = 24, MB = 40;
+    const pw = W - ML - MR, ph = H - MT - MB, base = MT + ph;
+    const years = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030];
+    const obsEnd = 10, n = years.length, last = n - 1;
+    const countObs = [14,22,13,20,30,58,63,98,75,90,95];
+    const shareObs = [40,45,52,58,61,62,62,70,72,75,76];
+    const scen = this.state.scenario2 || 'ai';
+    const countProj = scen === 'baseline' ? [99,103,106,109] : [125,155,180,205];
+    const shareProj = scen === 'baseline' ? [77,78,79,80] : [82,86,90,93];
+    const isCount = this.state.volumeView === 'count';
+    const data = isCount ? countObs.concat(countProj) : shareObs.concat(shareProj);
+    const dMax = isCount ? 240 : 100, yFor = v => MT + (dMax - v) / dMax * ph;
+    const step = pw / n, bw = step * 0.58, xFor = i => ML + step * i + step / 2;
+    const k = [];
+    const gl = isCount ? [0,60,120,180,240] : [0,25,50,75,100];
+    gl.forEach(v => { k.push(h('line',{key:'g'+v,x1:ML,x2:ML+pw,y1:yFor(v),y2:yFor(v),stroke:'#EEF0F2',strokeWidth:1})); k.push(T(ML-8,yFor(v)+3,isCount?String(v):(v+'%'),{key:'gl'+v,anchor:'end',mono:true,fs:10})); });
+    k.push(h('rect',{key:'pbg',x:xFor(obsEnd)+step/2,y:MT,width:(ML+pw)-(xFor(obsEnd)+step/2),height:ph,fill:'#FEF6EE'}));
+    if (!isCount) { k.push(h('line',{key:'h50',x1:ML,x2:ML+pw,y1:yFor(50),y2:yFor(50),stroke:'#10314F',strokeWidth:1,strokeDasharray:'2 3'})); k.push(T(ML+6,yFor(50)-5,'half of all exploited vulnerabilities',{key:'h50l',anchor:'start',fs:9.5,fw:600,fill:'#10314F'})); }
+    years.forEach((yr,i) => { const proj = i > obsEnd, y = yFor(data[i]); k.push(h('rect',{key:'b'+yr,x:xFor(i)-bw/2,y:y,width:bw,height:base-y,rx:2,fill:proj?'rgba(245,128,37,0.30)':'#F58025',stroke:proj?'#F58025':'none',strokeWidth:proj?1:0,strokeDasharray:proj?'3 2':'0'})); });
+    [0,obsEnd,last].forEach(i => k.push(T(xFor(i),yFor(data[i])-7,isCount?String(data[i]):(data[i]+'%'),{key:'vl'+i,anchor:'middle',mono:true,fs:11,fw:700,fill:i>obsEnd?'#C77A1F':'#8A4E12'})));
+    years.forEach((yr,i) => { if (i%2===0 || i===obsEnd) k.push(T(xFor(i),base+15,String(yr),{key:'xl'+yr,anchor:'middle',mono:true,fs:9,fill:(i===obsEnd)?'#23282C':'#97A0A8',fw:(i===obsEnd)?700:500})); });
+    k.push(h('line',{key:'td',x1:xFor(obsEnd)+step/2,x2:xFor(obsEnd)+step/2,y1:MT,y2:base,stroke:'#97A0A8',strokeWidth:1,strokeDasharray:'3 3'}));
+    k.push(T((xFor(obsEnd)+step/2+ML+pw)/2,MT+11,'Projected · '+(scen==='baseline'?'baseline':'AI-accelerated'),{key:'pjl',anchor:'middle',fs:9.5,fw:600,fill:'#C77A1F'}));
+    const zerodayChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const volBtns = [['count','Absolute number'],['share','Share of total']].map(([id,label]) => { const active = this.state.volumeView === id; return { label, onClick:()=>this.setState({volumeView:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
+    const scen2Btns = [['ai','AI-accelerated'],['baseline','Baseline']].map(([id,label]) => { const active = scen === id; return { label, onClick:()=>this.setState({scenario2:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
+    const zeroStats = [
+      { label:'2016', value:String(countObs[0]), note:'Zero-day vulnerabilities tracked as exploited in the wild that year.' },
+      { label:'Today (2026)', value:countObs[obsEnd]+' · '+shareObs[obsEnd]+'%', note:'Current-year estimate and share of all exploited vulnerabilities.' },
+      { label:'2030 projected', value:countProj[countProj.length-1]+' · '+shareProj[shareProj.length-1]+'%', note:'Number and share under the '+(scen==='baseline'?'baseline':'AI-accelerated')+' scenario.' },
+    ];
+    return { zerodayChart, volBtns, scen2Btns, zeroStats };
+  }
+
+  controlsVals() {
+    const G = {
+      up:     { color:'var(--success)',       headBg:'var(--success-bg)',      headBorder:'var(--success-line)',    arrow:'↑', label:'Increasing importance',  sub:'AI acceleration raises their value' },
+      steady: { color:'var(--pnc-navy)',       headBg:'var(--bg-2)',            headBorder:'var(--line-1)',          arrow:'→', label:'Steady',                 sub:'Consistently essential; unchanged by AI' },
+      down:   { color:'var(--pnc-orange-700)', headBg:'var(--pnc-orange-050)',  headBorder:'var(--pnc-orange-100)',  arrow:'↓', label:'Reduced relative weight', sub:'Still necessary, but less decisive on its own' },
+    };
+    const controlGroups = [
+      { ...G.up, items:[
+        { name:'Detection & response', metric:'Average time to detect an intrusion' },
+        { name:'Network segmentation & least privilege', metric:'Share of critical systems isolated; potential spread of an intrusion' },
+        { name:'Backup, recovery & data integrity', metric:'Tested recovery time; backup test success rate' },
+        { name:'Operational resilience & continuity', metric:'Critical services with a tested limit on disruption' },
+        { name:'Threat hunting', metric:'Time an intruder stays undetected' },
+        { name:'Third-party & concentration risk', metric:'Single points of failure; reliance on critical vendors' },
+      ] },
+      { ...G.steady, items:[
+        { name:'Identity & access management', metric:'Multi-factor authentication coverage; frequency of access reviews' },
+        { name:'Secure configuration & hardening', metric:'Share of systems meeting the security baseline' },
+        { name:'Security awareness & phishing resistance', metric:'Phishing-simulation failure rate' },
+      ] },
+      { ...G.down, items:[
+        { name:'Vulnerability & patch management', metric:'Average time to fix by severity; share fixed on time' },
+      ] },
+    ];
+    return { controlGroups };
+  }
+
+  freezeVals() {
+    const scope = this.state.freezeScope || 'targeted';
+    const S = {
+      targeted:   { label:'Targeted',   sub:'Critical & high only', value:3, dis:1, valueWord:'Highest', disWord:'Lowest' },
+      broad:      { label:'Broad',      sub:'Through moderate',     value:2, dis:3, valueWord:'Lower',   disWord:'Higher' },
+      exhaustive: { label:'Exhaustive', sub:'Push toward zero',     value:1, dis:4, valueWord:'Lowest',  disWord:'Highest' },
+    };
+    const cur = S[scope];
+    const scopeBtns = Object.keys(S).map(id => ({ id, label:S[id].label, sub:S[id].sub, active:scope===id, onClick:()=>this.setState({freezeScope:id}), bg:scope===id?'var(--pnc-navy)':'#fff', color:scope===id?'#fff':'var(--fg-1)', sublcolor:scope===id?'rgba(255,255,255,.7)':'var(--fg-3)', border:scope===id?'var(--pnc-navy)':'var(--line-1)' }));
+    const mk = (n,color) => [0,1,2,3].map(i => ({ bg: i<n ? color : 'var(--bg-3)' }));
+    const valueMeter = { word:cur.valueWord, cells:mk(cur.value,'var(--success)') };
+    const disruptionMeter = { word:cur.disWord, cells:mk(cur.dis,'var(--risk-high)') };
+    const freezePros = [
+      { h:'Closes known doors', t:'Removes specific flaws an attacker could use today.' },
+      { h:'Shrinks the attack surface', t:'Fewer exposed weaknesses to monitor and defend.' },
+      { h:'Supports compliance posture', t:'Helps meet remediation expectations from regulators and auditors.' },
+      { h:'Cuts opportunistic risk', t:'Most commodity attacks reuse known, unpatched flaws.' },
+    ];
+    const freezeLimits = [
+      { h:'Halts delivery', t:'Features, fixes and even security improvements wait in the queue.' },
+      { h:'Diminishing returns', t:'Beyond critical and high, each added week clears lower-impact issues.' },
+      { h:'Never reaches zero', t:'New vulnerabilities arrive continuously, so the backlog refills.' },
+      { h:'No cover for the unknown', t:'Remediation does nothing against flaws with no fix yet — detection and containment must.' },
+    ];
+    const freezeVerdict = scope==='targeted' ? 'Targeted remediation addresses the vulnerabilities most likely to be exploited, with the least delivery impact.' : (scope==='broad' ? 'Extending into moderate-severity issues adds lower-severity coverage with greater delivery impact.' : 'Pursuing zero adds mainly low-severity coverage at the highest delivery impact, and cannot reach zero because new vulnerabilities arrive continuously.');
+    return { scopeBtns, valueMeter, disruptionMeter, freezePros, freezeLimits, freezeVerdict };
+  }
+
+  zeroPolicyVals() {
+    const mode = this.state.gateMode || 'zero';
+    const d = {
+      zero: { shipW:16, blockW:84, shipLabel:'Limited change proceeds', blockLabel:'Most change held pending remediation', ship:'Limited', wait:'Extended', windows:'Rare' },
+      risk: { shipW:82, blockW:18, shipLabel:'Most change proceeds', blockLabel:'Highest-risk items held first', ship:'Most', wait:'Within days', windows:'Continuous' },
+    }[mode];
+    const gateBtns = [['zero','Zero-vulnerability gate'],['risk','Risk-based gate']].map(([id,label]) => { const active=mode===id; return { label, onClick:()=>this.setState({gateMode:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
+    const gateStats = [
+      { label:'Production change able to proceed', value:d.ship },
+      { label:'Typical wait to ship a change', value:d.wait },
+      { label:'Clear production windows', value:d.windows },
+    ];
+    const gateChallenges = [
+      { tag:'Continuous inflow', text:'New relevant vulnerabilities are disclosed continually, so the open count rarely settles at zero.', stat:'~110+ new CVEs / day' },
+      { tag:'No fix yet exists', text:'Some vulnerabilities are zero-days or await a vendor patch, so there may be nothing to remediate yet.', stat:'~70% of 2023 exploited flaws were zero-day' },
+      { tag:'Third-party code', text:'Much software is assembled from vendor and open-source components whose fixes sit outside direct control.', stat:'~70%+ open-source components' },
+      { tag:'Remediation lags disclosure', text:'Remediation is typically measured in weeks, while new flaws arrive in days.', stat:'weeks vs. days' },
+      { tag:'Security fixes included', text:'A strict gate can also delay shipping security improvements themselves.', stat:'delays improvements' },
+      { tag:'Delivery slows', text:'Routine features, fixes, and resilience work may wait, slowing delivery.', stat:'slower delivery' },
+    ];
+    return { gateBtns, gateStats, gateChallenges, gateShip:d.shipW, gateBlock:d.blockW, gateShipLabel:d.shipLabel, gateBlockLabel:d.blockLabel, gateVerdict: mode==='zero' ? 'A zero-vulnerability gate aims to clear all known exposure before change ships. In practice, because new vulnerabilities arrive continually and some have no fix yet, it tends to hold back most change while rarely reaching zero.' : 'A risk-based gate allows most change to proceed while holding the highest-risk vulnerabilities first.' };
+  }
+
+  questionsVals() {
+    return { questions: [
+      { tag:'Detection', q:'How quickly can the organisation detect exploitation of a critical vulnerability, and how is that measured?', why:'Detection and response shape the impact of an incident alongside prevention.' },
+      { tag:'Resilience', q:'Which critical services have a defined tolerance for disruption, and when was each last tested?', why:'Tested recovery is the basis for operating through an incident.' },
+      { tag:'Investment', q:'How is security investment currently allocated across prevention, detection, containment, and recovery?', why:'Allocation can be compared with where protective value now sits.' },
+      { tag:'Containment', q:'If a breach occurred this year, what evidence shows it could be contained while critical services continue?', why:'Evidence turns an assumption into a tested plan.' },
+      { tag:'Concentration', q:'Which single third-party or platform, if it failed, could disrupt a critical service — and what is the fallback?', why:'Concentration risk grows as exploitation accelerates.' },
+      { tag:'AI in defence', q:'Where is AI being applied to strengthen detection and response within the organisation?', why:'Defensive capability is most useful when it matches the pace of the threat.' },
+    ] };
+  }
+
+  navVals() {
+    const sections = [
+      { id:'grpC', label:'The Challenge' },
+      { id:'grp0', label:'Threat Landscape' },
+      { id:'grp1', label:'AI Acceleration' },
+      { id:'grp2', label:'Risk Management' },
+      { id:'grp3', label:'Executive Questions' },
+    ];
+    const chapters = sections.map(sx => sx.label);
+    const c = this.state.chapter || 0, n = sections.length;
+    const go = i => () => { try { const sc = document.getElementById('scroller'), el = document.getElementById(sections[i].id); if (sc && el) sc.scrollTo({ top: el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 66, behavior: 'smooth' }); } catch (e) {} };
+    return {
+      chapNav: chapters.map((label,i) => ({ label, num:i+1, active:i===c, onClick:go(i), bg:i===c?'var(--pnc-navy)':'#fff', color:i===c?'#fff':'var(--fg-2)', border:i===c?'var(--pnc-navy)':'var(--line-1)' })),
+      stepLabel: 'Section '+(c+1)+' of '+n,
+      onPrev: go(Math.max(0,c-1)), onNext: go(Math.min(n-1,c+1)),
+      prevText: c>0 ? ('← '+chapters[c-1]) : '← Back',
+      nextText: c<n-1 ? (chapters[c+1]+' →') : 'End of briefing',
+      prevOpacity: c===0 ? '0.4' : '1', nextOpacity: c===n-1 ? '0.4' : '1',
+      onPdf: () => { try { window.print(); } catch (e) {} },
+    };
+  }
+
+  render() {
+    const v = this.renderVals();
+    const {
+      stepLabel, chapNav, onPdf, onPrev, onNext, prevText, nextText, prevOpacity, nextOpacity,
+      cveBtns, cveSurge, cveChart,
+      frameworkBtns, policyLegend, fwLabel, ticks, bars, showTargets,
+      scenBtns, exploitStats, exploitChart,
+      windowChart, milestoneLegend,
+      volBtns, scen2Btns, zeroStats, zerodayChart,
+      controlGroups,
+      scopeBtns, valueMeter, disruptionMeter, freezeVerdict, freezePros, freezeLimits,
+      gateBtns, gateShip, gateBlock, gateShipLabel, gateBlockLabel, gateStats, gateVerdict, gateChallenges,
+      questions,
+    } = v;
+
+    return (
+      <div id="scroller" style={s("height:100vh;overflow-y:auto;background:var(--bg-2);font-family:var(--font-sans);color:var(--fg-1);")}>
+        <div id="progbar"></div>
+        <div id="printfooter" className="print-only">Evaluating Frontier AI Risk &middot; Technology Risk &middot; Generated June 2026</div>
+
+        <header style={s("background:#fff;border-bottom:1px solid var(--line-1);padding:20px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;")}>
+          <div style={s("display:flex;align-items:center;gap:16px;")}>
+            <div style={s("width:40px;height:40px;border-radius:var(--radius-md);background:var(--pnc-navy);display:grid;place-items:center;color:#fff;")}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+            <div>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--pnc-orange);")}>CYBER &amp; TECHNOLOGY RISK · BOARD BRIEFING</div>
+              <div style={s("font-family:var(--font-serif);font-size:22px;font-weight:700;letter-spacing:-.01em;color:var(--fg-1);line-height:1.15;margin-top:2px;")}>Frontier AI and Cyber Risk</div>
+            </div>
+          </div>
+          <div style={s("display:flex;align-items:center;gap:10px;")}>
+            <span style={s("font-size:12px;font-weight:600;color:var(--fg-2);background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-pill);padding:6px 12px;")}>June 2026</span>
+          </div>
+        </header>
+
+        <nav className="no-print" style={s("position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line-1);box-shadow:var(--shadow-xs);padding:10px 36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;")}>
+          <span style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);flex:none;")}>{stepLabel}</span>
+          <div className="chapstrip" style={s("display:flex;gap:6px;flex-wrap:wrap;flex:1;")}>
+            {chapNav.map((n, i) => (
+              <button key={i} onClick={n.onClick} style={s(`display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-pill);background:${n.bg};color:${n.color};border:1px solid ${n.border};transition:all var(--dur-fast);`)}><span style={s("font-family:var(--font-mono);font-size:10.5px;opacity:.7;")}>{n.num}</span>{n.label}</button>
+            ))}
+          </div>
+          <button onClick={onPdf} style={s("display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:700;padding:7px 13px;border-radius:var(--radius-md);background:var(--pnc-orange);color:#fff;border:none;flex:none;")}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V3"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>Download PDF</button>
+        </nav>
+
+        <main style={s("padding:36px;max-width:1180px;margin:0 auto;")}>
+
+          {/* ============ OPENING · THE CHALLENGE ============ */}
+          <div id="grpC" className="reveal" style={s("scroll-margin-top:66px;margin-top:6px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-top:4px solid var(--pnc-orange);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:32px 34px 28px;")}>
+            <div style={s("font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--pnc-orange);")}>The central challenge · why this briefing</div>
+            <h2 style={s("font-family:var(--font-serif);font-size:27px;font-weight:600;letter-spacing:-.015em;line-height:1.18;margin:10px 0 0;color:var(--fg-1);max-width:900px;text-wrap:pretty;")}>As attacks accelerate, a common response is to patch faster. Does that still reduce risk to the same degree?</h2>
+            <p style={s("font-size:14px;line-height:21px;color:var(--fg-2);margin:13px 0 0;max-width:900px;text-wrap:pretty;")}>For much of the past decade, faster remediation was among the most reliable ways to reduce cyber risk. AI is changing that calculus: it is raising both the capability and the speed of attackers and compressing the time from a vulnerability becoming known to its first exploitation. As that window narrows, faster patching addresses a smaller share of the risk, while the effort required to sustain it rises.</p>
+
+            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;")} data-collapse="">
+              <div style={s("border:1px solid var(--line-1);border-top:3px solid var(--pnc-navy);border-radius:var(--radius-md);padding:15px 17px;background:#fff;")}>
+                <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pnc-navy);")}>The common response</div>
+                <div style={s("font-size:14px;font-weight:700;color:var(--fg-1);margin-top:8px;line-height:1.3;text-wrap:pretty;")}>Accelerate patching</div>
+                <div style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin-top:6px;text-wrap:pretty;")}>As attacks speed up, accelerating remediation is a common first response across the industry.</div>
+              </div>
+              <div style={s("border:1px solid var(--line-1);border-top:3px solid var(--pnc-orange);border-radius:var(--radius-md);padding:15px 17px;background:#fff;")}>
+                <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pnc-orange-700);")}>The question</div>
+                <div style={s("font-size:14px;font-weight:700;color:var(--fg-1);margin-top:8px;line-height:1.3;text-wrap:pretty;")}>Does faster patching still reduce risk as it once did?</div>
+                <div style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin-top:6px;text-wrap:pretty;")}>When exploitation increasingly precedes any available fix, additional patching speed addresses a smaller share of the risk than before.</div>
+              </div>
+              <div style={s("border:1px solid var(--line-1);border-top:3px solid var(--success);border-radius:var(--radius-md);padding:15px 17px;background:#fff;")}>
+                <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--success);")}>The implication</div>
+                <div style={s("font-size:14px;font-weight:700;color:var(--fg-1);margin-top:8px;line-height:1.3;text-wrap:pretty;")}>Weigh where risk reduction now comes from</div>
+                <div style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin-top:6px;text-wrap:pretty;")}>Where patching alone addresses less of the risk, control priorities and investment can be weighed toward detection, containment, and resilience.</div>
+              </div>
+            </div>
+
+            <div style={s("margin-top:18px;padding:15px 18px;background:var(--pnc-navy);border-radius:var(--radius-md);color:#fff;")}>
+              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pnc-orange);")}>What this briefing examines</div>
+              <div style={s("font-size:13.5px;line-height:20px;margin-top:6px;text-wrap:pretty;")}>The four parts that follow set out the publicly available evidence — the pace of disclosure, how fast attackers now move, and where fixes fall behind — and a framework for weighing control priorities and investment to manage the risk now and into the future.</div>
+            </div>
+          </section>
+          </div>
+
+          {this.groupHeader('grp0',0,'I','Part one','The Current Threat Landscape','Where vulnerability disclosure and remediation across the industry stand today — the baseline against which AI is reshaping cyber risk. Covers the rise in disclosed vulnerabilities and how remediation pace compares with standards and best practices.',6)}
+
+          {/* ============ SECTION 0 · CURRENT STATE ============ */}
+          <div id="ch0" className="reveal" style={s("scroll-margin-top:66px;margin-top:20px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;")}>
+            <div style={s("display:grid;grid-template-columns:320px 1fr;gap:34px;align-items:stretch;")} data-collapse="">
+
+              <aside style={s("border-right:1px solid var(--line-1);padding-right:30px;display:flex;flex-direction:column;")}>
+                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>The current state</div>
+                <h2 style={s("font-family:var(--font-serif);font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.22;margin:8px 0 0;color:var(--fg-1);")}>Disclosed software vulnerabilities are increasing rapidly</h2>
+
+                <div style={s("margin-top:20px;display:flex;flex-direction:column;gap:18px;padding-bottom:20px;")}>
+                  <div>
+                    <div style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--pnc-navy);")}>Record and rising</div>
+                    <p style={s("font-size:13px;line-height:19px;color:var(--fg-2);margin:5px 0 0;text-wrap:pretty;")}>Disclosed vulnerabilities hit a record <strong style={s("color:var(--fg-1);")}>~40,000 in 2024</strong> and keep climbing — well beyond what any team can fully remediate.</p>
+                  </div>
+                  <div>
+                    <div style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--pnc-orange-700);")}>AI is accelerating it</div>
+                    <p style={s("font-size:13px;line-height:19px;color:var(--fg-2);margin:5px 0 0;text-wrap:pretty;")}>AI now lets researchers and adversaries find and weaponise flaws far faster, driving the steep rise from 2023 onward.</p>
+                  </div>
+                  <div>
+                    <div style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--pnc-orange-700);")}>Oversight has fallen behind</div>
+                    <p style={s("font-size:13px;line-height:19px;color:var(--fg-2);margin:5px 0 0;text-wrap:pretty;")}>In early 2024, <strong style={s("color:var(--fg-1);")}>NIST</strong> scaled back scoring of these flaws, so the national catalogue alone can no longer guide remediation priorities.</p>
+                  </div>
+                </div>
+
+                <div style={s("margin-top:auto;padding:14px 16px;background:var(--pnc-orange-050);border:1px solid var(--pnc-orange-100);border-radius:var(--radius-md);")}>
+                  <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pnc-orange-700);")}>Implication</div>
+                  <div style={s("font-size:13px;line-height:19px;color:var(--fg-1);margin-top:5px;font-weight:600;")}>Disclosed vulnerabilities now exceed the capacity to remediate them in full, while the authoritative scoring source has fallen behind.</div>
+                </div>
+              </aside>
+
+              <div>
+                <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;")}>
+                  <div style={s("max-width:430px;")}>
+                    <div style={s("font-size:13px;font-weight:700;color:var(--fg-1);")}>Vulnerabilities disclosed per year</div>
+                    <div style={s("font-size:11.5px;color:var(--fg-3);margin-top:1px;text-wrap:pretty;")}>Publicly disclosed software vulnerabilities (CVE records) by year. Hover over a bar for the exact count.</div>
+                  </div>
+                  <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
+                    {cveBtns.map((c, i) => (
+                      <button key={i} onClick={c.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${c.bg};color:${c.color};box-shadow:${c.shadow};`)}>{c.label}</button>
+                    ))}
+                  </div>
+                </div>
+                <div style={s("display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:12px;")}>
+                  <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:14px;height:14px;border-radius:3px;background:var(--pnc-navy);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Pre-AI era</span></div>
+                  <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:14px;height:14px;border-radius:3px;background:var(--pnc-orange);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>AI-era (2023+)</span></div>
+                  <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:14px;height:14px;border-radius:3px;background:var(--pnc-orange-100);border:1px dashed var(--pnc-orange);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Projected</span></div>
+                  {cveSurge && <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:20px;height:0;border-top:2px dashed var(--pnc-navy);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Projected pre-AI trend</span></div>}
+                </div>
+                <div style={s("margin-top:12px;")}>{cveChart}</div>
+                <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Illustrative and directional; 2025 is a partial-year estimate and 2026–2028 are projected.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://nvd.nist.gov" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST NVD</a> &middot; <a href="https://www.cve.org" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CVE Program</a></span></p>
+              </div>
+            </div>
+          </section>
+          </div>
+
+          {/* ============ SECTION 1 · PATCH TIME VS STANDARDS ============ */}
+          <div id="ch1" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
+              <div style={s("max-width:560px;")}>
+                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Remediation time vs. standards</div>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Remediation time against deadline standards</h2>
+                <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Average days to fix a vulnerability versus the deadline each standard sets, by severity — across the industry, remediation runs late at every level. Lower is better; switch the policy to compare.</p>
+              </div>
+              <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
+                <span style={s("font-size:10.5px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.05em;")}>Deadline policy</span>
+                <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
+                  {frameworkBtns.map((f, i) => (
+                    <button key={i} onClick={f.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${f.bg};color:${f.color};box-shadow:${f.shadow};`)}>{f.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div style={s("margin-top:18px;")}>
+              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-bottom:9px;")}>What each deadline standard means · days to remediate by severity</div>
+              <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:10px;")} data-collapse="">
+                {policyLegend.map((p, i) => (
+                  <div key={i} onClick={p.onClick} style={s(`cursor:pointer;border:1px solid ${p.active?'var(--pnc-orange)':'var(--line-1)'};border-radius:var(--radius-md);padding:11px 13px;background:${p.active?'var(--pnc-orange-050)':'var(--bg-2)'};box-shadow:${p.active?'var(--shadow-xs)':'none'};transition:all var(--dur-fast);`)}>
+                    <div style={s(`font-size:12.5px;font-weight:700;color:${p.active?'var(--pnc-orange-700)':'var(--fg-1)'};`)}>{p.name}</div>
+                    <div style={s("font-family:var(--font-mono);font-size:11px;color:var(--pnc-navy);margin-top:4px;")}>{p.days}</div>
+                    <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:5px;text-wrap:pretty;")}>{p.basis}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={s("margin-top:16px;padding:13px 16px;background:var(--pnc-orange-050);border:1px solid var(--pnc-orange-100);border-radius:var(--radius-md);display:flex;gap:12px;align-items:flex-start;")}>
+              <span style={s("flex:none;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--pnc-orange);border-radius:var(--radius-sm);padding:3px 7px;margin-top:1px;")}>New 2026</span>
+              <div>
+                <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);")}>CISA now mandates a 3-day federal standard for the highest-risk vulnerabilities</div>
+                <div style={s("font-size:12px;line-height:17px;color:var(--fg-2);margin-top:3px;text-wrap:pretty;")}>Binding Operational Directive 26-04 (June 2026) requires federal civilian agencies to remediate exposed, actively-exploited, automatable critical vulnerabilities within 3 calendar days, explicitly citing AI-accelerated exploitation. The directive is binding on federal agencies, and CISA recommends that critical-infrastructure operators adopt comparable timelines. Select <strong style={s("color:var(--fg-1);")}>CISA (federal)</strong> above to compare against current remediation times.</div>
+              </div>
+            </div>
+
+            <div style={s("display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-1);")}>
+              <div style={s("display:flex;align-items:center;gap:8px;")}><span style={s("width:16px;height:16px;border-radius:3px;background:var(--gray-100);border:1px solid var(--line-2);")}></span><span style={s("font-size:13px;color:var(--fg-2);font-weight:500;")}>Within the standard</span></div>
+              <div style={s("display:flex;align-items:center;gap:8px;")}><span style={s("width:16px;height:16px;border-radius:3px;background:var(--risk-high);")}></span><span style={s("font-size:13px;color:var(--fg-2);font-weight:500;")}>Beyond the standard</span></div>
+              <div style={s("display:flex;align-items:center;gap:8px;")}><span style={s("width:22px;height:0;border-top:2px dashed var(--pnc-navy);")}></span><span style={s("font-size:13px;color:var(--fg-2);font-weight:500;")}>{fwLabel} deadline</span></div>
+              <span style={s("margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--fg-3);")}>industry-average days to remediate · lower is better</span>
+            </div>
+
+            <div style={s("display:flex;gap:10px;margin-top:24px;")}>
+              <div style={s("position:relative;width:42px;height:360px;flex:none;")}>
+                {ticks.map((t, i) => (
+                  <div key={i} style={s(`position:absolute;right:0;bottom:${t.px}px;transform:translateY(50%);font-family:var(--font-mono);font-size:11px;color:var(--fg-3);`)}>{t.v}</div>
+                ))}
+              </div>
+              <div style={s("position:relative;flex:1;height:360px;border-bottom:2px solid var(--line-2);")}>
+                {ticks.map((t, i) => (
+                  <div key={i} style={s(`position:absolute;left:0;right:0;bottom:${t.px}px;height:1px;background:var(--gray-100);`)}></div>
+                ))}
+                <div style={s("position:absolute;inset:0;display:flex;justify-content:space-around;align-items:flex-end;")}>
+                  {bars.map((b, i) => (
+                    <div key={i} className="rembars-col" onMouseEnter={b.onEnter} onMouseLeave={b.onLeave} style={s(`position:relative;width:100px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;cursor:default;opacity:${b.opacity};transition:opacity var(--dur-slow);`)}>
+                      {b.showTip && (
+                        <div style={s(`position:absolute;bottom:${b.tipBottom}px;left:50%;transform:translateX(-50%);width:200px;background:var(--pnc-navy);color:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:12px 14px;z-index:9;animation:fadeUp .18s var(--ease-standard) both;`)}>
+                          <div style={s("display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:7px;margin-bottom:8px;")}><span style={s("font-size:13px;font-weight:700;")}>{b.key}</span><span style={s("font-family:var(--font-mono);font-size:11px;color:#cdd8e2;")}>{b.key} risk</span></div>
+                          <div style={s("display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;")}><span style={s("color:#aebccb;")}>Industry-average window</span><span style={s("font-family:var(--font-mono);font-weight:600;")}>{b.actual}d</span></div>
+                          <div style={s("display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;")}><span style={s("color:#aebccb;")}>Standard / best practice</span><span style={s("font-family:var(--font-mono);font-weight:600;")}>{b.target}d</span></div>
+                          <div style={s("display:flex;justify-content:space-between;font-size:12px;")}><span style={s("color:#aebccb;")}>Days beyond standard</span><span style={s("font-family:var(--font-mono);font-weight:700;color:var(--pnc-orange);")}>+{b.over}d</span></div>
+                        </div>
+                      )}
+                      <div style={s(`position:absolute;bottom:${b.labelPx}px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--fg-1);`)}>{b.actual}d</div>
+                      <div style={s("width:58px;display:flex;flex-direction:column;justify-content:flex-end;")}>
+                        <div style={s(`width:100%;height:${b.overPx}px;background:${b.c};border-radius:4px 4px 0 0;transition:height var(--dur-slow) var(--ease-standard);`)}></div>
+                        <div style={s(`width:100%;height:${b.withinPx}px;background:${b.bg};border:1px solid ${b.c};border-top:none;border-radius:0 0 4px 4px;transition:height var(--dur-slow) var(--ease-standard);`)}></div>
+                      </div>
+                      {showTargets && (
+                        <div style={s(`position:absolute;bottom:${b.targetPx}px;left:8px;right:8px;border-top:2px dashed var(--pnc-navy);transition:bottom var(--dur-slow) var(--ease-standard);`)}><span style={s("position:absolute;right:0;top:-16px;font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--pnc-navy);background:#fff;padding:0 3px;")}>{b.target}d</span></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={s("display:flex;gap:10px;margin-top:12px;")}>
+              <div style={s("width:42px;flex:none;")}></div>
+              <div style={s("flex:1;display:flex;justify-content:space-around;")}>
+                {bars.map((b, i) => (
+                  <div key={i} className="rembars-lbl" style={s("width:100px;text-align:center;")}><div style={s("font-size:14px;font-weight:700;color:var(--fg-1);")}>{b.key}</div><div style={s("font-size:11.5px;color:var(--fg-3);margin-top:6px;")}>{b.share}% of all flaws</div></div>
+                ))}
+              </div>
+            </div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Deadline policies: "PCI DSS" reflects its one-month (30-day) rule for critical patches; "CISA" approximates BOD 26-04's risk-tiered deadlines by severity. FFIEC sets no fixed deadline — it requires risk-based, timely remediation defined by each institution. Remediation times from public benchmarking; illustrative and directional.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://www.cisa.gov/news-events/directives" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CISA directives (BOD 26-04)</a> &middot; <a href="https://www.pcisecuritystandards.org" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>PCI DSS</a> &middot; <a href="https://www.ffiec.gov/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>FFIEC IT Handbook</a> &middot; <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Verizon DBIR</a></span></p>
+          </section>
+          </div>
+
+          {this.groupHeader('grp1',1,'II','Part two','AI Acceleration of Cyber Threats','How AI is compressing the time between a vulnerability becoming known and its exploitation — often to less than zero. Covers threat-actor speed, the disclosure-to-patch exposure window, and the rise of zero-day attacks.',40)}
+
+          {/* ============ SECTION 2 · THREAT-ACTOR SPEED ============ */}
+          <div id="ch2" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
+              <div style={s("max-width:560px;")}>
+                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Threat-actor speed</div>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Time for threat actors to exploit a vulnerability</h2>
+                <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Days from a flaw becoming known to its first exploitation. Below zero means it is attacked <em style={s("font-style:normal;font-weight:700;color:var(--fg-1);")}>before</em> it is even public — increasingly the norm across the industry today.</p>
+              </div>
+              <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
+                <span style={s("font-size:10.5px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.05em;")}>Projection scenario</span>
+                <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
+                  {scenBtns.map((sb, i) => (
+                    <button key={i} onClick={sb.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${sb.bg};color:${sb.color};box-shadow:${sb.shadow};`)}>{sb.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;")} data-collapse="">
+              {exploitStats.map((st, i) => (
+                <div key={i} style={s(`border:1px solid var(--line-1);border-radius:var(--radius-md);padding:13px 15px;background:${st.bg};`)}>
+                  <div style={s("font-size:11px;font-weight:700;color:var(--fg-2);")}>{st.label}</div>
+                  <div style={s(`font-family:var(--font-mono);font-size:24px;font-weight:600;color:${st.color};line-height:1;margin-top:7px;`)}>{st.value}</div>
+                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:6px;")}>{st.note}</div>
+                </div>
+              ))}
+            </div>
+            <div style={s("margin-top:18px;")}>{exploitChart}</div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Time-to-exploit from Mandiant / GTIG; negative values mean exploitation begins before a patch exists. 2027–2030 projected under the selected scenario.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/time-to-exploit-trends-2023" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Mandiant: Time-to-Exploit 2023</a> &middot; <a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Mandiant M-Trends 2026</a></span></p>
+          </section>
+          </div>
+
+          {/* ============ SECTION 3 · DISCLOSURE-TO-PATCH TIMELINE ============ */}
+          <div id="ch3" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("max-width:620px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>The exposure window</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>When risk starts — and how the window shifts</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Three eras on one scale. The <strong style={s("color:var(--risk-high);")}>red band</strong> is the exposure window — when a flaw is exploitable but not yet fixed. Risk truly starts where attackers can strike (the red marker), not at discovery. Watch where that point moves, and how the window widens, then narrows again when defenders also use AI.</p>
+            </div>
+            <div style={s("margin-top:16px;")}>{windowChart}</div>
+            <div style={s("display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:12px;")}>
+              {milestoneLegend.map((m, i) => (
+                <div key={i} style={s("display:flex;align-items:center;gap:8px;")}><span style={s(`width:11px;height:11px;border-radius:3px;background:${m.color};flex:none;`)}></span><span style={s("font-size:12px;color:var(--fg-1);font-weight:600;")}>{m.name}</span></div>
+              ))}
+            </div>
+
+            <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;")} data-collapse="">
+              <div style={s("border:1px solid var(--danger-line);border-left:3px solid var(--risk-high);border-radius:var(--radius-md);background:var(--risk-high-bg);padding:13px 16px;")}>
+                <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("font-size:13px;")}>⚡</span><span style={s("font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--risk-high);")}>AI speeds the attacker</span></div>
+                <div style={s("font-size:12.5px;line-height:18px;color:var(--fg-1);margin-top:6px;text-wrap:pretty;")}>Flaws are found and weaponised <strong>before public disclosure</strong> — exploitation moves from <strong>+5 days</strong> today to <strong>−5</strong> in the AI era. The window opens earlier.</div>
+              </div>
+              <div style={s("border:1px solid var(--success-line);border-left:3px solid var(--success);border-radius:var(--radius-md);background:var(--success-bg);padding:13px 16px;")}>
+                <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("font-size:13px;")}>🛡️</span><span style={s("font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--success);")}>AI speeds the defender</span></div>
+                <div style={s("font-size:12.5px;line-height:18px;color:var(--fg-1);margin-top:6px;text-wrap:pretty;")}>AI-assisted patch development and automated deployment pull the fix in from <strong>+45 days</strong> to <strong>+20</strong> — closing the window sooner than today.</div>
+              </div>
+            </div>
+            <div style={s("margin-top:12px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The takeaway:</strong> AI moves both sides of the timeline. The exposure window only narrows where detection, patch development and deployment adopt AI as fast as attackers do — otherwise it opens earlier and stays open longer.</div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Time-to-exploit from Mandiant M-Trends; remediation pace from public benchmarks. AI-accelerated era is a modeled projection.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/time-to-exploit-trends-2023" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Mandiant: Time-to-Exploit 2023</a> &middot; <a href="https://cloud.google.com/security/resources/m-trends" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Mandiant M-Trends</a></span></p>
+          </section>
+          </div>
+
+          {/* ============ SECTION 4 · ZERO-DAYS ============ */}
+          <div id="ch4" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
+              <div style={s("max-width:560px;")}>
+                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Exploitation before a fix exists</div>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>The rise of zero-day exploitation</h2>
+                <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>A <strong style={s("color:var(--fg-1);")}>zero-day</strong> is attacked before any fix exists — so there is nothing to patch. Their number, and share of all exploited flaws, keeps climbing.</p>
+              </div>
+              <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:8px;")}>
+                <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
+                  {volBtns.map((vb, i) => (
+                    <button key={i} onClick={vb.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${vb.bg};color:${vb.color};box-shadow:${vb.shadow};`)}>{vb.label}</button>
+                  ))}
+                </div>
+                <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
+                  {scen2Btns.map((sb, i) => (
+                    <button key={i} onClick={sb.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${sb.bg};color:${sb.color};box-shadow:${sb.shadow};`)}>{sb.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;")} data-collapse="">
+              {zeroStats.map((st, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:13px 15px;background:#fff;")}>
+                  <div style={s("font-size:11px;font-weight:700;color:var(--fg-2);")}>{st.label}</div>
+                  <div style={s("font-family:var(--font-mono);font-size:24px;font-weight:600;color:var(--pnc-orange-700);line-height:1;margin-top:7px;")}>{st.value}</div>
+                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:6px;")}>{st.note}</div>
+                </div>
+              ))}
+            </div>
+            <div style={s("margin-top:16px;")}>{zerodayChart}</div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Zero-day counts and share from Google GTIG and Mandiant reporting; 2026 is a current-year estimate and 2027–2030 are modeled under the selected scenario.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/2024-zero-day-trends" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2024 Zero-Day Analysis</a> &middot; <a href="https://cloud.google.com/blog/topics/threat-intelligence/2025-zero-day-review" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2025 Zero-Days in Review</a></span></p>
+          </section>
+          </div>
+
+          {this.groupHeader('grp2',2,'III','Part three','Risk Management Implications & Trade-Offs','Where protective value is shifting as patching addresses less of the risk — and the trade-offs of remediation-first policies. Covers changing control priorities, the change-freeze trade-off, and a zero-vulnerability gate.',40)}
+
+          {/* ============ SECTION 5 · CONTROLS STACK ============ */}
+          <div id="ch5" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
+              <div style={s("max-width:660px;")}>
+                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Drivers of security and resilience</div>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>How AI acceleration reshapes control priorities</h2>
+                <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Where protective value is moving as attacks outpace fixes — and the metric to measure each control by.</p>
+              </div>
+            </div>
+
+            <div style={s("display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-1);")}>
+              <span style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);")}>Direction of change</span>
+              <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-sm);background:var(--success);color:#fff;font-size:13px;font-weight:700;")}>↑</span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Increasing</span></div>
+              <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-sm);background:var(--pnc-navy);color:#fff;font-size:13px;font-weight:700;")}>→</span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Steady</span></div>
+              <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-sm);background:var(--pnc-orange-700);color:#fff;font-size:13px;font-weight:700;")}>↓</span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Reduced</span></div>
+            </div>
+
+            <div style={s("display:flex;flex-direction:column;gap:18px;margin-top:18px;")}>
+              {controlGroups.map((g, gi) => (
+                <div key={gi}>
+                  <div style={s(`display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;background:${g.headBg};border:1px solid ${g.headBorder};border-radius:var(--radius-md);`)}>
+                    <span style={s(`display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:var(--radius-sm);background:${g.color};color:#fff;font-size:15px;font-weight:700;line-height:1;flex:none;`)}>{g.arrow}</span>
+                    <span style={s(`font-size:13.5px;font-weight:700;color:${g.color};`)}>{g.label}</span>
+                    <span style={s("font-size:11.5px;color:var(--fg-3);")}>{g.sub}</span>
+                  </div>
+                  <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;")} data-collapse="">
+                    {g.items.map((it, ii) => (
+                      <div key={ii} style={s(`border:1px solid var(--line-1);border-left:3px solid ${g.color};border-radius:var(--radius-md);padding:12px 15px;`)}>
+                        <div style={s("font-size:13px;font-weight:700;color:var(--fg-1);")}>{it.name}</div>
+                        <div style={s("font-size:11px;line-height:15px;color:var(--fg-2);margin-top:4px;")}><span style={s("font-weight:700;color:var(--fg-3);")}>Metric · </span>{it.metric}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={s("margin-top:18px;padding:15px 18px;background:var(--pnc-navy);border-radius:var(--radius-md);color:#fff;")}>
+              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pnc-orange);")}>What it means for prioritisation</div>
+              <div style={s("font-size:13px;line-height:19px;margin-top:5px;")}>Patch management remains essential. As exploitation increasingly outpaces remediation, current industry frameworks — including NIST CSF 2.0 — place growing weight on detection, containment, and recovery alongside prevention. Control priorities and investment can be reviewed against where protective value now sits.</div>
+            </div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Aligned to NIST CSF 2.0, CISA BOD 26-04 and FFIEC resilience practice. A directional interpretation, not a scored model.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST CSF 2.0</a> &middot; <a href="https://www.cisa.gov/news-events/directives" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CISA directives (BOD 26-04)</a> &middot; <a href="https://www.ffiec.gov/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>FFIEC IT Handbook</a></span></p>
+          </section>
+          </div>
+
+          {/* ============ SECTION 6 · CHANGE FREEZE TRADE-OFF ============ */}
+          <div id="ch6" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("max-width:760px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Trade-off &middot; change freeze</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>What pausing change to remediate buys &mdash; and what it costs</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Pausing change to clear the backlog is one option for reducing exposure. How far to extend it is a judgement of risk reduction versus delivery impact. Choose a scope to see the trade-off.</p>
+            </div>
+
+            <div style={s("display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;")}>
+              {scopeBtns.map((b, i) => (
+                <button key={i} onClick={b.onClick} style={s(`cursor:pointer;text-align:left;font-family:var(--font-sans);border:1px solid ${b.border};background:${b.bg};border-radius:var(--radius-md);padding:9px 15px;transition:all var(--dur-fast);`)}>
+                  <div style={s(`font-size:13px;font-weight:700;color:${b.color};`)}>{b.label}</div>
+                  <div style={s(`font-size:11px;color:${b.sublcolor};margin-top:1px;`)}>{b.sub}</div>
+                </button>
+              ))}
+            </div>
+
+            <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;")} data-collapse="">
+              <div style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:15px 17px;background:var(--bg-2);")}>
+                <div style={s("display:flex;align-items:baseline;justify-content:space-between;gap:10px;")}>
+                  <span style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);")}>Marginal risk addressed</span>
+                  <span style={s("font-size:14px;font-weight:700;color:var(--success);")}>{valueMeter.word}</span>
+                </div>
+                <div style={s("display:flex;gap:5px;margin-top:10px;")}>
+                  {valueMeter.cells.map((c, i) => (
+                    <div key={i} style={s(`flex:1;height:12px;border-radius:3px;background:${c.bg};transition:background var(--dur-slow);`)}></div>
+                  ))}
+                </div>
+              </div>
+              <div style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:15px 17px;background:var(--bg-2);")}>
+                <div style={s("display:flex;align-items:baseline;justify-content:space-between;gap:10px;")}>
+                  <span style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);")}>Delivery impact</span>
+                  <span style={s("font-size:14px;font-weight:700;color:var(--risk-high);")}>{disruptionMeter.word}</span>
+                </div>
+                <div style={s("display:flex;gap:5px;margin-top:10px;")}>
+                  {disruptionMeter.cells.map((c, i) => (
+                    <div key={i} style={s(`flex:1;height:12px;border-radius:3px;background:${c.bg};transition:background var(--dur-slow);`)}></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div style={s("margin-top:16px;padding:13px 16px;background:var(--pnc-orange-050);border:1px solid var(--pnc-orange-100);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:var(--fg-1);")}><strong style={s("color:var(--pnc-orange-700);")}>At this scope:</strong> {freezeVerdict}</div>
+
+            <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;")} data-collapse="">
+              <div style={s("border:1px solid var(--line-1);border-top:3px solid var(--success);border-radius:var(--radius-md);padding:16px 18px;background:#fff;")}>
+                <div style={s("font-size:12px;font-weight:700;color:var(--success);")}>What remediation buys</div>
+                <div style={s("display:flex;flex-direction:column;gap:11px;margin-top:12px;")}>
+                  {freezePros.map((p, i) => (
+                    <div key={i} style={s("display:flex;gap:9px;align-items:flex-start;")}>
+                      <span style={s("width:6px;height:6px;border-radius:2px;background:var(--success);flex:none;margin-top:7px;")}></span>
+                      <div><span style={s("font-size:13px;font-weight:700;color:var(--fg-1);")}>{p.h}</span> <span style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);")}>&mdash; {p.t}</span></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={s("border:1px solid var(--line-1);border-top:3px solid var(--pnc-orange);border-radius:var(--radius-md);padding:16px 18px;background:#fff;")}>
+                <div style={s("font-size:12px;font-weight:700;color:var(--pnc-orange-700);")}>Limits &amp; costs of chasing it</div>
+                <div style={s("display:flex;flex-direction:column;gap:11px;margin-top:12px;")}>
+                  {freezeLimits.map((p, i) => (
+                    <div key={i} style={s("display:flex;gap:9px;align-items:flex-start;")}>
+                      <span style={s("width:6px;height:6px;border-radius:2px;background:var(--pnc-orange);flex:none;margin-top:7px;")}></span>
+                      <div><span style={s("font-size:13px;font-weight:700;color:var(--fg-1);")}>{p.h}</span> <span style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);")}>&mdash; {p.t}</span></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>A qualitative trade-off, not a forecast.</strong> Value and disruption levels are directional judgements to support discussion; they are not derived from internal vulnerability, cost or delivery data.</p>
+          </section>
+          </div>
+
+          {/* ============ SECTION 7 · ZERO-VULNERABILITY GATE ============ */}
+          <div id="ch7" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
+              <div style={s("max-width:620px;")}>
+                <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Policy option &middot; zero-vulnerability gate</div>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Weighing a &ldquo;fix everything first&rdquo; gate</h2>
+                <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Requiring zero open vulnerabilities before any change ships is an understandable goal. Comparing it with a risk-based gate helps weigh the protection it offers against its effect on delivery.</p>
+              </div>
+              <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
+                <span style={s("font-size:10.5px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.05em;")}>Gate policy</span>
+                <div style={s("display:flex;background:var(--bg-2);border:1px solid var(--line-1);border-radius:var(--radius-md);padding:3px;gap:2px;")}>
+                  {gateBtns.map((g, i) => (
+                    <button key={i} onClick={g.onClick} style={s(`border:none;cursor:pointer;font-family:var(--font-sans);font-size:12px;font-weight:600;padding:6px 11px;border-radius:var(--radius-sm);transition:background var(--dur-slow),color var(--dur-slow);background:${g.bg};color:${g.color};box-shadow:${g.shadow};`)}>{g.label}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div style={s("margin-top:20px;padding-top:18px;border-top:1px solid var(--line-1);")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);")}>Production changes able to reach production</div>
+              <div style={s("display:flex;height:38px;border:1px solid var(--line-1);border-radius:var(--radius-md);overflow:hidden;margin-top:12px;")}>
+                <div style={s(`width:${gateShip}%;background:var(--success);transition:width var(--dur-slow) var(--ease-standard);`)}></div>
+                <div style={s(`width:${gateBlock}%;background:var(--risk-high);transition:width var(--dur-slow) var(--ease-standard);`)}></div>
+              </div>
+              <div style={s("display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:8px;")}>
+                <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:11px;height:11px;border-radius:3px;background:var(--success);")}></span><span style={s("font-size:12px;color:var(--fg-1);font-weight:600;")}>{gateShipLabel}</span></div>
+                <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:11px;height:11px;border-radius:3px;background:var(--risk-high);")}></span><span style={s("font-size:12px;color:var(--fg-1);font-weight:600;")}>{gateBlockLabel}</span></div>
+              </div>
+            </div>
+
+            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;")} data-collapse="">
+              {gateStats.map((st, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:13px 15px;background:#fff;")}>
+                  <div style={s("font-size:10.5px;font-weight:700;color:var(--fg-2);text-wrap:pretty;")}>{st.label}</div>
+                  <div style={s("font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--pnc-navy);line-height:1.1;margin-top:8px;")}>{st.value}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={s("margin-top:18px;padding:13px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>In practice:</strong> {gateVerdict}</div>
+
+            <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);margin-top:22px;")}>Practical considerations for a zero-vulnerability gate</div>
+            <div style={s("display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px;")} data-collapse="">
+              {gateChallenges.map((c, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-left:3px solid var(--pnc-orange);border-radius:var(--radius-md);padding:13px 15px;background:#fff;display:flex;flex-direction:column;gap:6px;")}>
+                  <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);")}>{c.tag}</div>
+                  <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-2);text-wrap:pretty;")}>{c.text}</div>
+                  <div style={s("font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--pnc-orange-700);margin-top:auto;")}>{c.stat}</div>
+                </div>
+              ))}
+            </div>
+
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates &mdash; not internal data from any single institution.</strong> Ship/block rates are illustrative comparisons of gating approaches; the risk-based gate reflects CISA BOD 26-04-style prioritisation. Directional, not a measured figure for any institution. <span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/2024-zero-day-trends" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2024 Zero-Day Analysis</a> &middot; <a href="https://www.blackduck.com/resources/analyst-reports/open-source-security-risk-analysis.html" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Synopsys / Black Duck OSSRA</a> &middot; <a href="https://www.cisa.gov/news-events/directives" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CISA directives (BOD 26-04)</a></span></p>
+          </section>
+          </div>
+
+          {this.groupHeader('grp3',3,'IV','Part four','Executive Questions to Drive Risk Reduction','Questions to assess organisational readiness, direct a measurable plan, and allocate resources to where protective value has shifted — built to surface evidence, not assign fault.',40)}
+
+          {/* ============ SECTION 8 · QUESTIONS ============ */}
+          <div id="ch8" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 26px;margin-top:28px;")}>
+            <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Questions to ask management</div>
+            <p style={s("font-size:13px;line-height:20px;color:var(--fg-2);margin:8px 0 0;max-width:780px;text-wrap:pretty;")}>Six open questions to assess readiness with evidence. They map to the themes above — detection, resilience, investment, containment, concentration, and the use of AI in defence.</p>
+            <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;")} data-collapse="">
+              {questions.map((q, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:18px 20px;background:#fff;")}>
+                  <div style={s("display:flex;align-items:center;gap:10px;")}>
+                    <span style={s("display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:var(--radius-sm);background:var(--pnc-navy);color:#fff;font-family:var(--font-mono);font-size:12px;font-weight:600;flex:none;")}>{i + 1}</span>
+                    <span style={s("font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pnc-orange);")}>{q.tag}</span>
+                  </div>
+                  <div style={s("font-size:15px;line-height:21px;font-weight:700;color:var(--fg-1);margin-top:11px;text-wrap:pretty;")}>{q.q}</div>
+                  <div style={s("font-size:12px;line-height:17px;color:var(--fg-3);margin-top:11px;padding-top:11px;border-top:1px solid var(--line-1);text-wrap:pretty;")}>{q.why}</div>
+                </div>
+              ))}
+            </div>
+            <div style={s("margin-top:18px;padding:13px 16px;background:var(--pnc-blue-050);border:1px solid var(--pnc-blue-100);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:var(--fg-2);")}>These questions are intended to assess readiness with evidence, not to assign fault.</div>
+            <p style={s("font-size:9.5px;line-height:13.5px;color:var(--fg-3);margin:16px 0 0;padding-top:11px;border-top:1px solid var(--line-1);")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong></p>
+          </section>
+          </div>
+
+          <div className="no-print" style={s("display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line-1);flex-wrap:wrap;")}>
+            <button onClick={onPrev} style={s(`display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-sans);font-size:13px;font-weight:600;padding:9px 16px;border-radius:var(--radius-md);background:#fff;border:1px solid var(--line-1);color:var(--fg-2);opacity:${prevOpacity};`)}>{prevText}</button>
+            <span style={s("font-size:11px;font-weight:600;color:var(--fg-3);")}>{stepLabel}</span>
+            <button onClick={onNext} style={s(`display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--font-sans);font-size:13px;font-weight:700;padding:9px 16px;border-radius:var(--radius-md);background:var(--pnc-navy);border:none;color:#fff;opacity:${nextOpacity};`)}>{nextText}</button>
+          </div>
+
+        </main>
+      </div>
+    );
+  }
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Dashboard showTargets={true} />);
+</script>
+</body>
+</html>

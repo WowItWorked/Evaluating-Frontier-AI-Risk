@@ -1,0 +1,6 @@
+# Local preview / tooling config (not needed in the published repo)
+.claude/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
