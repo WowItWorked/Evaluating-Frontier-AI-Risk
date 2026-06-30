@@ -52,6 +52,9 @@ html{scroll-behavior:smooth;}
 #progbar{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--pnc-orange),var(--pnc-orange-700));box-shadow:0 0 8px rgba(245,128,37,.55);transition:width .12s linear;}
 .partbanner{position:relative;overflow:hidden;border-radius:var(--radius-lg);color:#fff;padding:26px 30px 24px;box-shadow:var(--shadow-md);background:linear-gradient(120deg,var(--pnc-navy),var(--pnc-navy-900));}
 #scroller{transition:background var(--dur-slow) var(--ease-standard);}
+.chart-scroll{overflow-x:auto;overflow-y:hidden;min-width:0;}
+[data-collapse]>*{min-width:0;}
+.chart-hint{display:none;}
 @media(max-width:820px){main{padding:18px!important;}[data-collapse]{grid-template-columns:1fr!important;}[data-collapse] aside{border-right:none!important;padding-right:0!important;border-bottom:1px solid var(--line-1);padding-bottom:20px;}header{padding:16px 18px!important;}nav.no-print{padding:9px 16px!important;}.exec-flow{flex-direction:column!important;}.exec-flow .exec-arrow{width:100%!important;height:36px!important;align-self:auto!important;}.exec-flow .exec-line{left:50%!important;right:auto!important;top:4px!important;bottom:4px!important;height:auto!important;width:2.5px!important;transform:translateX(-50%)!important;}.exec-flow .exec-chev{transform:rotate(90deg);}}
 @media(max-width:640px){
   main{padding:14px!important;}
@@ -67,6 +70,7 @@ html{scroll-behavior:smooth;}
   .mobilenav{display:block!important;order:2;flex:1 1 100%!important;}
   #grpC section{padding:22px 18px 20px!important;}
   #grpC h2{font-size:21px!important;}
+  .chart-hint{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-3);margin:0 0 7px;}
 }
 </style>
 </head>
@@ -235,7 +239,7 @@ class Dashboard extends React.Component {
     if (hy != null) k.push(T(xFor(hy),yFor(counts[hy])-7,counts[hy].toLocaleString(),{key:'hl',anchor:'middle',mono:true,fs:11,fw:700,fill:'#10314F'}));
     years.forEach((yr,i) => k.push(T(xFor(i),base+15,String(yr),{key:'xl'+yr,anchor:'middle',mono:true,fs:9,fill:(i===obsEnd)?'#23282C':'#97A0A8',fw:(i===obsEnd)?700:500})));
     k.push(h('line',{key:'bl0',x1:ML,x2:ML+pw,y1:base,y2:base,stroke:'#D7DBDF',strokeWidth:1}));
-    const cveChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const cveChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible',minWidth:'660px'}},k);
     const cveBtns = [['actual','As reported'],['surge','vs. pre-AI trend']].map(([id,label]) => { const active = this.state.cveView === id; return { label, onClick:()=>this.setState({cveView:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
     return { cveChart, cveBtns, cveSurge: surge };
   }
@@ -276,7 +280,7 @@ class Dashboard extends React.Component {
       k.push(T(xFor(m.t)+o.dx, yFor(m.cap)+o.nameDy, m.name, {key:'l'+i,anchor:o.anchor,fs:11,fw:700,fill:m.c}));
       k.push(T(xFor(m.t)+o.dx, yFor(m.cap)+o.verDy, '('+m.co+')', {key:'lv'+i,anchor:o.anchor,fs:8.5,fw:600,fill:'#9AA4AE'}));
     });
-    const modelsChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const modelsChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible',minWidth:'660px'}},k);
     return { models, modelsChart };
   }
 
@@ -338,7 +342,7 @@ class Dashboard extends React.Component {
         k.push(h('circle',{key:'m'+i+kk,cx:xFor(val),cy:y,r:kk==='exploit'?5.5:4.5,fill:COL[kk],stroke:'#fff',strokeWidth:1.5}));
       });
     });
-    const windowChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const windowChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible',minWidth:'660px'}},k);
     const milestoneLegend = [
       { name:'Vulnerability discovered', color:COL.disc },
       { name:'Attackers can exploit — risk starts', color:COL.exploit },
@@ -373,7 +377,7 @@ class Dashboard extends React.Component {
     years.forEach((yr,i) => { if (i%2===0 || i===obsEnd) k.push(T(xFor(i),base+15,String(yr),{key:'xl'+yr,anchor:'middle',mono:true,fs:9,fill:(i===obsEnd)?'#23282C':'#97A0A8',fw:(i===obsEnd)?700:500})); });
     k.push(h('line',{key:'td',x1:xFor(obsEnd)+step/2,x2:xFor(obsEnd)+step/2,y1:MT,y2:base,stroke:'#97A0A8',strokeWidth:1,strokeDasharray:'3 3'}));
     k.push(T((xFor(obsEnd)+step/2+ML+pw)/2,MT+11,'Projected · '+(scen==='baseline'?'baseline':'AI-accelerated'),{key:'pjl',anchor:'middle',fs:9.5,fw:600,fill:'#C77A1F'}));
-    const zerodayChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
+    const zerodayChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible',minWidth:'660px'}},k);
     const volBtns = [['count','Absolute number'],['share','Share of total']].map(([id,label]) => { const active = this.state.volumeView === id; return { label, onClick:()=>this.setState({volumeView:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
     const scen2Btns = [['ai','AI-accelerated'],['baseline','Baseline']].map(([id,label]) => { const active = scen === id; return { label, onClick:()=>this.setState({scenario2:id}), bg:active?'#fff':'transparent', color:active?'var(--pnc-navy)':'var(--fg-2)', shadow:active?'var(--shadow-xs)':'none' }; });
     const zeroStats = [
@@ -690,7 +694,7 @@ class Dashboard extends React.Component {
                   <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:14px;height:14px;border-radius:3px;background:var(--pnc-orange-100);border:1px dashed var(--pnc-orange);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Projected</span></div>
                   {cveSurge && <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:20px;height:0;border-top:2px dashed var(--pnc-navy);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Projected pre-AI trend</span></div>}
                 </div>
-                <div style={s("margin-top:12px;")}>{cveChart}</div>
+                <div style={s("margin-top:12px;")}><div className="chart-hint">&#8596; Swipe to view the full chart</div><div className="chart-scroll">{cveChart}</div></div>
                 <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Illustrative and directional; 2025 is a partial-year estimate and 2026–2028 are projected.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://nvd.nist.gov/general/nvd-dashboard" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST NVD dashboard</a> &middot; <a href="https://www.cve.org/about/Metrics" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CVE Program metrics</a> &middot; <a href="https://www.nist.gov/news-events/news/2026/04/nist-updates-nvd-operations-address-record-cve-growth" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST: 2026 NVD update</a></span></p>
               </div>
             </div>
@@ -807,7 +811,7 @@ class Dashboard extends React.Component {
               </div>
               <span style={s("font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);")}>Release date &rarr;</span>
             </div>
-            <div style={s("margin-top:8px;")}>{modelsChart}</div>
+            <div style={s("margin-top:8px;")}><div className="chart-hint">&#8596; Swipe to view the full chart</div><div className="chart-scroll">{modelsChart}</div></div>
             <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;")} data-collapse="">
               {models.map((m, i) => {
                 const tg = {open:{l:'Open weights',c:'#1E7F4F',bg:'#E7F5EE'}, free:{l:'Open · free',c:'#1E7F4F',bg:'#E7F5EE'}, gated:{l:'Gov-gated',c:'var(--pnc-orange-700)',bg:'var(--pnc-orange-050)'}, api:{l:'Closed API',c:'#5A6570',bg:'#F2F4F5'}}[m.tag];
@@ -840,7 +844,7 @@ class Dashboard extends React.Component {
               <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>When risk starts — and how it shifts</h2>
               <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Three eras on one scale. The <strong style={s("color:var(--risk-high);")}>red band</strong> is the exposure window — when a flaw is exploitable but not yet fixed. Risk truly starts where attackers can strike (the red marker), not at discovery. Watch where that point moves, and how the window widens, then narrows again when defenders also use AI.</p>
             </div>
-            <div style={s("margin-top:16px;")}>{windowChart}</div>
+            <div style={s("margin-top:16px;")}><div className="chart-hint">&#8596; Swipe to view the full chart</div><div className="chart-scroll">{windowChart}</div></div>
             <div style={s("display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:12px;")}>
               {milestoneLegend.map((m, i) => (
                 <div key={i} style={s("display:flex;align-items:center;gap:8px;")}><span style={s(`width:11px;height:11px;border-radius:3px;background:${m.color};flex:none;`)}></span><span style={s("font-size:12px;color:var(--fg-1);font-weight:600;")}>{m.name}</span></div>
@@ -893,7 +897,7 @@ class Dashboard extends React.Component {
                 </div>
               ))}
             </div>
-            <div style={s("margin-top:16px;")}>{zerodayChart}</div>
+            <div style={s("margin-top:16px;")}><div className="chart-hint">&#8596; Swipe to view the full chart</div><div className="chart-scroll">{zerodayChart}</div></div>
             <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Zero-day counts and share from Google GTIG and Mandiant reporting; 2026 is a current-year estimate and 2027–2030 are modeled under the selected scenario.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/2024-zero-day-trends" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2024 Zero-Day Analysis</a> &middot; <a href="https://cloud.google.com/blog/topics/threat-intelligence/2025-zero-day-review" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2025 Zero-Days in Review</a></span></p>
           </section>
           </div>
