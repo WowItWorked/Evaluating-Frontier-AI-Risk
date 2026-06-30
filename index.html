@@ -197,9 +197,9 @@ class Dashboard extends React.Component {
     const ticks = [0, 30, 60, 90, 120, 150, 180, 210].map(v => ({ v, px: px(v) }));
     const frameworkBtns = Object.keys(frameworks).map(id => { const active = this.state.framework === id; return { id, label: frameworks[id].label, bg: active ? "#fff" : "transparent", color: active ? "var(--pnc-navy)" : "var(--fg-2)", shadow: active ? "var(--shadow-xs)" : "none", onClick: () => this.setState({ framework: id }) }; });
     const policyMeta = {
-      internal:   { name:'Standard',       days:'Crit 15 · High 30 · Med 90 · Low 180', basis:'Common internal target by severity.' },
-      pci:        { name:'PCI DSS',        days:'Critical ≤ 30 (one month)',            basis:'Payment-card regulation; critical patches within a month.' },
-      cisa:       { name:'CISA (federal)', days:'Top-risk ≤ 3 · next ≤ 14',             basis:'CISA BOD 26-04 (2026); risk-tiered federal deadlines.' },
+      internal:   { name:'Standard',       headline:'Fix critical flaws within 15 days', plain:'A common in-house target; lower-severity flaws get weeks to months.' },
+      pci:        { name:'PCI DSS',        headline:'Fix critical flaws within 1 month',  plain:'Payment-card regulation — 30 days for critical flaws.' },
+      cisa:       { name:'CISA (federal)', headline:'Fix the highest-risk flaws within 3 days', plain:'New 2026 federal rule (BOD 26-04) for actively-exploited flaws.' },
     };
     const policyLegend = ['internal','pci','cisa'].map(id => ({ id, ...policyMeta[id], active: this.state.framework === id, onClick: () => this.setState({ framework: id }) }));
 
@@ -623,7 +623,7 @@ class Dashboard extends React.Component {
                   </div>
                   <div>
                     <div style={s("font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--pnc-orange-700);")}>Oversight has fallen behind</div>
-                    <p style={s("font-size:13px;line-height:19px;color:var(--fg-2);margin:5px 0 0;text-wrap:pretty;")}>In early 2024, <strong style={s("color:var(--fg-1);")}>NIST</strong> scaled back scoring of these flaws, so the national catalogue alone can no longer guide remediation priorities.</p>
+                    <p style={s("font-size:13px;line-height:19px;color:var(--fg-2);margin:5px 0 0;text-wrap:pretty;")}>In early 2024, <strong style={s("color:var(--fg-1);")}>NIST</strong> scaled back scoring of these flaws. In April 2026 it went further — fully analysing only the highest-priority flaws (those known to be exploited or in critical software) — so the national catalogue alone can no longer guide remediation priorities.</p>
                   </div>
                 </div>
 
@@ -652,7 +652,7 @@ class Dashboard extends React.Component {
                   {cveSurge && <div style={s("display:flex;align-items:center;gap:7px;")}><span style={s("width:20px;height:0;border-top:2px dashed var(--pnc-navy);")}></span><span style={s("font-size:11.5px;color:var(--fg-2);")}>Projected pre-AI trend</span></div>}
                 </div>
                 <div style={s("margin-top:12px;")}>{cveChart}</div>
-                <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Illustrative and directional; 2025 is a partial-year estimate and 2026–2028 are projected.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://nvd.nist.gov/general/nvd-dashboard" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST NVD dashboard</a> &middot; <a href="https://www.cve.org/about/Metrics" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CVE Program metrics</a></span></p>
+                <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates — not internal data from any single institution.</strong> Illustrative and directional; 2025 is a partial-year estimate and 2026–2028 are projected.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://nvd.nist.gov/general/nvd-dashboard" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST NVD dashboard</a> &middot; <a href="https://www.cve.org/about/Metrics" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CVE Program metrics</a> &middot; <a href="https://www.nist.gov/news-events/news/2026/04/nist-updates-nvd-operations-address-record-cve-growth" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST: 2026 NVD update</a></span></p>
               </div>
             </div>
           </section>
@@ -678,13 +678,13 @@ class Dashboard extends React.Component {
             </div>
 
             <div style={s("margin-top:18px;")}>
-              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-bottom:9px;")}>What each deadline standard means · days to remediate by severity</div>
+              <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-bottom:9px;")}>What each standard requires</div>
               <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:10px;")} data-collapse="">
                 {policyLegend.map((p, i) => (
-                  <div key={i} onClick={p.onClick} style={s(`cursor:pointer;border:1px solid ${p.active?'var(--pnc-orange)':'var(--line-1)'};border-radius:var(--radius-md);padding:11px 13px;background:${p.active?'var(--pnc-orange-050)':'var(--bg-2)'};box-shadow:${p.active?'var(--shadow-xs)':'none'};transition:all var(--dur-fast);`)}>
-                    <div style={s(`font-size:12.5px;font-weight:700;color:${p.active?'var(--pnc-orange-700)':'var(--fg-1)'};`)}>{p.name}</div>
-                    <div style={s("font-family:var(--font-mono);font-size:11px;color:var(--pnc-navy);margin-top:4px;")}>{p.days}</div>
-                    <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:5px;text-wrap:pretty;")}>{p.basis}</div>
+                  <div key={i} onClick={p.onClick} style={s(`cursor:pointer;border:1px solid ${p.active?'var(--pnc-orange)':'var(--line-1)'};border-radius:var(--radius-md);padding:13px 15px;background:${p.active?'var(--pnc-orange-050)':'var(--bg-2)'};box-shadow:${p.active?'var(--shadow-xs)':'none'};transition:all var(--dur-fast);`)}>
+                    <div style={s(`font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:${p.active?'var(--pnc-orange-700)':'var(--fg-3)'};`)}>{p.name}</div>
+                    <div style={s("font-size:14px;font-weight:700;line-height:1.3;color:var(--fg-1);margin-top:6px;text-wrap:pretty;")}>{p.headline}</div>
+                    <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-3);margin-top:6px;text-wrap:pretty;")}>{p.plain}</div>
                   </div>
                 ))}
               </div>
