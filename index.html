@@ -432,28 +432,23 @@ class Dashboard extends React.Component {
 
   zeroPolicyVals() {
     const gates = [
-      { key:'zero', name:'Zero-vulnerability gate', tagline:'Fix every known flaw before any change ships', accent:'var(--risk-high)', shipW:16, ship:'Limited', wait:'Open-ended', windows:'Rare',
+      { key:'zero', name:'Zero-vulnerability gate', tagline:'Fix every known flaw before anything ships', accent:'var(--risk-high)', shipW:16, ship:'Very little ships',
         points:[
-          { ok:true,  t:'Nothing with a known vulnerability reaches production' },
-          { ok:false, t:'Most change is held, so delivery largely stalls' },
-          { ok:false, t:'Rarely reaches zero — new flaws arrive continually' },
+          { ok:true,  t:'Nothing with a known flaw reaches production' },
+          { ok:false, t:'But almost all change is held up' },
         ] },
-      { key:'risk', name:'Risk-based gate', tagline:'Hold the highest-risk flaws first, ship the rest', accent:'var(--success)', shipW:82, ship:'Most', wait:'Within days', windows:'Continuous',
+      { key:'risk', name:'Risk-based gate', tagline:'Fix the riskiest flaws first, ship the rest', accent:'var(--success)', shipW:82, ship:'Most change ships',
         points:[
-          { ok:true, t:'Highest-risk vulnerabilities are held and fixed first' },
-          { ok:true, t:'Most change continues to reach production' },
-          { ok:true, t:'Continuous, risk-prioritised flow' },
+          { ok:true, t:'The most dangerous flaws are fixed first' },
+          { ok:true, t:'Most change keeps moving' },
         ] },
     ];
-    const gateChallenges = [
-      { tag:'Continuous inflow', text:'New relevant vulnerabilities are disclosed continually, so the open count rarely settles at zero.', stat:'~110+ new CVEs / day' },
-      { tag:'No fix yet exists', text:'Some vulnerabilities are zero-days or await a vendor patch, so there may be nothing to remediate yet.', stat:'~70% of 2023 exploited flaws were zero-day' },
-      { tag:'Third-party code', text:'Much software is assembled from vendor and open-source components whose fixes sit outside direct control.', stat:'~70%+ open-source components' },
-      { tag:'Remediation lags disclosure', text:'Remediation is typically measured in weeks, while new flaws arrive in days.', stat:'weeks vs. days' },
-      { tag:'Security fixes included', text:'A strict gate can also delay shipping security improvements themselves.', stat:'delays improvements' },
-      { tag:'Delivery slows', text:'Routine features, fixes, and resilience work may wait, slowing delivery.', stat:'slower delivery' },
+    const gateLimits = [
+      'New flaws never stop arriving, so “zero” is a moving target the bank never actually reaches.',
+      'Some flaws have no fix available yet — there is nothing to patch, so the gate blocks change for no gain.',
+      'It holds up good change too: security improvements and fixes wait in the same queue.',
     ];
-    return { gates, gateChallenges };
+    return { gates, gateLimits };
   }
 
   questionsVals() {
@@ -524,7 +519,7 @@ class Dashboard extends React.Component {
       volBtns, scen2Btns, zeroStats, zerodayChart,
       controlGroups,
       scopeBtns, valueMeter, disruptionMeter, freezeVerdict, freezePros, freezeLimits,
-      gates, gateChallenges,
+      gates, gateLimits,
       aiFrameworks, aiShift, aiControls,
       questions,
     } = v;
@@ -993,44 +988,38 @@ class Dashboard extends React.Component {
                   <div style={s("font-size:14.5px;font-weight:700;color:var(--fg-1);")}>{g.name}</div>
                   <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-3);margin-top:2px;text-wrap:pretty;")}>{g.tagline}</div>
 
-                  <div style={s("font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:15px;")}>Change that reaches production</div>
-                  <div style={s("position:relative;display:flex;height:30px;border:1px solid var(--line-1);border-radius:var(--radius-sm);overflow:hidden;margin-top:7px;")}>
-                    <div style={s(`width:${g.shipW}%;background:var(--success);display:flex;align-items:center;justify-content:center;`)}>{g.shipW>=34 && <span style={s("font-size:11.5px;font-weight:700;color:#fff;")}>{g.ship}</span>}</div>
+                  <div style={s("font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:15px;")}>How much change still ships</div>
+                  <div style={s("display:flex;height:30px;border:1px solid var(--line-1);border-radius:var(--radius-sm);overflow:hidden;margin-top:7px;")}>
+                    <div style={s(`width:${g.shipW}%;background:var(--success);`)}></div>
                     <div style={s(`width:${100-g.shipW}%;background:var(--bg-3);`)}></div>
                   </div>
-                  {g.shipW<34 && <div style={s("font-size:11.5px;font-weight:700;color:var(--success);margin-top:5px;")}>{g.ship}</div>}
+                  <div style={s(`font-size:12.5px;font-weight:700;color:${g.accent};margin-top:6px;`)}>{g.ship}</div>
 
-                  <div style={s("display:flex;flex-direction:column;gap:8px;margin-top:14px;")}>
+                  <div style={s("display:flex;flex-direction:column;gap:9px;margin-top:14px;")}>
                     {g.points.map((p, j) => (
-                      <div key={j} style={s("display:flex;gap:8px;align-items:flex-start;")}>
-                        <span style={s(`flex:none;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;background:${p.ok?'var(--success)':'var(--risk-high)'};margin-top:1px;`)}>{p.ok?'✓':'✕'}</span>
-                        <span style={s("font-size:12px;line-height:16px;color:var(--fg-2);text-wrap:pretty;")}>{p.t}</span>
+                      <div key={j} style={s("display:flex;gap:9px;align-items:flex-start;")}>
+                        <span style={s(`flex:none;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:${p.ok?'var(--success)':'var(--risk-high)'};margin-top:1px;`)}>{p.ok?'✓':'✕'}</span>
+                        <span style={s("font-size:12.5px;line-height:17px;color:var(--fg-1);text-wrap:pretty;")}>{p.t}</span>
                       </div>
                     ))}
                   </div>
-
-                  <div style={s("display:flex;gap:18px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-1);")}>
-                    <div><div style={s("font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-3);")}>Typical wait</div><div style={s("font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--pnc-navy);margin-top:3px;")}>{g.wait}</div></div>
-                    <div><div style={s("font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-3);")}>Clear windows</div><div style={s("font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--pnc-navy);margin-top:3px;")}>{g.windows}</div></div>
-                  </div>
                 </div>
               ))}
             </div>
 
-            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:12.5px;line-height:18px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The trade-off:</strong> A zero-vulnerability gate prioritises eliminating known exposure, but holds back most change and rarely reaches zero. A risk-based gate keeps most delivery moving and contains the highest-risk flaws first — accepting that some lower-risk issues remain open.</div>
+            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:13px;line-height:19px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The bottom line:</strong> Aiming to fix everything first stops almost all change — and is never actually reached. A risk-based gate keeps the bank moving while fixing the most dangerous flaws first.</div>
 
-            <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);margin-top:22px;")}>Practical considerations for a zero-vulnerability gate</div>
-            <div style={s("display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px;")} data-collapse="">
-              {gateChallenges.map((c, i) => (
-                <div key={i} style={s("border:1px solid var(--line-1);border-left:3px solid var(--pnc-orange);border-radius:var(--radius-md);padding:13px 15px;background:#fff;display:flex;flex-direction:column;gap:6px;")}>
-                  <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);")}>{c.tag}</div>
-                  <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-2);text-wrap:pretty;")}>{c.text}</div>
-                  <div style={s("font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--pnc-orange-700);margin-top:auto;")}>{c.stat}</div>
+            <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);margin-top:22px;")}>Why &ldquo;fix everything first&rdquo; can&rsquo;t work</div>
+            <div style={s("display:flex;flex-direction:column;gap:11px;margin-top:12px;")}>
+              {gateLimits.map((l, i) => (
+                <div key={i} style={s("display:flex;gap:11px;align-items:flex-start;")}>
+                  <span style={s("flex:none;width:22px;height:22px;border-radius:50%;background:var(--pnc-orange-050);border:1px solid var(--pnc-orange-100);color:var(--pnc-orange-700);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:700;margin-top:1px;")}>{i + 1}</span>
+                  <span style={s("font-size:13px;line-height:19px;color:var(--fg-1);text-wrap:pretty;")}>{l}</span>
                 </div>
               ))}
             </div>
 
-            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates &mdash; not internal data from any single institution.</strong> Ship/block rates are illustrative comparisons of gating approaches; the risk-based gate reflects CISA BOD 26-04-style prioritisation. Directional, not a measured figure for any institution. <span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/2024-zero-day-trends" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2024 Zero-Day Analysis</a> &middot; <a href="https://www.blackduck.com/resources/analyst-reports/open-source-security-risk-analysis.html" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Synopsys / Black Duck OSSRA</a> &middot; <a href="https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CISA BOD 26-04</a></span></p>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available information and industry estimates &mdash; not internal data from any single institution.</strong> The delivery comparison is illustrative of the two gating approaches; the risk-based gate reflects CISA BOD 26-04-style prioritisation. Directional, not a measured figure for any institution.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://cloud.google.com/blog/topics/threat-intelligence/2024-zero-day-trends" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>GTIG: 2024 Zero-Day Analysis</a> &middot; <a href="https://www.blackduck.com/resources/analyst-reports/open-source-security-risk-analysis.html" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Synopsys / Black Duck OSSRA</a> &middot; <a href="https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>CISA BOD 26-04</a></span></p>
           </section>
           </div>
 
