@@ -474,15 +474,20 @@ class Dashboard extends React.Component {
       { name:'ISO/IEC 42001', detail:'AI management-system standard' },
       { name:'EU AI Act', detail:'Risk-tiered legal rules (Reg. 2024/1689)' },
     ];
-    const aiControls = [
-      { name:'AI inventory & approval', desc:'Catalogue where AI is used — models, vendors, and agents — and bring shadow AI into governance.', metric:'Share of AI use catalogued and approved' },
-      { name:'Access & data controls', desc:'Govern who and what can use each model, and keep sensitive data out of prompts, training, and third-party models.', metric:'Data-classification controls on AI inputs' },
-      { name:'AI supply-chain & pipeline security', desc:'Vet model provenance and dependencies; protect the integrity of training and retrieval data.', metric:'Provenance and integrity checks' },
-      { name:'Model & prompt security', desc:'Test for prompt injection, jailbreaks, and data exfiltration; validate outputs before they drive action.', metric:'Adversarial testing / red-teaming' },
-      { name:'AI-agent oversight', desc:'Least privilege for autonomous agents, human approval for consequential actions, and full logging.', metric:'Agent permissions; human-in-the-loop coverage' },
-      { name:'Validation & monitoring', desc:'Validate models before deployment and monitor for drift, bias, and failure in production.', metric:'Pre-deployment validation; ongoing monitoring' },
+    const aiShift = [
+      { name:'They act, not just generate', desc:'Agentic frontier models plan and take actions across systems — with tool access that can move money, change configuration, or reach customer data.' },
+      { name:'More capable, less predictable', desc:'Behaviour is harder to explain, and new capabilities can emerge with each model, so prior testing may no longer hold.' },
+      { name:'Direct and through vendors', desc:'Built in-house or embedded via third-party copilots and APIs, where model behaviour and data handling sit partly outside direct control and can change without notice.' },
     ];
-    return { aiFrameworks, aiControls };
+    const aiControls = [
+      { name:'Observability & logging', desc:'Capture every model and agent input, output, tool call, and decision; monitor behaviour for drift and anomalies as it runs.', metric:'Share of agent actions logged and reviewable' },
+      { name:'Kill switches & circuit breakers', desc:'Disable a model or agent immediately, revoke its access, and halt in-flight autonomous actions.', metric:'Tested time to disable an agent' },
+      { name:'Autonomy & capability bounds', desc:'Least-privilege tool access, with human approval before consequential or irreversible actions.', metric:'Actions that require human sign-off' },
+      { name:'Containment & blast radius', desc:'Sandbox agent actions, scope permissions tightly, and stage rollouts so one agent cannot cascade.', metric:'Scope of any single agent’s access' },
+      { name:'Pre-deployment evaluation', desc:'Test for dangerous capabilities, jailbreaks, and misuse before access is granted — and re-test after each model update.', metric:'Evaluations before and after each release' },
+      { name:'Third-party & hosted-model governance', desc:'Contractual control over data handling, change notification, and behaviour of vendor-hosted models, with a fallback when a model updates.', metric:'Change-notification and exit terms in place' },
+    ];
+    return { aiFrameworks, aiShift, aiControls };
   }
 
   navVals() {
@@ -520,7 +525,7 @@ class Dashboard extends React.Component {
       controlGroups,
       scopeBtns, valueMeter, disruptionMeter, freezeVerdict, freezePros, freezeLimits,
       gates, gateChallenges,
-      aiFrameworks, aiControls,
+      aiFrameworks, aiShift, aiControls,
       questions,
     } = v;
     const curNav = chapNav.find(n => n.active) || chapNav[0];
@@ -1034,23 +1039,23 @@ class Dashboard extends React.Component {
           {/* ============ PART IV · INTERNAL AI MODEL CONTROL ============ */}
           <div id="ch9" className="reveal" style={s("scroll-margin-top:66px;margin-top:28px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;")}>
-            <div style={s("max-width:680px;")}>
-              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Internal AI &middot; model control &amp; governance</div>
-              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Governing the AI the institution runs</h2>
-              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Frontier AI is not only a threat the institution faces — it is a capability it deploys. Internally-run models, agents, and data pipelines need governance and security of their own, building on established frameworks.</p>
+            <div style={s("max-width:710px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Internal AI &middot; frontier models &amp; autonomous agents</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Governing frontier models and agents</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Generative AI used to mean reviewing what a model wrote. As the most capable frontier models — and the autonomous agents built on them — are brought inside the bank, directly or through third parties, the risk shifts from content to action: they can <em style={s("font-style:normal;font-weight:700;color:var(--fg-1);")}>do</em> things. The controls that matter shift with it.</p>
             </div>
 
-            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Established governance frameworks</div>
-            <div style={s("display:grid;grid-template-columns:repeat(4,1fr);gap:10px;")} data-collapse="">
-              {aiFrameworks.map((f, i) => (
-                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:11px 13px;background:var(--bg-2);")}>
-                  <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);")}>{f.name}</div>
-                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:4px;text-wrap:pretty;")}>{f.detail}</div>
+            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Why frontier models change the risk — beyond older generative AI</div>
+            <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:10px;")} data-collapse="">
+              {aiShift.map((sh, i) => (
+                <div key={i} style={s("border:1px solid var(--pnc-orange-100);border-left:3px solid var(--pnc-orange);border-radius:var(--radius-md);padding:12px 15px;background:var(--pnc-orange-050);")}>
+                  <div style={s("font-size:13px;font-weight:700;color:var(--fg-1);")}>{sh.name}</div>
+                  <div style={s("font-size:11.5px;line-height:16px;color:var(--fg-2);margin-top:4px;text-wrap:pretty;")}>{sh.desc}</div>
                 </div>
               ))}
             </div>
 
-            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Controls over internally-deployed AI</div>
+            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Controls that become essential</div>
             <div style={s("display:grid;grid-template-columns:1fr 1fr;gap:10px;")} data-collapse="">
               {aiControls.map((c, i) => (
                 <div key={i} style={s("border:1px solid var(--line-1);border-left:3px solid var(--pnc-blue);border-radius:var(--radius-md);padding:12px 15px;")}>
@@ -1061,9 +1066,19 @@ class Dashboard extends React.Component {
               ))}
             </div>
 
+            <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3);margin-top:18px;margin-bottom:9px;")}>Grounded in established governance frameworks</div>
+            <div style={s("display:grid;grid-template-columns:repeat(4,1fr);gap:10px;")} data-collapse="">
+              {aiFrameworks.map((f, i) => (
+                <div key={i} style={s("border:1px solid var(--line-1);border-radius:var(--radius-md);padding:11px 13px;background:var(--bg-2);")}>
+                  <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);")}>{f.name}</div>
+                  <div style={s("font-size:11px;line-height:15px;color:var(--fg-3);margin-top:4px;text-wrap:pretty;")}>{f.detail}</div>
+                </div>
+              ))}
+            </div>
+
             <div style={s("margin-top:18px;padding:15px 18px;background:var(--pnc-navy);border-radius:var(--radius-md);color:#fff;")}>
               <div style={s("font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pnc-orange);")}>What it means for the board</div>
-              <div style={s("font-size:13px;line-height:19px;margin-top:5px;")}>As internal AI adoption grows, it expands both the attack surface and the model-risk surface. Inventory, validation, access, and agent oversight should keep pace with adoption, not lag it.</div>
+              <div style={s("font-size:13px;line-height:19px;margin-top:5px;")}>Older generative AI was largely a content risk. Frontier models and autonomous agents are an action risk — they can take consequential steps on their own. The emphasis shifts from reviewing outputs to observing behaviour, bounding autonomy, and being able to intervene: observability, kill switches, and containment, not policy alone.</div>
             </div>
             <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Based on publicly available standards and guidance — not internal data from any single institution.</strong> Control set aligned to the frameworks above; a directional interpretation, not a scored model.<span style={s("display:block;margin-top:6px;")}><strong style={s("font-weight:700;color:var(--fg-2);")}>Sources:</strong> <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>NIST AI RMF</a> &middot; <a href="https://www.iso.org/standard/81230.html" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>ISO/IEC 42001</a> &middot; <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>EU AI Act</a> &middot; <a href="https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>Fed SR 26-2 (model risk)</a> &middot; <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener" style={s("color:#0069AA;text-decoration:underline;")}>OWASP LLM Top 10</a></span></p>
           </section>
