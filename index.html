@@ -587,7 +587,7 @@ class Dashboard extends React.Component {
 
               <aside style={s("border-right:1px solid var(--line-1);padding-right:30px;display:flex;flex-direction:column;")}>
                 <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>The current state</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.22;margin:8px 0 0;color:var(--fg-1);")}>Disclosed software vulnerabilities are increasing rapidly</h2>
+                <h2 style={s("font-family:var(--font-serif);font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.22;margin:8px 0 0;color:var(--fg-1);")}>Disclosed vulnerabilities are rising fast</h2>
 
                 <div style={s("margin-top:20px;display:flex;flex-direction:column;gap:18px;padding-bottom:20px;")}>
                   <div>
@@ -641,7 +641,7 @@ class Dashboard extends React.Component {
             <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
               <div style={s("max-width:560px;")}>
                 <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Remediation time vs. standards</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Remediation time against deadline standards</h2>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Fixes exceed standard deadlines</h2>
                 <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Average days to fix a vulnerability versus the deadline each standard sets, by severity — across the industry, remediation runs late at every level. Lower is better; switch the policy to compare.</p>
               </div>
               <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
@@ -736,7 +736,7 @@ class Dashboard extends React.Component {
             <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
               <div style={s("max-width:560px;")}>
                 <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Threat-actor speed</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Time for threat actors to exploit a vulnerability</h2>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Time to exploit a vulnerability</h2>
                 <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Days from a flaw becoming known to its first exploitation. Below zero means it is attacked <em style={s("font-style:normal;font-weight:700;color:var(--fg-1);")}>before</em> it is even public — increasingly the norm across the industry today.</p>
               </div>
               <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
@@ -767,7 +767,7 @@ class Dashboard extends React.Component {
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
             <div style={s("max-width:620px;")}>
               <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>The exposure window</div>
-              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>When risk starts — and how the window shifts</h2>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>When risk starts — and how it shifts</h2>
               <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Three eras on one scale. The <strong style={s("color:var(--risk-high);")}>red band</strong> is the exposure window — when a flaw is exploitable but not yet fixed. Risk truly starts where attackers can strike (the red marker), not at discovery. Watch where that point moves, and how the window widens, then narrows again when defenders also use AI.</p>
             </div>
             <div style={s("margin-top:16px;")}>{windowChart}</div>
@@ -798,7 +798,7 @@ class Dashboard extends React.Component {
             <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
               <div style={s("max-width:560px;")}>
                 <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Exploitation before a fix exists</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>The rise of zero-day exploitation</h2>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>The rise of zero-days</h2>
                 <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>A <strong style={s("color:var(--fg-1);")}>zero-day</strong> is attacked before any fix exists — so there is nothing to patch. Their number, and share of all exploited flaws, keeps climbing.</p>
               </div>
               <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:8px;")}>
@@ -828,7 +828,7 @@ class Dashboard extends React.Component {
           </section>
           </div>
 
-          {this.groupHeader('grp2',2,'III','Part three','Risk Management Implications & Trade-Offs','Where protective value is shifting as patching addresses less of the risk — and the trade-offs of remediation-first policies. Covers changing control priorities, the change-freeze trade-off, and a zero-vulnerability gate.',40)}
+          {this.groupHeader('grp2',2,'III','Part three','Risk Management Implications','Where protective value is shifting as patching addresses less of the risk — and the trade-offs of remediation-first policies. Covers changing control priorities, the change-freeze trade-off, and a zero-vulnerability gate.',40)}
 
           {/* ============ SECTION 5 · CONTROLS STACK ============ */}
           <div id="ch5" className="reveal" style={s("scroll-margin-top:66px;")}>
@@ -836,7 +836,7 @@ class Dashboard extends React.Component {
             <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
               <div style={s("max-width:660px;")}>
                 <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Drivers of security and resilience</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>How AI acceleration reshapes control priorities</h2>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>How AI reshapes control priorities</h2>
                 <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Where protective value is moving as attacks outpace fixes — and the metric to measure each control by.</p>
               </div>
             </div>
@@ -881,7 +881,7 @@ class Dashboard extends React.Component {
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
             <div style={s("max-width:760px;")}>
               <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Trade-off &middot; change freeze</div>
-              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>What pausing change to remediate buys &mdash; and what it costs</h2>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>What a change freeze buys &mdash; and costs</h2>
               <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Pausing change to clear the backlog is one option for reducing exposure. How far to extend it is a judgement of risk reduction versus delivery impact. Choose a scope to see the trade-off.</p>
             </div>
 
@@ -956,7 +956,7 @@ class Dashboard extends React.Component {
             <div style={s("display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;")}>
               <div style={s("max-width:620px;")}>
                 <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>Policy option &middot; zero-vulnerability gate</div>
-                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Weighing a &ldquo;fix everything first&rdquo; gate</h2>
+                <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Weighing a zero-vulnerability gate</h2>
                 <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>Requiring zero open vulnerabilities before any change ships is an understandable goal. Comparing it with a risk-based gate helps weigh the protection it offers against its effect on delivery.</p>
               </div>
               <div style={s("display:flex;flex-direction:column;align-items:flex-end;gap:5px;")}>
@@ -1007,7 +1007,7 @@ class Dashboard extends React.Component {
           </section>
           </div>
 
-          {this.groupHeader('grp3',3,'IV','Part four','Executive Questions to Drive Risk Reduction','Questions to assess organisational readiness, direct a measurable plan, and allocate resources to where protective value has shifted.',40)}
+          {this.groupHeader('grp3',3,'IV','Part four','Questions to Drive Risk Reduction','Questions to assess organisational readiness, direct a measurable plan, and allocate resources to where protective value has shifted.',40)}
 
           {/* ============ SECTION 8 · QUESTIONS ============ */}
           <div id="ch8" className="reveal" style={s("scroll-margin-top:66px;")}>
