@@ -242,26 +242,32 @@ class Dashboard extends React.Component {
 
   exploitVals() {
     const h = React.createElement, T = this.T.bind(this);
-    const W = 820, H = 250, ML = 50, MR = 40, MT = 22, MB = 38;
+    const NAVY = '#10314F', RED = '#C0392B';
+    const rows = [
+      { y:'2018', sub:'Defenders had ~2 months', v:63 },
+      { y:'2022', sub:'Warning window shrinking', v:32 },
+      { y:'Today · 2026', sub:'Attackers strike first', v:-8, today:true },
+    ];
+    const W = 820, H = 250, GX = 106, ML = 120, MR = 64, MT = 62, MB = 26;
     const pw = W - ML - MR, ph = H - MT - MB, base = MT + ph;
-    const years = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
-    const n = years.length, last = n - 1;
-    const tte = [70,66,63,54,44,38,32,5,-1,-7,-8];
-    const xFor = i => ML + i / last * pw;
-    const dMin = -20, dMax = 75, yFor = v => MT + (dMax - v) / (dMax - dMin) * ph;
-    const fmt = v => (v < 0 ? ('−' + Math.abs(v)) : ('+' + v));
+    const vMin = -22, vMax = 70, range = vMax - vMin;
+    const xFor = v => ML + (v - vMin) / range * pw, x0 = xFor(0);
+    const n = rows.length, bandH = ph / n, barH = 26;
     const k = [];
-    [60,40,20,0,-20].forEach(v => { k.push(h('line',{key:'g'+v,x1:ML,x2:ML+pw,y1:yFor(v),y2:yFor(v),stroke:v===0?'#10314F':'#EEF0F2',strokeWidth:v===0?1.25:1,strokeDasharray:v===0?'2 3':'0'})); k.push(T(ML-8,yFor(v)+3,String(v),{key:'gl'+v,anchor:'end',mono:true,fs:10})); });
-    k.push(h('rect',{key:'dz',x:ML,y:yFor(0),width:pw,height:base-yFor(0),fill:'rgba(192,57,43,0.06)'}));
-    k.push(T(ML+6,yFor(0)-6,'Public disclosure — day 0',{key:'z0',anchor:'start',fs:9.5,fw:700,fill:'#10314F'}));
-    k.push(T(ML+6,base-8,'Attacked before it is even public',{key:'dzl',anchor:'start',fs:9.5,fw:700,fill:'#C0392B'}));
-    const pts = []; for (let i=0;i<n;i++) pts.push(xFor(i).toFixed(1)+','+yFor(tte[i]).toFixed(1));
-    k.push(h('polyline',{key:'o',points:pts.join(' '),fill:'none',stroke:'#C0392B',strokeWidth:3,strokeLinecap:'round',strokeLinejoin:'round'}));
-    k.push(h('circle',{key:'sd',cx:xFor(0),cy:yFor(tte[0]),r:3.6,fill:'#C0392B'}));
-    k.push(T(xFor(0)+8,yFor(tte[0])+1,fmt(tte[0])+' days',{key:'sl',anchor:'start',mono:true,fs:11,fw:700,fill:'#C0392B'}));
-    k.push(h('circle',{key:'ed',cx:xFor(last),cy:yFor(tte[last]),r:4.5,fill:'#C0392B',stroke:'#fff',strokeWidth:1.5}));
-    k.push(T(xFor(last),yFor(tte[last])+18,fmt(tte[last])+'d · today',{key:'el',anchor:'end',mono:true,fs:11,fw:700,fill:'#C0392B'}));
-    [0,4,8,10].forEach(i => k.push(T(xFor(i),base+15,String(years[i]),{key:'xl'+i,anchor:'middle',mono:true,fs:9.5,fill:(i===last)?'#23282C':'#97A0A8',fw:(i===last)?700:500})));
+    rows.forEach((r,i) => { if (i % 2 === 0) k.push(h('rect',{key:'bd'+i,x:12,y:MT+bandH*i,width:(ML+pw)-12,height:bandH,fill:'#FAFBFC'})); });
+    k.push(h('line',{key:'z',x1:x0,x2:x0,y1:52,y2:base,stroke:NAVY,strokeWidth:1.5,strokeDasharray:'3 3'}));
+    k.push(T(x0,30,'Flaw made public · day 0',{key:'z0',anchor:'middle',fs:10.5,fw:700,fill:NAVY}));
+    k.push(T(x0-12,46,'← before it is public',{key:'zb',anchor:'end',fs:9.5,fw:700,fill:RED}));
+    k.push(T(x0+12,46,'after it is public →',{key:'za',anchor:'start',fs:9.5,fw:700,fill:'#6B747C'}));
+    rows.forEach((r,i) => {
+      const yMid = MT + bandH*(i+0.5), bx = xFor(r.v), pos = r.v >= 0, col = pos ? NAVY : RED;
+      k.push(h('rect',{key:'b'+i,x:pos?x0:bx,y:yMid-barH/2,width:Math.max(2,Math.abs(bx-x0)),height:barH,rx:3,fill:col,opacity:pos?0.9:1}));
+      k.push(T(GX,yMid-2,r.y,{key:'y'+i,anchor:'end',fs:12.5,fw:700,fill:r.today?RED:'#23282C'}));
+      k.push(T(GX,yMid+13,r.sub,{key:'s'+i,anchor:'end',fs:9.5,fw:500,fill:r.today?RED:'#97A0A8'}));
+      const vt = Math.abs(r.v) + ' days';
+      if (pos) k.push(T(bx+9,yMid+4,vt,{key:'v'+i,anchor:'start',mono:true,fs:12.5,fw:700,fill:NAVY}));
+      else k.push(T(bx-9,yMid+4,vt,{key:'v'+i,anchor:'end',mono:true,fs:12.5,fw:700,fill:RED}));
+    });
     const exploitChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
     const exploitStats = [
       { label:'2018 — first tracked', value:'63 days', note:'Attackers took about two months after a flaw was known to exploit it.', color:'#10314F', bg:'#fff' },
@@ -294,19 +300,15 @@ class Dashboard extends React.Component {
     const pts=models.map(m=>xFor(m.t).toFixed(1)+','+yFor(m.cap).toFixed(1));
     k.push(h('polyline',{key:'ln',points:pts.join(' '),fill:'none',stroke:'#C2C9D0',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}));
     const lab = {
-      'GPT-4':{dy:-11,anchor:'middle'}, 'Llama 3':{dy:-11,anchor:'middle'},
-      'DeepSeek-R1':{dy:17,anchor:'middle'}, 'GPT-5':{dy:-11,anchor:'middle'},
-      'Mythos':{dy:-11,anchor:'middle'}, 'GLM-5.2':{dy:-11,anchor:'end'},
+      'GPT-4':{dx:0,dy:-13,anchor:'middle'}, 'Llama 3':{dx:0,dy:-13,anchor:'middle'},
+      'DeepSeek-R1':{dx:0,dy:20,anchor:'middle'}, 'GPT-5':{dx:0,dy:-13,anchor:'middle'},
+      'Mythos':{dx:-8,dy:-13,anchor:'end'}, 'GLM-5.2':{dx:10,dy:5,anchor:'start'},
     };
     models.forEach((m,i)=>{
       const o=lab[m.name];
       k.push(h('circle',{key:'c'+i,cx:xFor(m.t),cy:yFor(m.cap),r:5,fill:m.c,stroke:'#fff',strokeWidth:1.5}));
-      k.push(T(xFor(m.t)+(o.anchor==='end'?7:0), yFor(m.cap)+o.dy, m.name, {key:'l'+i,anchor:o.anchor,fs:10.5,fw:700,fill:m.c}));
+      k.push(T(xFor(m.t)+o.dx, yFor(m.cap)+o.dy, m.name, {key:'l'+i,anchor:o.anchor,fs:11,fw:700,fill:m.c}));
     });
-    // governance annotations on the 2026 pair
-    const mMy=models[4], mGl=models[5];
-    k.push(T(xFor(mMy.t), yFor(mMy.cap)+15, 'US · gov-gated', {key:'amy',anchor:'middle',fs:8.5,fw:700,fill:'#97A0A8'}));
-    k.push(T(xFor(mGl.t)+7, yFor(mGl.cap)+15, 'China · open · free', {key:'agl',anchor:'end',fs:8.5,fw:700,fill:CN}));
     const modelsChart = h('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block',overflow:'visible'}},k);
     return { models, modelsChart };
   }
@@ -612,24 +614,24 @@ class Dashboard extends React.Component {
 
           {/* ============ OPENING · THE CHALLENGE ============ */}
           <div id="grpC" className="reveal" style={s("scroll-margin-top:66px;margin-top:6px;")}>
-          <section style={s("background:#fff;border:1px solid var(--line-1);border-top:4px solid var(--pnc-orange);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:32px 34px 28px;")}>
-            <div style={s("display:flex;align-items:center;justify-content:space-between;gap:14px;")}>
-              <div style={s("font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--pnc-orange);")}>The central challenge</div>
-              <div aria-hidden="true" title="The fish on the table — name the awkward issue openly; the longer it sits, the more it stinks." style={s("flex:none;opacity:.5;line-height:0;")}>
-                <svg width="42" height="42" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M23 30 q-3.4 -4 0 -7.5 q3.4 -3.5 0 -7.5" stroke="#F58025" strokeWidth="1.4" strokeLinecap="round" opacity="0.7" />
-                  <path d="M30 28 q-3.4 -4 0 -7.5 q3.4 -3.5 0 -7.5" stroke="#F58025" strokeWidth="1.4" strokeLinecap="round" opacity="0.55" />
-                  <path d="M37 30 q-3.4 -4 0 -7.5 q3.4 -3.5 0 -7.5" stroke="#F58025" strokeWidth="1.4" strokeLinecap="round" opacity="0.7" />
-                  <ellipse cx="30" cy="38" rx="12" ry="5.5" stroke="#5A6570" strokeWidth="1.6" />
-                  <path d="M18 38 L10 33 L10 43 Z" stroke="#5A6570" strokeWidth="1.6" strokeLinejoin="round" />
-                  <circle cx="37" cy="36.4" r="1.1" fill="#5A6570" />
-                  <line x1="8" y1="47" x2="52" y2="47" stroke="#5A6570" strokeWidth="1.6" strokeLinecap="round" />
-                  <line x1="16" y1="47" x2="14" y2="54" stroke="#5A6570" strokeWidth="1.6" strokeLinecap="round" />
-                  <line x1="44" y1="47" x2="46" y2="54" stroke="#5A6570" strokeWidth="1.6" strokeLinecap="round" />
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:30px 34px 28px;overflow:hidden;")}>
+            <div style={s("margin:-30px -34px 22px;padding:13px 34px;background:linear-gradient(95deg,var(--pnc-navy),#0c2942);border-bottom:3px solid var(--pnc-orange);display:flex;align-items:center;justify-content:space-between;gap:16px;")}>
+              <span style={s("font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pnc-orange);")}>The Central Challenge</span>
+              <div aria-hidden="true" title="The fish on the table — name the awkward issue openly; the longer it sits, the more it stinks." style={s("flex:none;opacity:.95;line-height:0;")}>
+                <svg width="58" height="58" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 30 q-3.4 -4 0 -7.5 q3.4 -3.5 0 -7.5" stroke="#F58025" strokeWidth="1.8" strokeLinecap="round" opacity="0.95" />
+                  <path d="M30 28 q-3.4 -4 0 -7.5 q3.4 -3.5 0 -7.5" stroke="#F58025" strokeWidth="1.8" strokeLinecap="round" opacity="0.8" />
+                  <path d="M37 30 q-3.4 -4 0 -7.5 q3.4 -3.5 0 -7.5" stroke="#F58025" strokeWidth="1.8" strokeLinecap="round" opacity="0.95" />
+                  <ellipse cx="30" cy="38" rx="12.5" ry="6" stroke="#FFFFFF" strokeWidth="1.9" />
+                  <path d="M17.5 38 L9 32.5 L9 43.5 Z" stroke="#FFFFFF" strokeWidth="1.9" strokeLinejoin="round" />
+                  <circle cx="37" cy="36.2" r="1.2" fill="#FFFFFF" />
+                  <line x1="7" y1="47.5" x2="53" y2="47.5" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" />
+                  <line x1="16" y1="47.5" x2="14" y2="55" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" />
+                  <line x1="44" y1="47.5" x2="46" y2="55" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" />
                 </svg>
               </div>
             </div>
-            <h2 style={s("font-family:var(--font-serif);font-size:27px;font-weight:600;letter-spacing:-.015em;line-height:1.18;margin:12px 0 0;color:var(--fg-1);max-width:880px;text-wrap:pretty;")}>What does frontier AI mean for IT risk-management prioritization?</h2>
+            <h2 style={s("font-family:var(--font-serif);font-size:27px;font-weight:600;letter-spacing:-.015em;line-height:1.18;margin:2px 0 0;color:var(--fg-1);max-width:880px;text-wrap:pretty;")}>What does frontier AI mean for IT risk-management prioritization?</h2>
             <p style={s("font-size:14px;line-height:21px;color:var(--fg-2);margin:13px 0 0;max-width:900px;text-wrap:pretty;")}>For much of the past decade, faster remediation was among the most reliable ways to reduce cyber risk. AI is changing that calculus: it is raising both the capability and the speed of attackers and compressing the time from a vulnerability becoming known to its first exploitation. As that window narrows, faster patching addresses a smaller share of the risk, while the effort required to sustain it rises. For IT risk management, the question becomes one of prioritization: where to direct limited control effort and investment for the greatest reduction in risk.</p>
 
             <div style={s("display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;")} data-collapse="">
