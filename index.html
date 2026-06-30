@@ -203,7 +203,7 @@ class Dashboard extends React.Component {
     };
     const policyLegend = ['internal','pci','cisa'].map(id => ({ id, ...policyMeta[id], active: this.state.framework === id, onClick: () => this.setState({ framework: id }) }));
 
-    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.exploitVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.internalAIVals(), ...this.navVals() };
+    return { bars, ticks, frameworkBtns, policyLegend, fwLabel: fw.label, showTargets, ...this.cveVals(), ...this.exploitVals(), ...this.modelsVals(), ...this.defenseVals(), ...this.windowVals(), ...this.zerodayVals(), ...this.controlsVals(), ...this.freezeVals(), ...this.zeroPolicyVals(), ...this.questionsVals(), ...this.internalAIVals(), ...this.navVals() };
   }
 
   cveVals() {
@@ -269,6 +269,30 @@ class Dashboard extends React.Component {
       { label:'The shift', value:'≈ 70 days', note:'Exploitation arrives roughly 70 days earlier than a decade ago — and is still moving forward.', color:'#C0392B', bg:'#fff' },
     ];
     return { exploitChart, exploitStats };
+  }
+
+  modelsVals() {
+    const models = [
+      { name:'GPT-4',       company:'OpenAI',    country:'United States', flag:'🇺🇸', year:'2023', cap:45 },
+      { name:'Llama 3',     company:'Meta',      country:'United States', flag:'🇺🇸', year:'2024', cap:58 },
+      { name:'Gemini 2.0',  company:'Google',    country:'United States', flag:'🇺🇸', year:'2024', cap:67 },
+      { name:'Mistral Large',company:'Mistral AI',country:'France',       flag:'🇫🇷', year:'2024', cap:72 },
+      { name:'DeepSeek-R1', company:'DeepSeek',  country:'China',         flag:'🇨🇳', year:'2025', cap:84 },
+      { name:'GPT-5',       company:'OpenAI',    country:'United States', flag:'🇺🇸', year:'2025', cap:95 },
+    ];
+    return { models };
+  }
+
+  defenseVals() {
+    const defenseLayers = [
+      { name:'Network segmentation', sub:'Limits where an intruder can move' },
+      { name:'Identity & access',    sub:'Multi-factor and least-privilege access' },
+      { name:'Patching',             sub:'Closes known vulnerabilities', hl:true },
+      { name:'Monitoring & detection', sub:'Surfaces intrusions early' },
+      { name:'Containment',          sub:'Isolates systems; limits the blast radius' },
+      { name:'Backup & recovery',    sub:'Restores operations after an event' },
+    ];
+    return { defenseLayers };
   }
 
   windowVals() {
@@ -432,8 +456,8 @@ class Dashboard extends React.Component {
         ] },
     ];
     const gateLimits = [
-      'New flaws never stop arriving, so “zero” is a moving target the bank never actually reaches.',
-      'Some flaws have no fix available yet — there is nothing to patch, so the gate blocks change for no gain.',
+      'New flaws arrive continually, so “zero” is a moving target that is rarely reached in practice.',
+      'Some flaws have no fix available yet — there is nothing to patch, so the gate may hold change without adding protection.',
       'It holds up good change too: security improvements and fixes wait in the same queue.',
     ];
     return { gates, gateLimits };
@@ -503,6 +527,7 @@ class Dashboard extends React.Component {
       cveBtns, cveSurge, cveChart,
       frameworkBtns, policyLegend, fwLabel, ticks, bars, showTargets,
       exploitStats, exploitChart,
+      models, defenseLayers,
       windowChart, milestoneLegend,
       volBtns, scen2Btns, zeroStats, zerodayChart,
       controlGroups,
@@ -741,6 +766,35 @@ class Dashboard extends React.Component {
 
           {this.groupHeader('grp1',1,'II','Part two','AI Acceleration of Cyber Threats','How AI is compressing the time between a vulnerability becoming known and its exploitation — often to less than zero. Covers threat-actor speed, the disclosure-to-patch exposure window, and the rise of zero-day attacks.',40)}
 
+          {/* ============ SECTION · FRONTIER MODELS ============ */}
+          <div id="chModels" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("max-width:660px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>The models behind the shift</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>Frontier AI capability is rising — and spreading</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>A small group of frontier models — and the autonomous agents built on them — is the engine behind faster exploitation. Their capability has climbed sharply in three years, and the leading models now come from several companies and more than one country.</p>
+            </div>
+            <div style={s("display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;")}>
+              <span style={s("font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-3);")}>Relative capability &#8599;</span>
+              <span style={s("font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-3);")}>2023 &rarr; 2025</span>
+            </div>
+            <div style={s("display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:10px;align-items:end;")} data-collapse="">
+              {models.map((m, i) => (
+                <div key={i} style={s("display:flex;flex-direction:column;")}>
+                  <div style={s("position:relative;height:118px;border-bottom:2px solid var(--line-2);display:flex;align-items:flex-end;")}>
+                    <div style={s(`width:100%;height:${m.cap}%;background:#FF6B57;opacity:${(0.5 + i*0.1).toFixed(2)};border-radius:5px 5px 0 0;`)}></div>
+                  </div>
+                  <div style={s("font-family:var(--font-mono);font-size:10.5px;color:var(--fg-3);margin-top:9px;")}>{m.year}</div>
+                  <div style={s("font-size:13px;font-weight:700;color:var(--fg-1);margin-top:2px;line-height:1.2;")}>{m.name}</div>
+                  <div style={s("font-size:11.5px;color:var(--fg-2);margin-top:3px;")}>{m.company}</div>
+                  <div style={s("font-size:11px;color:var(--fg-3);margin-top:3px;")}>{m.flag} {m.country}</div>
+                </div>
+              ))}
+            </div>
+            <p style={s("font-size:11.5px;line-height:17px;color:var(--fg-3);margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line-1);text-wrap:pretty;")}><strong style={s("color:var(--fg-2);font-weight:700;")}>Illustrative — relative capability and release timing based on public information.</strong> The models and their developers are publicly announced; the capability ranking is a directional comparison across widely used frontier models to support discussion, not a benchmark score. The point is the trajectory: rapidly rising capability, available from multiple companies and countries.</p>
+          </section>
+          </div>
+
           {/* ============ SECTION 2 · THREAT-ACTOR SPEED ============ */}
           <div id="ch2" className="reveal" style={s("scroll-margin-top:66px;")}>
           <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
@@ -830,6 +884,33 @@ class Dashboard extends React.Component {
           </div>
 
           {this.groupHeader('grp2',2,'III','Part three','Risk Management Implications','Where protective value is shifting as patching addresses less of the risk — and the trade-offs of remediation-first policies. Covers changing control priorities, the change-freeze trade-off, and a zero-vulnerability gate.',40)}
+
+          {/* ============ SECTION · DEFENSE IN DEPTH (framing) ============ */}
+          <div id="chDepth" className="reveal" style={s("scroll-margin-top:66px;")}>
+          <section style={s("background:#fff;border:1px solid var(--line-1);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:28px 32px 24px;margin-top:28px;")}>
+            <div style={s("max-width:700px;")}>
+              <div style={s("font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pnc-orange);")}>A reasonable question</div>
+              <h2 style={s("font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:8px 0 0;color:var(--fg-1);")}>If remediation runs behind, why aren&rsquo;t prime targets breached more often?</h2>
+              <p style={s("font-size:12.5px;line-height:18px;color:var(--fg-2);margin:7px 0 0;text-wrap:pretty;")}>With remediation under pressure and frontier-AI capability widely available, one might expect frequent, material breaches at well-defended institutions such as banks. In practice, they remain comparatively rare — because patching is only one of many controls working together.</p>
+            </div>
+            <div style={s("display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;")}>
+              <span style={s("display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--fg-2);")}><span style={s("width:7px;height:7px;border-radius:50%;background:var(--risk-critical);")}></span>Attacker</span>
+              <span style={s("font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);")}>Must get past every layer &rarr;</span>
+              <span style={s("display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--fg-2);")}>Customers &amp; critical services<span style={s("width:7px;height:7px;border-radius:50%;background:var(--risk-low);")}></span></span>
+            </div>
+            <div style={s("display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px;")} data-collapse="">
+              {defenseLayers.map((L, i) => (
+                <div key={i} style={s(`position:relative;border:1px solid ${L.hl?'var(--pnc-orange)':'var(--line-1)'};background:${L.hl?'var(--pnc-orange-050)':'#F7F8F9'};border-radius:10px;padding:12px 11px 13px;`)}>
+                  <div style={s(`font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.04em;color:${L.hl?'var(--pnc-orange-700)':'var(--fg-3)'};`)}>{'LAYER ' + (i+1)}</div>
+                  <div style={s("font-size:12.5px;font-weight:700;color:var(--fg-1);margin-top:6px;line-height:1.22;")}>{L.name}</div>
+                  <div style={s("font-size:10.5px;color:var(--fg-3);margin-top:4px;line-height:1.35;")}>{L.sub}</div>
+                  {L.hl ? <div style={s("display:inline-block;margin-top:8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--pnc-orange-700);background:#fff;border:1px solid var(--pnc-orange-100);border-radius:99px;padding:2px 7px;")}>One layer</div> : null}
+                </div>
+              ))}
+            </div>
+            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:13px;line-height:19px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The answer &mdash; defense in depth.</strong> Protection comes from layered, overlapping controls, not from patching alone. An adversary must defeat several of them in sequence, so a single unpatched flaw rarely leads to material loss on its own. The implication for the board: as patching addresses less of the risk, the protective value of the surrounding layers &mdash; detection, segmentation, containment, and recovery &mdash; rises.</div>
+          </section>
+          </div>
 
           {/* ============ SECTION 5 · CONTROLS STACK ============ */}
           <div id="ch5" className="reveal" style={s("scroll-margin-top:66px;")}>
@@ -985,9 +1066,9 @@ class Dashboard extends React.Component {
               ))}
             </div>
 
-            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:13px;line-height:19px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The bottom line:</strong> Aiming to fix everything first stops almost all change — and is never actually reached. A risk-based gate keeps the bank moving while fixing the most dangerous flaws first.</div>
+            <div style={s("margin-top:16px;padding:14px 16px;background:var(--pnc-navy);border-radius:var(--radius-md);font-size:13px;line-height:19px;color:#fff;")}><strong style={s("color:var(--pnc-orange);")}>The bottom line:</strong> Aiming to fix everything first holds back most change for limited added protection, and full elimination is rarely achieved. A risk-based gate keeps the business moving while addressing the most material flaws first.</div>
 
-            <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);margin-top:22px;")}>Why &ldquo;fix everything first&rdquo; can&rsquo;t work</div>
+            <div style={s("font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3);margin-top:22px;")}>Why &ldquo;fix everything first&rdquo; may not deliver the value intended</div>
             <div style={s("display:flex;flex-direction:column;gap:11px;margin-top:12px;")}>
               {gateLimits.map((l, i) => (
                 <div key={i} style={s("display:flex;gap:11px;align-items:flex-start;")}>
